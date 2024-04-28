@@ -28,10 +28,10 @@ const projection = geoAlbers();
 const d3GeoPath = geoPath(projection);
 
 export const ActiveAlertMap = () => {
-  const { data: tor_warn } = useNwsAlertsByEvent(EVENTS.tor_warn);
-  const { data: tor_watch } = useNwsAlertsByEvent(EVENTS.tor_watch);
-  const { data: st_warn } = useNwsAlertsByEvent(EVENTS.st_warn);
-  const { data: st_watch } = useNwsAlertsByEvent(EVENTS.st_watch);
+  const { data: tor_warn } = useNwsAlertsByEvent(EVENTS.tornado_warning);
+  const { data: tor_watch } = useNwsAlertsByEvent(EVENTS.tornado_watch);
+  const { data: st_warn } = useNwsAlertsByEvent(EVENTS.severe_storm_warning);
+  const { data: st_watch } = useNwsAlertsByEvent(EVENTS.severe_storm_watch);
 
   const fake_tor_warn = FAKE_ALERTS.tor_warn;
   const fake_tor_watch = FAKE_ALERTS.tor_watch;
@@ -104,9 +104,12 @@ const WarningPoints = ({ alerts, color, icon, callback }) => {
             const [centX, centY] = d3GeoPath.centroid(alert.geometry);
             const isTornadoEmergency = checkStringForPhrase(
               description,
-              SITUATIONS.te
+              SITUATIONS.tornado_emergency
             );
-            const isPDS = checkStringForPhrase(description, SITUATIONS.pds);
+            const isPDS = checkStringForPhrase(
+              description,
+              SITUATIONS.particularly_dangerous_situation
+            );
             const polygonColor = isTornadoEmergency
               ? "#f0f"
               : isPDS
@@ -144,7 +147,7 @@ const WarningPolygon = ({ color, feature, onClick }) => {
   return (
     <path
       d={d3GeoPath(rewind(feature.geometry, { reverse: true }))}
-      fill="none"
+      fill={color}
       stroke={color}
       strokeWidth={1}
       onClick={() => onClick(feature)}
@@ -166,7 +169,10 @@ const WatchPolygons = ({ alerts, color, callback }) => {
             // TODO: move watch poly creation logic to util func
             const affectedCountyIds = alert.properties.geocode.SAME;
             const { description } = alert.properties;
-            const isPDS = checkStringForPhrase(description, SITUATIONS.pds);
+            const isPDS = checkStringForPhrase(
+              description,
+              SITUATIONS.particularly_dangerous_situation
+            );
             const fillColor = isPDS ? "#09f" : color;
 
             const watchFeature = topojson.merge(
@@ -200,7 +206,7 @@ const WatchPolygon = ({ alert, color, feature, onClick }) => {
       onClick={() => onClick(alert)}
       fillOpacity={0.5}
       stroke="black"
-      strokeWidth={1.5}
+      strokeWidth={0.5}
     />
   );
 };

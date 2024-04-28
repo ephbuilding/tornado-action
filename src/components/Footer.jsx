@@ -89,9 +89,9 @@ export const Footer = () => {
   return (
     <div data-testid="Footer">
       <DaisyFooter className="p-10 bg-primary">
-        <LinkSection title="Resources" links={LINKS.resources} />
-        <LinkSection title="Tornado Warned" links={LINKS.project} />
-        <LinkSection title="Contact" links={LINKS.me} />
+        {/* <LinkSection title="Resources" links={LINKS.resources} /> */}
+        {/* <LinkSection title="Tornado Warned" links={LINKS.project} /> */}
+        {/* <LinkSection title="Contact" links={LINKS.me} /> */}
 
         <div>
           <PoweredBySection logos={LOGOS} />
@@ -139,7 +139,8 @@ const PoweredBySection = ({ logos }) => {
 
 const Copyright = () => (
   <p className="text-center text-xs mb-3">
-    &copy; {new Date().getFullYear()} Ephraim Smith. &nbsp; All Rights Reserved.
+    &copy; {new Date().getFullYear()} Tornado Warned&trade;. &nbsp; All Rights
+    Reserved.
   </p>
 );
 
