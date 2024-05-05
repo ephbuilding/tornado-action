@@ -1,14 +1,13 @@
 import { useState } from "react";
 import { Button, Modal } from "react-daisyui";
 
-import { PageLayout } from "components";
 import {
   CategoricalMap,
   DayInfo,
   TextProductModal,
 } from "features/convective-outlooks";
 
-const ConvectiveOutlookScreen = () => {
+export const ConvectiveOutlooks = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [outlookDay, setOutlookDay] = useState(1);
 
@@ -22,10 +21,10 @@ const ConvectiveOutlookScreen = () => {
   };
 
   return (
-    <PageLayout>
-      <h1 className="text-3xl uppercase font-bold mb-3 text-center bg-clip-text text-transparent bg-gradient-to-br from-primary to-base-content">
+    <>
+      {/* <h1 className="text-3xl uppercase font-bold mb-3 text-center bg-clip-text text-transparent bg-gradient-to-br from-primary to-base-content">
         Convective Outlooks
-      </h1>
+      </h1> */}
       {/* <p className="text-center text-sm mb-10">
         Convective Outlooks are organized severe storm forecasts created by the
         Storm Prediction Center in Norman, OK. Click or tap on any of the
@@ -44,11 +43,9 @@ const ConvectiveOutlookScreen = () => {
         outlookDay={outlookDay}
         closeHandler={closeModalHandler}
       />
-    </PageLayout>
+    </>
   );
 };
-
-export default ConvectiveOutlookScreen;
 
 const OutlooksGrid = ({ children }) => (
   <div className="md:grid md:grid-cols-2 xl:grid-cols-3">{children}</div>
