@@ -20,6 +20,7 @@ import {
   FAKE_ALERTS,
   SITUATIONS,
 } from "services/nws-api-web-service";
+import { checkStringForPhrase } from "utils";
 
 import { FaTornado } from "react-icons/fa6";
 import { IoThunderstorm } from "react-icons/io5";
@@ -28,15 +29,21 @@ const projection = geoAlbers();
 const d3GeoPath = geoPath(projection);
 
 export const ActiveAlertMap = () => {
-  const { data: tor_warn } = useNwsAlertsByEvent(EVENTS.tornado_warning);
-  const { data: tor_watch } = useNwsAlertsByEvent(EVENTS.tornado_watch);
-  const { data: st_warn } = useNwsAlertsByEvent(EVENTS.severe_storm_warning);
-  const { data: st_watch } = useNwsAlertsByEvent(EVENTS.severe_storm_watch);
+  const { data: tornado_warnings } = useNwsAlertsByEvent(
+    EVENTS.tornado_warning
+  );
+  const { data: tornado_watches } = useNwsAlertsByEvent(EVENTS.tornado_watch);
+  const { data: severe_storm_warnings } = useNwsAlertsByEvent(
+    EVENTS.severe_storm_warning
+  );
+  const { data: severe_storm_watches } = useNwsAlertsByEvent(
+    EVENTS.severe_storm_watch
+  );
 
-  const fake_tor_warn = FAKE_ALERTS.tor_warn;
-  const fake_tor_watch = FAKE_ALERTS.tor_watch;
-  const fake_st_warn = FAKE_ALERTS.st_warn;
-  const fake_st_watch = FAKE_ALERTS.st_watch;
+  const fake_tornado_warnings = FAKE_ALERTS.tornado_warnings;
+  const fake_tornado_watches = FAKE_ALERTS.tornado_watches;
+  const fake_severe_storm_warnings = FAKE_ALERTS.severe_storm_warnings;
+  const fake_severe_storm_watches = FAKE_ALERTS.severe_storm_watches;
 
   const [isOpen, setIsOpen] = useState(false);
   const [alertInfo, setAlertInfo] = useState(null);
@@ -55,27 +62,27 @@ export const ActiveAlertMap = () => {
       {/* <AlertMapLegend /> */}
       <USStateMap>
         <WatchPolygons
-          alerts={tor_watch}
-          // alerts={fake_tor_watch}
+          alerts={tornado_watches}
+          // alerts={fake_tornado_watches}
           color="yellow"
           callback={handleShowAlertModal}
         />
         <WatchPolygons
-          alerts={st_watch}
-          // alerts={fake_st_watch}
+          alerts={severe_storm_watches}
+          // alerts={fake_severe_storm_watches}
           color="limegreen"
           callback={handleShowAlertModal}
         />
-        <WarningPoints
-          alerts={st_warn}
-          // alerts={fake_st_warn}
-          color="#f90"
+        <WarningPolygons
+          alerts={severe_storm_warnings}
+          // alerts={fake_severe_storm_warnings}
+          color="orange"
           icon={IoThunderstorm}
           callback={handleShowAlertModal}
         />
-        <WarningPoints
-          alerts={tor_warn}
-          // alerts={fake_tor_warn}
+        <WarningPolygons
+          alerts={tornado_warnings}
+          // alerts={fake_tornado_warnings}
           color="red"
           icon={FaTornado}
           callback={handleShowAlertModal}
@@ -94,7 +101,7 @@ export const ActiveAlertMap = () => {
 // ------------
 // --- WARNINGS
 // ------------
-const WarningPoints = ({ alerts, color, icon, callback }) => {
+const WarningPolygons = ({ alerts, color, icon, callback }) => {
   return (
     <>
       {alerts && alerts.length > 0 ? (
@@ -148,7 +155,10 @@ const WarningPolygon = ({ color, feature, onClick }) => {
     <path
       d={d3GeoPath(rewind(feature.geometry, { reverse: true }))}
       fill={color}
+      fillOpacity={0.65}
+      // stroke={color}
       stroke={color}
+      strokeOpacity={0.85}
       strokeWidth={1}
       onClick={() => onClick(feature)}
     />
@@ -205,7 +215,8 @@ const WatchPolygon = ({ alert, color, feature, onClick }) => {
       fill={color}
       onClick={() => onClick(alert)}
       fillOpacity={0.5}
-      stroke="black"
+      stroke={color}
+      strokeOpacity={0.75}
       strokeWidth={0.5}
     />
   );
@@ -240,8 +251,3 @@ const AlertModal = ({ isOpen, closeModalHandler, alertInfo }) => {
     </>
   );
 };
-
-// TODO: relo to utils/
-function checkStringForPhrase(string, phrase) {
-  return string.toLowerCase().includes(phrase);
-}

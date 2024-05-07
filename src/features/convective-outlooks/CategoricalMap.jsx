@@ -18,7 +18,7 @@ export const CategoricalMap = ({ outlookDay }) => {
     DAY_TO_LAYERS[outlookDay]
   );
 
-  console.log(`DAY ${outlookDay} Features: \n`, features);
+  // console.log(`DAY ${outlookDay} Features: \n`, features);
 
   const [isOpen, setIsOpen] = useState(false);
   const [category, setCategory] = useState("");

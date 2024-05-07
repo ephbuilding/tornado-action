@@ -198,8 +198,10 @@ export const ImpactedAreas = ({ areaDesc }) => {
     <AlertCardSubComponent className="mb-2">
       {impactedAreasMapEntries
         ? impactedAreasMapEntries.map(([state, areas]) => {
-            console.log("STATE: ", state, "-->");
-            console.log(areas);
+            {
+              /* console.log("STATE: ", state, "-->");
+            console.log(areas); */
+            }
 
             const joinedAreaDescStr = areas.join(", ");
 
@@ -274,7 +276,7 @@ export const TornadoDetection = ({ tornadoDetection }) => {
     <AlertCardSubComponent className="flex items-center">
       <FaTornado size={30} />
       <span className="text-sm font-bold ml-4">
-        {tornadoDetection.length > 0 ? tornadoDetection[0] : "N/A"}
+        {tornadoDetection?.length > 0 ? tornadoDetection[0] : "N/A"}
       </span>
     </AlertCardSubComponent>
   );

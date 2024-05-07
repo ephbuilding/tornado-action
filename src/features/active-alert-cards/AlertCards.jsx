@@ -15,6 +15,10 @@ import {
   TornadoDetection,
 } from "./AlertCardElements";
 
+import { SITUATIONS } from "services/nws-api-web-service";
+
+import { checkStringForPhrase } from "utils";
+
 // TODO: add special messaging for TORNADO EMERGENCY & PARTICULARLY DANGEROUS SITUATION alerts
 
 export const TornadoWarningAlert = ({ alert }) => {
@@ -32,8 +36,24 @@ export const TornadoWarningAlert = ({ alert }) => {
     parameters: { maxHailSize, tornadoDetection },
   } = properties;
 
+  const isTornadoEmergency = checkStringForPhrase(
+    description,
+    SITUATIONS.tornado_emergency
+  );
+
+  const isPDS = checkStringForPhrase(
+    description,
+    SITUATIONS.particularly_dangerous_situation
+  );
+
+  const bgColor = isTornadoEmergency ? "#651fff" : isPDS ? "#f0f" : "red";
+
   return (
-    <Card className="bg-gradient-to-br from-red-500 to-red-800 p-2">
+    <Card
+      style={{ backgroundColor: `${bgColor}` }}
+      className="p-2"
+      // className="bg-gradient-to-br from-red-500 to-red-800 p-2"
+    >
       <CardTitle>
         <SenderName senderName={senderName} />
       </CardTitle>
@@ -61,8 +81,16 @@ export const TornadoWatchAlert = ({ alert }) => {
   const { areaDesc, effective, expires, senderName, description, instruction } =
     properties;
 
+  const isPDS = checkStringForPhrase(
+    description,
+    SITUATIONS.particularly_dangerous_situation
+  );
+
+  const bgColor = isPDS ? "#f0f" : "yellow";
+
   return (
-    <Card className="bg-gradient-to-br from-yellow-300 to-yellow-600 p-2">
+    <Card style={{ backgroundColor: `${bgColor}` }} className="p-2">
+      {/* className="bg-gradient-to-br from-yellow-300 to-yellow-600 p-2"> */}
       <CardTitle>
         <SenderName senderName={senderName} />
       </CardTitle>
@@ -85,8 +113,19 @@ export const SevereStormWarningAlert = ({ alert }) => {
   const { areaDesc, effective, expires, senderName, description, instruction } =
     alert?.properties;
 
+  const isPDS = checkStringForPhrase(
+    description,
+    SITUATIONS.particularly_dangerous_situation
+  );
+
+  const bgColor = isPDS ? "#f0f" : "orange";
+
   return (
-    <Card className="bg-gradient-to-br from-orange-400 to-orange-600 p-2">
+    <Card
+      style={{ backgroundColor: `${bgColor}` }}
+      className="p-2"
+      // className="bg-gradient-to-br from-orange-400 to-orange-600 p-2"
+    >
       <CardTitle>
         <SenderName senderName={senderName} />
       </CardTitle>

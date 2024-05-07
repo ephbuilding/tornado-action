@@ -1,6 +1,6 @@
 import { PageLayout } from "components";
 import { ActiveAlertMap } from "features/active-alert-map";
-import { AlertSection } from "features/active-alert-cards/AlertSection";
+import { ActiveAlertCounts, AlertSection } from "features/active-alert-cards";
 import { ConvectiveOutlooks } from "features/convective-outlooks";
 
 import {
@@ -13,7 +13,11 @@ import {
 const HomeScreen = () => {
   return (
     <PageLayout>
-      <ActiveAlertMap />
+      <div className="grid grid-cols-2">
+        <ActiveAlertCounts />
+        <ActiveAlertMap />
+      </div>
+      <ConvectiveOutlooks />
       <AlertSection
         alertComponent={TornadoWarningAlert}
         event="Tornado Warning"
@@ -27,7 +31,6 @@ const HomeScreen = () => {
         alertComponent={SevereStormWatchAlert}
         event="Severe Thunderstorm Watch"
       />
-      <ConvectiveOutlooks />
     </PageLayout>
   );
 };

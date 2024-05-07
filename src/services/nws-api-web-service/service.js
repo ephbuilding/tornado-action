@@ -25,7 +25,11 @@ const getNwsAlertsByEvent = async (event) => {
 };
 
 export const useNwsAlertsByEvent = (event) => {
-  return useQuery(["NWS", "Alerts", event], () => getNwsAlertsByEvent(event));
+  return useQuery({
+    queryKey: ["NWS", "Alerts", event],
+    queryFn: () => getNwsAlertsByEvent(event),
+    refetchInterval: 15000,
+  });
 };
 
 // ------------------------ SIMPLIFY SERVICE -------------------------

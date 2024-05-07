@@ -26,7 +26,7 @@ export const ActiveAlertCounts = () =>
 
     return (
       <div className="flex justify-center my-auto">
-        <Stats>
+        <Stats vertical="true">
           <Stats.Stat className="bg-red-600 text-black place-items-center">
             <Stat.Item variant="title" className="text-black text">
               TOR WARNINGS
