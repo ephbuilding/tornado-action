@@ -118,9 +118,9 @@ const WarningPolygons = ({ alerts, color, icon, callback }) => {
               SITUATIONS.particularly_dangerous_situation
             );
             const polygonColor = isTornadoEmergency
-              ? "#f0f"
+              ? "#651fff"
               : isPDS
-              ? "#09f"
+              ? "#f0f"
               : color;
 
             const Icon = icon;
