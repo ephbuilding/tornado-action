@@ -9,7 +9,7 @@ export const ActiveAlertCounts = ({
 }) => {
   return (
     <div className="flex justify-center my-auto">
-      <Stats vertical="true">
+      <Stats>
         <AlertStatItem
           count={tornadoWarnings}
           className="bg-red-600"

@@ -102,8 +102,6 @@ export const AlertPolygonMap = ({ alertFeature }) => {
       ? "orange"
       : "green";
 
-  // const canvasContext = d3.select("canvas").node().getContext("2d");
-
   const albersFitExtent = d3.geoAlbers().fitExtent(
     [
       [150, 100],

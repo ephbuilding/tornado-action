@@ -1679,8 +1679,8 @@ const FAKE_ALERTS = {
 const NWS_ALERT_TYPES = Object.freeze({
   tornado_warning: "Tornado Warning",
   tornado_watch: "Tornado Watch",
-  severe_storm_warning: "Severe Thunderstorm Warning",
-  severe_storm_watch: "Severe Thunderstorm Watch",
+  storm_warning: "Severe Thunderstorm Warning",
+  storm_watch: "Severe Thunderstorm Watch",
 });
 const NWS_STORM_SITUATIONS = Object.freeze({
   destructive_storm: "destructive storm",
