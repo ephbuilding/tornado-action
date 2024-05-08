@@ -78,9 +78,7 @@ export const TornadoWatchAlert = ({ alert }) => {
   const { properties } = alert;
   const { areaDesc, effective, expires, senderName, description, instruction } =
     properties;
-
   const isPDS = alertIsPDS(description);
-
   const bgColor = isPDS ? "#f0f" : "yellow";
 
   return (
@@ -104,12 +102,9 @@ export const TornadoWatchAlert = ({ alert }) => {
 
 export const SevereStormWarningAlert = ({ alert }) => {
   const { id, type, geometry, properties } = alert;
-
   const { areaDesc, effective, expires, senderName, description, instruction } =
     alert?.properties;
-
   const isPDS = alertIsPDS(description);
-
   const bgColor = isPDS ? "#f0f" : "orange";
 
   return (

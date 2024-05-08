@@ -1,27 +1,24 @@
-import { twMerge } from "tailwind-merge";
+import { useFakeNwsAlertsByType } from "services/nws-api-web-service";
 import {
-  useActiveNwsAlertsByType,
-  useFakeNwsAlertsByType,
-} from "services/nws-api-web-service";
+  TornadoWarningAlert,
+  TornadoWatchAlert,
+  SevereStormWarningAlert,
+  SevereStormWatchAlert,
+} from "features/active-alert-cards/AlertCards";
 
-export const AlertSection = ({
-  alertComponent,
-  event,
-  className,
-  ...props
-}) => {
-  const classes = twMerge("p-2", className);
-  const AlertComponent = alertComponent;
-  const { data: alerts } = useActiveNwsAlertsByType(event);
-  const fakeAlerts = useFakeNwsAlertsByType(event);
-
-  // console.log(event.toUpperCase());
-  // alerts?.map((alert) => console.log(alert));
-  // console.log("FAKE ALERTS >> ", fakeAlerts);
+export const AlertSection = ({ alerts, alertType }) => {
+  const fakeAlerts = useFakeNwsAlertsByType(alertType);
+  const ComponentMap = {
+    "Tornado Warning": TornadoWarningAlert,
+    "Tornado Watch": TornadoWatchAlert,
+    "Severe Thunderstorm Warning": SevereStormWarningAlert,
+    "Severe Thunderstorm Watch": SevereStormWatchAlert,
+  };
+  const AlertComponent = ComponentMap[alertType];
 
   return (
-    <section {...props} className={classes}>
-      <SectionTitle title={event} />
+    <section className="p-2">
+      <SectionTitle title={alertType} />
       <GridLayout>
         {alerts
           ? alerts.map((alert) => (

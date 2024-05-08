@@ -4,13 +4,6 @@ import { ActiveAlertCounts, AlertSection } from "features/active-alert-cards";
 import { ConvectiveOutlooks } from "features/convective-outlooks";
 
 import {
-  TornadoWarningAlert,
-  TornadoWatchAlert,
-  SevereStormWarningAlert,
-  SevereStormWatchAlert,
-} from "features/active-alert-cards/AlertCards";
-
-import {
   useActiveNwsAlertsByType,
   useFakeNwsAlertsByType,
 } from "services/nws-api-web-service";
@@ -78,17 +71,17 @@ const HomeScreen = () => {
       {/* TODO: eliminate AlertCard sections (only display detailed/highly visual AlertCard when user clicks on alert map) */}
       {/* TODO: create similar "Cards" for when user clicks on Convective Outlook Map areas */}
       <AlertSection
-        alertComponent={TornadoWarningAlert}
-        event="Tornado Warning"
+        alerts={alerts?.tornadoWarnings}
+        alertType="Tornado Warning"
       />
-      <AlertSection alertComponent={TornadoWatchAlert} event="Tornado Watch" />
+      <AlertSection alerts={alerts?.tornadoWatches} alertType="Tornado Watch" />
       <AlertSection
-        alertComponent={SevereStormWarningAlert}
-        event="Severe Thunderstorm Warning"
+        alerts={alerts?.stormWarnings}
+        alertType="Severe Thunderstorm Warning"
       />
       <AlertSection
-        alertComponent={SevereStormWatchAlert}
-        event="Severe Thunderstorm Watch"
+        alerts={alerts?.stormWatches}
+        alertType="Severe Thunderstorm Watch"
       />
     </PageLayout>
   );

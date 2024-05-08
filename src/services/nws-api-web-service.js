@@ -5,7 +5,6 @@ import { createHTTPClient } from "./create-http-client";
 // ! --- CONSTANTS
 
 const ERROR_TITLE = "/// ERROR: National Weather Service API Web Service ///";
-
 const FAKE_ALERTS = {
   "Tornado Warning": [
     {
@@ -1677,14 +1676,12 @@ const FAKE_ALERTS = {
     },
   ],
 };
-
 const NWS_ALERT_TYPES = Object.freeze({
   tornado_warning: "Tornado Warning",
   tornado_watch: "Tornado Watch",
   severe_storm_warning: "Severe Thunderstorm Warning",
   severe_storm_watch: "Severe Thunderstorm Watch",
 });
-
 const NWS_STORM_SITUATIONS = Object.freeze({
   destructive_storm: "destructive storm",
   particularly_dangerous_situation: "particularly dangerous situation",
@@ -1698,7 +1695,6 @@ const NWS_STORM_SITUATIONS = Object.freeze({
 const nwsApiClient = createHTTPClient({
   baseURL: "https://api.weather.gov",
 });
-
 const fetchActiveNwsAlertsByType = async (event) => {
   const encodedEvent = encodeURIComponent(event);
   const endpoint = `/alerts/active?status=actual&message_type=alert,update&event=${encodedEvent}`;
@@ -1716,30 +1712,25 @@ const fetchActiveNwsAlertsByType = async (event) => {
 };
 
 // ! --- SERVICE FUNCTIONS
-// TODO: add conditional alert color for DESCTRUCTIVE STORMS
+
 export const alertIsDestructiveStorm = (alertDescription) => {
   return checkStringForPhrase(
     alertDescription,
     NWS_STORM_SITUATIONS.destructive_storm
   );
 };
-
 export const alertIsPDS = (alertDescription) => {
   return checkStringForPhrase(
     alertDescription,
     NWS_STORM_SITUATIONS.particularly_dangerous_situation
   );
 };
-
 export const alertIsTornadoEmergency = (alertDescription) => {
   return checkStringForPhrase(
     alertDescription,
     NWS_STORM_SITUATIONS.tornado_emergency
   );
 };
-
-// TODO: replace this throughout app with below service funcs
-// TODO: use useNwsAlertsByType(event) exclusively for alerts
 export const useActiveNwsAlertsByType = (eventTypeString) => {
   return useQuery({
     queryKey: ["NWS API Web Service", "Alerts", "Active", eventTypeString],
@@ -1747,57 +1738,6 @@ export const useActiveNwsAlertsByType = (eventTypeString) => {
     refetchInterval: 15000,
   });
 };
-
-export const useNwsActiveTornadoWarnings = () => {
-  return useQuery({
-    queryKey: [
-      "NWS API Web Service",
-      "Active Alerts",
-      NWS_ALERT_TYPES.tornado_warning,
-    ],
-    queryFn: () => fetchActiveNwsAlertsByType(NWS_ALERT_TYPES.tornado_warning),
-    refetchInterval: 15000,
-  });
-};
-
-export const useNwsActiveTornadoWatches = () => {
-  return useQuery({
-    queryKey: [
-      "NWS API Web Service",
-      "Active Alerts",
-      NWS_ALERT_TYPES.tornado_watches,
-    ],
-    queryFn: () => fetchActiveNwsAlertsByType(NWS_ALERT_TYPES.tornado_watches),
-    refetchInterval: 15000,
-  });
-};
-
-export const useNwsActiveSevereStormWarnings = () => {
-  return useQuery({
-    queryKey: [
-      "NWS API Web Service",
-      "Active Alerts",
-      NWS_ALERT_TYPES.severe_storm_warning,
-    ],
-    queryFn: () =>
-      fetchActiveNwsAlertsByType(NWS_ALERT_TYPES.severe_storm_warning),
-    refetchInterval: 15000,
-  });
-};
-
-export const useNwsActiveSevereStormWatches = () => {
-  return useQuery({
-    queryKey: [
-      "NWS API Web Service",
-      "Active Alerts",
-      NWS_ALERT_TYPES.severe_storm_watch,
-    ],
-    queryFn: () =>
-      fetchActiveNwsAlertsByType(NWS_ALERT_TYPES.severe_storm_watch),
-    refetchInterval: 15000,
-  });
-};
-
 export const useFakeNwsAlertsByType = (watchEvent) => {
   return FAKE_ALERTS[watchEvent];
   // const features = FAKE_ALERTS[watchEvent];
