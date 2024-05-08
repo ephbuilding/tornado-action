@@ -15,7 +15,12 @@ import {
   TornadoDetection,
 } from "./AlertCardElements";
 
-import { SITUATIONS } from "services/nws-api-web-service";
+import {
+  alertIsDestructiveStorm,
+  alertIsPDS,
+  alertIsTornadoEmergency,
+  NWS_STORM_SITUATIONS,
+} from "services/nws-api-web-service";
 
 import { checkStringForPhrase } from "utils";
 
@@ -36,15 +41,8 @@ export const TornadoWarningAlert = ({ alert }) => {
     parameters: { maxHailSize, tornadoDetection },
   } = properties;
 
-  const isTornadoEmergency = checkStringForPhrase(
-    description,
-    SITUATIONS.tornado_emergency
-  );
-
-  const isPDS = checkStringForPhrase(
-    description,
-    SITUATIONS.particularly_dangerous_situation
-  );
+  const isTornadoEmergency = alertIsTornadoEmergency(description);
+  const isPDS = alertIsPDS(description);
 
   const bgColor = isTornadoEmergency ? "#651fff" : isPDS ? "#f0f" : "red";
 
@@ -81,10 +79,7 @@ export const TornadoWatchAlert = ({ alert }) => {
   const { areaDesc, effective, expires, senderName, description, instruction } =
     properties;
 
-  const isPDS = checkStringForPhrase(
-    description,
-    SITUATIONS.particularly_dangerous_situation
-  );
+  const isPDS = alertIsPDS(description);
 
   const bgColor = isPDS ? "#f0f" : "yellow";
 
@@ -113,10 +108,7 @@ export const SevereStormWarningAlert = ({ alert }) => {
   const { areaDesc, effective, expires, senderName, description, instruction } =
     alert?.properties;
 
-  const isPDS = checkStringForPhrase(
-    description,
-    SITUATIONS.particularly_dangerous_situation
-  );
+  const isPDS = alertIsPDS(description);
 
   const bgColor = isPDS ? "#f0f" : "orange";
 

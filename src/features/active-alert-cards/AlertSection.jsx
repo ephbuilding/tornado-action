@@ -1,7 +1,6 @@
 import { twMerge } from "tailwind-merge";
 import {
-  useWatchAlertsByEvent,
-  useNwsAlertsByEvent,
+  useActiveNwsAlertsByType,
   useFakeAlertsByEvent,
 } from "services/nws-api-web-service";
 
@@ -13,12 +12,12 @@ export const AlertSection = ({
 }) => {
   const classes = twMerge("p-2", className);
   const AlertComponent = alertComponent;
-  const { data: alerts } = useNwsAlertsByEvent(event);
+  const { data: alerts } = useActiveNwsAlertsByType(event);
   const fakeAlerts = useFakeAlertsByEvent(event);
 
-  console.log(event.toUpperCase());
-  alerts?.map((alert) => console.log(alert));
-  console.log("FAKE ALERTS >> ", fakeAlerts);
+  // console.log(event.toUpperCase());
+  // alerts?.map((alert) => console.log(alert));
+  // console.log("FAKE ALERTS >> ", fakeAlerts);
 
   return (
     <section {...props} className={classes}>
