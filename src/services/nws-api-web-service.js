@@ -1798,7 +1798,7 @@ export const useNwsActiveSevereStormWatches = () => {
   });
 };
 
-export const useFakeAlertsByEvent = (watchEvent) => {
+export const useFakeNwsAlertsByType = (watchEvent) => {
   return FAKE_ALERTS[watchEvent];
   // const features = FAKE_ALERTS[watchEvent];
   // let affectedZones = [];

@@ -2,7 +2,7 @@ import { useState } from "react";
 import rewind from "@turf/rewind";
 import * as topojson from "topojson-client";
 import { Button, Modal } from "react-daisyui";
-import { geoAlbers, geoPath, geoTransform } from "d3";
+import { geoAlbers, geoPath } from "d3";
 
 import AlbersTopo from "components/_constants/albers-map.topo.json";
 import { USStateMap } from "components";
@@ -16,12 +16,6 @@ import {
   alertIsDestructiveStorm,
   alertIsPDS,
   alertIsTornadoEmergency,
-  useNwsActiveTornadoWarnings,
-  useNwsActiveTornadoWatches,
-  useNwsActiveSevereStormWarnings,
-  useNwsActiveSevereStormWatches,
-  useFakeAlertsByEvent,
-  NWS_STORM_SITUATIONS,
 } from "services/nws-api-web-service";
 
 import { FaTornado } from "react-icons/fa6";
@@ -30,84 +24,60 @@ import { IoThunderstorm } from "react-icons/io5";
 const projection = geoAlbers();
 const d3GeoPath = geoPath(projection);
 
-export const ActiveAlertMap = () =>
-  //   {
-  //   tornadoWarnings,
-  //   tornadoWatches,
-  //   stormWarnings,
-  //   stormWatches,
-  // }
-  {
-    const { data: tornado_warnings } = useNwsActiveTornadoWarnings();
-    const { data: tornado_watches } = useNwsActiveTornadoWatches();
-    const { data: severe_storm_warnings } = useNwsActiveSevereStormWarnings();
-    const { data: severe_storm_watches } = useNwsActiveSevereStormWatches();
+export const ActiveAlertMap = ({
+  tornadoWarnings,
+  tornadoWatches,
+  stormWarnings,
+  stormWatches,
+}) => {
+  const [isOpen, setIsOpen] = useState(false);
+  const [alertInfo, setAlertInfo] = useState(null);
 
-    const fake_tornado_warnings = useFakeAlertsByEvent("Tornado Warning");
-    const fake_tornado_watches = useFakeAlertsByEvent("Tornado Watch");
-    const fake_severe_storm_warnings = useFakeAlertsByEvent(
-      "Severe Thunderstorm Warning"
-    );
-    const fake_severe_storm_watches = useFakeAlertsByEvent(
-      "Severe Thunderstorm Watch"
-    );
-
-    const [isOpen, setIsOpen] = useState(false);
-    const [alertInfo, setAlertInfo] = useState(null);
-
-    const handleShowAlertModal = (alert) => {
-      setAlertInfo(alert);
-      setIsOpen((isOpen) => !isOpen);
-    };
-
-    const handleCloseModal = () => {
-      setIsOpen(false);
-    };
-
-    return (
-      <>
-        {/* <AlertMapLegend /> */}
-        <USStateMap>
-          <WatchPolygons
-            alerts={tornado_watches}
-            // alerts={fake_tornado_watches}
-            color="yellow"
-            callback={handleShowAlertModal}
-          />
-          <WatchPolygons
-            alerts={severe_storm_watches}
-            // alerts={fake_severe_storm_watches}
-            color="limegreen"
-            callback={handleShowAlertModal}
-          />
-          <WarningPolygons
-            alerts={severe_storm_warnings}
-            // alerts={fake_severe_storm_warnings}
-            color="orange"
-            icon={IoThunderstorm}
-            callback={handleShowAlertModal}
-          />
-          <WarningPolygons
-            alerts={tornado_warnings}
-            // alerts={fake_tornado_warnings}
-            color="red"
-            icon={FaTornado}
-            callback={handleShowAlertModal}
-          />
-        </USStateMap>
-
-        <AlertModal
-          isOpen={isOpen}
-          alertInfo={alertInfo}
-          closeModalHandler={handleCloseModal}
-        />
-      </>
-    );
+  const handleShowAlertModal = (alert) => {
+    setAlertInfo(alert);
+    setIsOpen((isOpen) => !isOpen);
   };
 
-// ------------
-// --- WARNINGS
-// ------------
+  const handleCloseModal = () => {
+    setIsOpen(false);
+  };
+
+  return (
+    <div>
+      <USStateMap>
+        <WatchPolygons
+          alerts={tornadoWatches}
+          color="yellow"
+          callback={handleShowAlertModal}
+        />
+        <WatchPolygons
+          alerts={stormWatches}
+          color="limegreen"
+          callback={handleShowAlertModal}
+        />
+        <WarningPolygons
+          alerts={stormWarnings}
+          color="orange"
+          icon={IoThunderstorm}
+          callback={handleShowAlertModal}
+        />
+        <WarningPolygons
+          alerts={tornadoWarnings}
+          color="red"
+          icon={FaTornado}
+          callback={handleShowAlertModal}
+        />
+      </USStateMap>
+
+      <AlertModal
+        isOpen={isOpen}
+        alertInfo={alertInfo}
+        closeModalHandler={handleCloseModal}
+      />
+    </div>
+  );
+};
+
 const WarningPolygons = ({ alerts, color, icon, callback }) => {
   return (
     <>
@@ -115,7 +85,9 @@ const WarningPolygons = ({ alerts, color, icon, callback }) => {
         <g>
           {alerts.map((alert) => {
             const { description } = alert.properties;
-            const [centX, centY] = d3GeoPath.centroid(alert.geometry);
+            {
+              /* const [centX, centY] = d3GeoPath.centroid(alert.geometry); */
+            }
             const isTornadoEmergency = alertIsTornadoEmergency(description);
             const isPDS = alertIsPDS(description);
             const polygonColor = isTornadoEmergency
@@ -169,10 +141,6 @@ const WarningPolygon = ({ color, feature, onClick }) => {
   );
 };
 
-// ------------
-// --- WATCHES
-// ------------
-
 const WatchPolygons = ({ alerts, color, callback }) => {
   const isValidFeatures = alerts && alerts.length > 0;
 
@@ -186,6 +154,9 @@ const WatchPolygons = ({ alerts, color, callback }) => {
             const isPDS = alertIsPDS(description);
             const fillColor = isPDS ? "#f0f" : color;
 
+            {
+              /* merges individual counties into single watch polygon */
+            }
             const watchFeature = topojson.merge(
               AlbersTopo,
               AlbersTopo.objects.counties.geometries.filter((geometry) => {
