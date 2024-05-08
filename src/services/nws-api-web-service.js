@@ -1731,6 +1731,9 @@ export const alertIsTornadoEmergency = (alertDescription) => {
     NWS_STORM_SITUATIONS.tornado_emergency
   );
 };
+export const parseAlertDescription = (alert) => {
+  return alert.properties.description.toLowerCase();
+};
 export const useActiveNwsAlertsByType = (eventTypeString) => {
   return useQuery({
     queryKey: ["NWS API Web Service", "Alerts", "Active", eventTypeString],

@@ -43,8 +43,15 @@ export const TornadoWarningAlert = ({ alert }) => {
 
   const isTornadoEmergency = alertIsTornadoEmergency(description);
   const isPDS = alertIsPDS(description);
+  const isDestructiveStorm = alertIsDestructiveStorm(description);
 
-  const bgColor = isTornadoEmergency ? "#651fff" : isPDS ? "#f0f" : "red";
+  const bgColor = isTornadoEmergency
+    ? "#651fff"
+    : isPDS
+    ? "#f0f"
+    : isDestructiveStorm
+    ? "#00f"
+    : "red";
 
   return (
     <Card
@@ -105,7 +112,8 @@ export const SevereStormWarningAlert = ({ alert }) => {
   const { areaDesc, effective, expires, senderName, description, instruction } =
     alert?.properties;
   const isPDS = alertIsPDS(description);
-  const bgColor = isPDS ? "#f0f" : "orange";
+  const isDestructiveStorm = alertIsDestructiveStorm(description);
+  const bgColor = isPDS ? "#f0f" : isDestructiveStorm ? "#00f" : "orange";
 
   return (
     <Card

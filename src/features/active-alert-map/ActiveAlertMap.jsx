@@ -58,13 +58,11 @@ export const ActiveAlertMap = ({
         <WarningPolygons
           alerts={stormWarnings}
           color="orange"
-          icon={IoThunderstorm}
           callback={handleShowAlertModal}
         />
         <WarningPolygons
           alerts={tornadoWarnings}
           color="red"
-          icon={FaTornado}
           callback={handleShowAlertModal}
         />
       </USStateMap>
@@ -78,7 +76,7 @@ export const ActiveAlertMap = ({
   );
 };
 
-const WarningPolygons = ({ alerts, color, icon, callback }) => {
+const WarningPolygons = ({ alerts, color, callback }) => {
   return (
     <>
       {alerts && alerts.length > 0 ? (
@@ -90,23 +88,14 @@ const WarningPolygons = ({ alerts, color, icon, callback }) => {
             }
             const isTornadoEmergency = alertIsTornadoEmergency(description);
             const isPDS = alertIsPDS(description);
+            const isDestructiveStorm = alertIsDestructiveStorm(description);
             const polygonColor = isTornadoEmergency
               ? "#651fff"
               : isPDS
               ? "#f0f"
+              : isDestructiveStorm
+              ? "#00f"
               : color;
-
-            const Icon = icon;
-
-            // return (
-            // 	<circle
-            // 		cx={centX}
-            // 		cy={centY}
-            // 		key={alert.id}
-            // 		fill={polygonColor}
-            // 		r='5'
-            // 	/>
-            // );
 
             return (
               <WarningPolygon
@@ -132,7 +121,6 @@ const WarningPolygon = ({ color, feature, onClick }) => {
       d={d3GeoPath(rewind(feature.geometry, { reverse: true }))}
       fill={color}
       fillOpacity={0.65}
-      // stroke={color}
       stroke={color}
       strokeOpacity={0.85}
       strokeWidth={1}

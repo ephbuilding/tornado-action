@@ -1,18 +1,35 @@
 import { PageLayout } from "components";
 import { ActiveAlertMap } from "features/active-alert-map";
-import { ActiveAlertCounts, AlertSection } from "features/active-alert-cards";
+import { ActiveAlertCounts } from "features/ActiveAlertCounts";
+import { AlertSection } from "features/active-alert-cards";
 import { ConvectiveOutlooks } from "features/convective-outlooks";
 import {
+  alertIsDestructiveStorm,
+  alertIsPDS,
+  alertIsTornadoEmergency,
+  parseAlertDescription,
   useActiveNwsAlertsByType,
   useFakeNwsAlertsByType,
 } from "services/nws-api-web-service";
 import { CategoricalMap } from "features/convective-outlooks";
 
 const HomeScreen = () => {
-  let alerts;
+  const fake_tornado_warnings = useFakeNwsAlertsByType("Tornado Warning");
+  const fake_tornado_watches = useFakeNwsAlertsByType("Tornado Watch");
+  const fake_severe_storm_warnings = useFakeNwsAlertsByType(
+    "Severe Thunderstorm Warning"
+  );
+  const fake_severe_storm_watches = useFakeNwsAlertsByType(
+    "Severe Thunderstorm Watch"
+  );
   const { data } = useActiveNwsAlertsByType(
     "Tornado Warning,Tornado Watch,Severe Thunderstorm Warning,Severe Thunderstorm Watch"
   );
+  let alerts;
+  let pdsAlerts;
+  let tornadoEmergencyAlerts;
+  let destructiveStormAlerts;
+
   const filterTornadoAndStormAlerts = (activeAlerts) => {
     let alerts = {
       tornadoWarnings: [],
@@ -40,21 +57,34 @@ const HomeScreen = () => {
 
     return alerts;
   };
-  if (data) alerts = filterTornadoAndStormAlerts(data);
-  const fake_tornado_warnings = useFakeNwsAlertsByType("Tornado Warning");
-  const fake_tornado_watches = useFakeNwsAlertsByType("Tornado Watch");
-  const fake_severe_storm_warnings = useFakeNwsAlertsByType(
-    "Severe Thunderstorm Warning"
-  );
-  const fake_severe_storm_watches = useFakeNwsAlertsByType(
-    "Severe Thunderstorm Watch"
-  );
+  if (data) {
+    destructiveStormAlerts = data.filter((alert) => {
+      const alertDescription = parseAlertDescription(alert);
+      return alertIsPDS(alertDescription);
+    });
+    pdsAlerts = data.filter((alert) => {
+      const alertDescription = parseAlertDescription(alert);
+      return alertIsPDS(alertDescription);
+    });
+    tornadoEmergencyAlerts = data.filter((alert) => {
+      const alertDescription = parseAlertDescription(alert);
+      return alertIsTornadoEmergency(alertDescription);
+    });
+    alerts = filterTornadoAndStormAlerts(data);
+  }
+
+  console.log("TORNADO EMERGENCIES: ", tornadoEmergencyAlerts);
+  console.log("PDS: ", pdsAlerts);
+  console.log("DESTRUCTIVE STORMS: ", destructiveStormAlerts);
 
   return (
     <PageLayout>
       <ActiveAlertCounts
+        tornadoEmergencies={tornadoEmergencyAlerts?.length}
+        pds={pdsAlerts?.length}
         tornadoWarnings={alerts?.tornadoWarnings.length}
         tornadoWatches={alerts?.tornadoWatches.length}
+        destructiveStorms={destructiveStormAlerts?.length}
         stormWarnings={alerts?.stormWarnings.length}
         stormWatches={alerts?.stormWatches.length}
         // tornadoWarnings={fake_tornado_warnings.length}
