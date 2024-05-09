@@ -11,7 +11,6 @@ import {
   useActiveNwsAlertsByType,
   useFakeNwsAlertsByType,
 } from "services/nws-api-web-service";
-import { CategoricalMap } from "features/convective-outlooks";
 
 const HomeScreen = () => {
   const fake_tornado_warnings = useFakeNwsAlertsByType("Tornado Warning");
@@ -60,7 +59,7 @@ const HomeScreen = () => {
   if (data) {
     destructiveStormAlerts = data.filter((alert) => {
       const alertDescription = parseAlertDescription(alert);
-      return alertIsPDS(alertDescription);
+      return alertIsDestructiveStorm(alertDescription);
     });
     pdsAlerts = data.filter((alert) => {
       const alertDescription = parseAlertDescription(alert);
@@ -92,19 +91,19 @@ const HomeScreen = () => {
         // stormWarnings={fake_severe_storm_warnings.length}
         // stormWatches={fake_severe_storm_watches.length}
       />
-      <div className="grid grid-cols-2">
-        <ActiveAlertMap
-          tornadoWarnings={alerts?.tornadoWarnings}
-          tornadoWatches={alerts?.tornadoWatches}
-          stormWarnings={alerts?.stormWarnings}
-          stormWatches={alerts?.stormWatches}
-          // tornadoWarnings={fake_tornado_warnings}
-          // tornadoWatches={fake_tornado_watches}
-          // stormWarnings={fake_severe_storm_warnings}
-          // stormWatches={fake_severe_storm_watches}
-        />
-        <CategoricalMap outlookDay={1} />
-      </div>
+      {/* <div className="grid grid-cols-2"> */}
+      <ActiveAlertMap
+        tornadoWarnings={alerts?.tornadoWarnings}
+        tornadoWatches={alerts?.tornadoWatches}
+        stormWarnings={alerts?.stormWarnings}
+        stormWatches={alerts?.stormWatches}
+        // tornadoWarnings={fake_tornado_warnings}
+        // tornadoWatches={fake_tornado_watches}
+        // stormWarnings={fake_severe_storm_warnings}
+        // stormWatches={fake_severe_storm_watches}
+      />
+      {/* <CategoricalMap outlookDay={1} /> */}
+      {/* </div> */}
       <ConvectiveOutlooks />
       <AlertSection
         alerts={alerts?.tornadoWarnings}
