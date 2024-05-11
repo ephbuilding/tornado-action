@@ -14,45 +14,44 @@ export const ActiveAlertCounts = ({
     <Stats className="flex">
       <AlertStatItem
         count={tornadoEmergencies}
-        className="bg-purple-600"
+        color="purple"
         title="TOR EMERGENCY"
       />
-      <AlertStatItem count={pds} className="bg-pink-300" title="PDS" />
-      <AlertStatItem
-        count={tornadoWarnings}
-        className="bg-red-600"
-        title="TOR WARNINGS"
-      />
+      <AlertStatItem count={pds} color="pink" title="PDS" />
+      <AlertStatItem count={tornadoWarnings} color="red" title="TOR WARNINGS" />
       <AlertStatItem
         count={tornadoWatches}
-        className="bg-yellow-300"
+        color="yellow"
         title="TOR WATCHES"
       />
       <AlertStatItem
         count={destructiveStorms}
-        className="bg-blue-600"
+        color="blue"
         title="DESTRUCTIVE"
       />
       <AlertStatItem
         count={stormWarnings}
-        className="bg-orange-500"
+        color="orange"
         title="STM WARNINGS"
       />
       <AlertStatItem
         count={stormWatches}
-        className="bg-green-500"
+        color="limegreen"
         title="STM WATCHES"
       />
     </Stats>
   );
 };
 
-const AlertStatItem = ({ className, count, title }) => {
+const AlertStatItem = ({ color, count, title }) => {
   const { Stat } = Stats;
-  const classes = twMerge("text-black place-items-center", className);
+  const bgColor = count > 0 ? color : "grey";
 
   return (
-    <Stats.Stat className={classes}>
+    <Stats.Stat
+      style={{ backgroundColor: bgColor }}
+      className="text-black place-items-center"
+    >
       <Stat.Item variant="title" className="text-black">
         {title}
       </Stat.Item>

@@ -1692,7 +1692,7 @@ const NWS_STORM_SITUATIONS = Object.freeze({
 
 // API URL: https://www.weather.gov/documentation/services-web-api#/
 
-const nwsApiClient = createHTTPClient({
+const AXIOS_CLIENT = createHTTPClient({
   baseURL: "https://api.weather.gov",
 });
 const fetchActiveNwsAlertsByType = async (event) => {
@@ -1702,7 +1702,7 @@ const fetchActiveNwsAlertsByType = async (event) => {
   console.log(">> NWS API Web Service Called <<");
 
   try {
-    const response = await nwsApiClient.get(endpoint);
+    const response = await AXIOS_CLIENT.get(endpoint);
     const { features } = response?.data;
 
     return features;
