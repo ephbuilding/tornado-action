@@ -18,8 +18,8 @@ export const AlertSection = ({ alerts, alertType }) => {
 
   return (
     <section className="p-2">
-      <SectionTitle title={alertType} />
-      <GridLayout>
+      <AlertSectionTitle title={alertType} />
+      <AlertGridLayout>
         {alerts
           ? alerts.map((alert) => (
               <AlertComponent key={alert.id} alert={alert} />
@@ -31,12 +31,12 @@ export const AlertSection = ({ alerts, alertType }) => {
               <AlertComponent key={alert.id} alert={alert} />
             ))
           : null} */}
-      </GridLayout>
+      </AlertGridLayout>
     </section>
   );
 };
 
-const SectionTitle = ({ title }) => {
+const AlertSectionTitle = ({ title }) => {
   return (
     <>
       <h2 className="font-display uppercase text-3xl mb-4 bg-clip-text text-transparent bg-gradient-to-br from-white to-neutral-600">
@@ -46,7 +46,7 @@ const SectionTitle = ({ title }) => {
   );
 };
 
-const GridLayout = ({ children }) => {
+const AlertGridLayout = ({ children }) => {
   return (
     <div className="grid gap-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
       {children}

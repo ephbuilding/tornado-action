@@ -1,47 +1,47 @@
 import { DayJSDateTime } from "components";
 
-import { useCategoricalOutlookByLayerId } from "services/outlook-mapserver";
+import { useCategoricalOutlookByLayerId } from "services/convective-outlook-mapserver.js";
 
 export const DayInfo = ({ day }) => {
-	let valid, expire;
+  let valid, expire;
 
-	const CATEGORICAL_DAY_TO_LAYER = Object.freeze({
-		1: 1,
-		2: 9,
-		3: 17,
-	});
+  const CATEGORICAL_DAY_TO_LAYER = Object.freeze({
+    1: 1,
+    2: 9,
+    3: 17,
+  });
 
-	const { data } = useCategoricalOutlookByLayerId(
-		CATEGORICAL_DAY_TO_LAYER[day]
-	);
+  const { data } = useCategoricalOutlookByLayerId(
+    CATEGORICAL_DAY_TO_LAYER[day]
+  );
 
-	if (data) {
-		valid = data[0]?.properties.valid;
-		expire = data[0]?.properties.expire;
-	}
+  if (data) {
+    valid = data[0]?.properties.valid;
+    expire = data[0]?.properties.expire;
+  }
 
-	return (
-		<div>
-			<DayHeading day={day} />
-			<div className='text-center'>
-				<p className='text-xs'>
-					<OutlookDate date={valid} />
-					&nbsp;&#45;&nbsp;
-					<OutlookDate date={expire} />
-				</p>
-			</div>
-		</div>
-	);
+  return (
+    <div>
+      <DayHeading day={day} />
+      <div className="text-center">
+        <p className="text-xs">
+          <OutlookDate date={valid} />
+          &nbsp;&#45;&nbsp;
+          <OutlookDate date={expire} />
+        </p>
+      </div>
+    </div>
+  );
 };
 
 const DayHeading = ({ day }) => (
-	<h3 className='text-center font-bold uppercase mb-3'>{`Day ${day}`}</h3>
+  <h3 className="text-center font-bold uppercase mb-3">{`Day ${day}`}</h3>
 );
 
 const OutlookDate = ({ date }) => (
-	<DayJSDateTime
-		utcDate={date ? date : "N/A"}
-		format='ddd MMM D, LT'
-		className='text-xs sm:text-sm'
-	/>
+  <DayJSDateTime
+    utcDate={date ? date : "N/A"}
+    format="ddd MMM D, LT"
+    className="text-xs sm:text-sm"
+  />
 );

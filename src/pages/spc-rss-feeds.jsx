@@ -1,9 +1,7 @@
 import React from "react";
 import { Button } from "react-daisyui";
 import { PageLayout } from "components";
-
-import { ENDPOINTS } from "services/spc-rss-feeds";
-import { useSpcRssFeedsQuery } from "services/spc-rss-feeds";
+import { ENDPOINTS, useSpcRssFeedsQuery } from "services/spc-rss-feeds";
 
 const SpcRssScreen = () => {
   const [feedToDisplay, setFeedToDisplay] = React.useState("");
