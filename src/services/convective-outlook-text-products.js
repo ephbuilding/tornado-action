@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { createHTTPClient } from "services/create-http-client";
 
-const appApiClient = createHTTPClient({
+const AXIOS_CLIENT = createHTTPClient({
   baseURL: "/api",
 });
 
@@ -20,7 +20,7 @@ const getOutlookTextProductByDay = async (day) => {
   const endpoint = `https://tgftp.nws.noaa.gov/data/raw/ac${path}`;
 
   try {
-    const { data } = await appApiClient.post(
+    const { data } = await AXIOS_CLIENT.post(
       "/convective-outlook-text-products",
       {
         textProductUrl: endpoint,
