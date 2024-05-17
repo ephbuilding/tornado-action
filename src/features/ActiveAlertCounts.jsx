@@ -18,16 +18,16 @@ export const ActiveAlertCounts = ({
         title="TOR EMERGENCY"
       />
       <AlertStatItem count={pds} color="pink" title="PDS" />
+      <AlertStatItem
+        count={destructiveStorms}
+        color="blue"
+        title="DESTRUCTIVE"
+      />
       <AlertStatItem count={tornadoWarnings} color="red" title="TOR WARNINGS" />
       <AlertStatItem
         count={tornadoWatches}
         color="yellow"
         title="TOR WATCHES"
-      />
-      <AlertStatItem
-        count={destructiveStorms}
-        color="blue"
-        title="DESTRUCTIVE"
       />
       <AlertStatItem
         count={stormWarnings}

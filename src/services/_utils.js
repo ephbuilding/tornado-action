@@ -14,7 +14,6 @@ export const countPropertyValueOccurrences = (objArr, property) => {
     }
   });
 };
-
 export const createMonthRangeDates = (year, month, day = "01") => {
   // SWDI has max date range of 1 month
   // ** Date() months are indexed from 0
@@ -38,7 +37,6 @@ export const createMonthRangeDates = (year, month, day = "01") => {
     throw new Error("Missing year/month value.");
   }
 };
-
 export const createUniqueAlertArraysObject = (alertObjectArray) => {
   const uniqueAlertArraysObject = Object.create({});
 
@@ -54,11 +52,9 @@ export const createUniqueAlertArraysObject = (alertObjectArray) => {
 
   return uniqueAlertArraysObject;
 };
-
 export const formatYYYYMMDD = (date) => {
   return date.toISOString().slice(0, 10).split("-").join("");
 };
-
 export const handleSelectOnChange = (
   selectOnChangeEvent,
   currentState,
@@ -72,7 +68,6 @@ export const handleSelectOnChange = (
     [property]: value,
   });
 };
-
 export const parseGeoJsonCoords = (arrWithGeoJson) => {
   const geoJsonCoordsArr = arrWithGeoJson.map((tvs) => {
     return tvs.geometry.coordinates;
@@ -80,13 +75,11 @@ export const parseGeoJsonCoords = (arrWithGeoJson) => {
 
   return geoJsonCoordsArr;
 };
-
 export const parseLocation = (WMOidentifier) => {
   const splitWmoId = WMOidentifier.split(" ");
   const station = splitWmoId.slice(1, 2)[0];
   return station.slice(1);
 };
-
 // TODO: refactor this to RECURSIVELY find key BEFORE sorting
 export const sortArrByKey = (unsortedArr, key) => {
   const sortASC = (curObj, nexObj) => {
@@ -99,14 +92,12 @@ export const sortArrByKey = (unsortedArr, key) => {
   };
   return unsortedArr.sort(sortASC);
 };
-
 // ///////////////////////// NOTE: ////////////////////////////////
 //        - SWDI returns multiple coord-unique TVS for each tornado
 //        - outside of rendering a tornado's path, I only need 1
 //        - uniqueSignatures() returns 1 TVS/tornado
 // ///////////////////////// NOTE: ////////////////////////////////
 // TODO: reference FCC algo for filtering objects from array based on matching entries
-
 export const uniqueTornadoVortexSignatures = (sortedTVS) => {
   let uniqueTVS = [];
 

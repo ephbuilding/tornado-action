@@ -2,7 +2,10 @@ import { PageLayout } from "components";
 import { ActiveAlertMap } from "features/active-alert-map";
 import { ActiveAlertCounts } from "features/ActiveAlertCounts";
 import { AlertSection } from "features/active-alert-cards";
-import { ConvectiveOutlooks } from "features/convective-outlooks";
+import {
+  CategoricalMap,
+  ConvectiveOutlooks,
+} from "features/convective-outlooks";
 import {
   alertIsDestructiveStorm,
   alertIsPDS,
@@ -72,10 +75,6 @@ const HomeScreen = () => {
     alerts = filterTornadoAndStormAlerts(data);
   }
 
-  console.log("TORNADO EMERGENCIES: ", tornadoEmergencyAlerts);
-  console.log("PDS: ", pdsAlerts);
-  console.log("DESTRUCTIVE STORMS: ", destructiveStormAlerts);
-
   return (
     <PageLayout>
       <ActiveAlertCounts
@@ -91,7 +90,7 @@ const HomeScreen = () => {
         // stormWarnings={fake_severe_storm_warnings.length}
         // stormWatches={fake_severe_storm_watches.length}
       />
-      {/* <div className="grid grid-cols-2"> */}
+      {/* <div className="flex-1"> */}
       <ActiveAlertMap
         tornadoWarnings={alerts?.tornadoWarnings}
         tornadoWatches={alerts?.tornadoWatches}
@@ -103,8 +102,8 @@ const HomeScreen = () => {
         // stormWatches={fake_severe_storm_watches}
       />
       {/* <CategoricalMap outlookDay={1} /> */}
-      {/* </div> */}
       <ConvectiveOutlooks />
+      {/* </div> */}
       <AlertSection
         alerts={alerts?.tornadoWarnings}
         alertType="Tornado Warning"
