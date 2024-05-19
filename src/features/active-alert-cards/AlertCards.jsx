@@ -137,12 +137,14 @@ export const SevereStormWarningAlert = ({ alert }) => {
 };
 
 export const SevereStormWatchAlert = ({ alert }) => {
-  const { properties } = alert;
   const { areaDesc, effective, expires, senderName, description, instruction } =
-    properties;
+    alert?.properties;
+  const isPDS = alertIsPDS(description);
+  const isDestructiveStorm = alertIsDestructiveStorm(description);
+  const bgColor = isPDS ? "#f0f" : isDestructiveStorm ? "#00f" : "lightgreen";
 
   return (
-    <Card className="bg-gradient-to-br from-green-400 to-green-700 p-2">
+    <Card style={{ backgroundColor: bgColor }} className="p-2">
       <CardTitle>
         <SenderName senderName={senderName} />
       </CardTitle>
