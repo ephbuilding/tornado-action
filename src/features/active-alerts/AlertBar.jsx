@@ -203,7 +203,7 @@ export const AlertBar = ({ alert }) => {
       className="flex justify-between p-2 rounded text-black"
     >
       <div>
-        <h4 className="font-bold">{senderName}</h4>
+        <span className="font-bold text-sm">{senderName}</span>
         {alertLabel && <div className="text-xs">{alertLabel}</div>}
       </div>
       <Button size="sm">Details</Button>

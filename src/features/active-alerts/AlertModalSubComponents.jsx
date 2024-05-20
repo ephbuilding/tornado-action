@@ -39,19 +39,19 @@ export const AlertMessageButtons = ({ description, instruction }) => {
     <>
       {description && instruction ? (
         <div className="flex">
-          <AlertCardModal messageType="Description" message={description} />
+          <AlertCardModal btnLabel="Description" message={description} />
           <div className="mx-2"></div>
-          <AlertCardModal messageType="Instruction" message={instruction} />
+          <AlertCardModal btnLabel="Instruction" message={instruction} />
         </div>
       ) : description ? (
-        <AlertCardModal messageType="Description" message={description} />
+        <AlertCardModal btnLabel="Description" message={description} />
       ) : instruction ? (
-        <AlertCardModal messageType="Instruction" message={instruction} />
+        <AlertCardModal btnLabel="Instruction" message={instruction} />
       ) : null}
     </>
   );
 };
-export const AlertCardModal = ({ messageType, message }) => {
+export const AlertCardModal = ({ btnLabel, message }) => {
   const [isOpen, setOpen] = useState(false);
 
   const toggleModalOpen = () => {
@@ -61,7 +61,7 @@ export const AlertCardModal = ({ messageType, message }) => {
   return (
     <div className="font-sans flex-1">
       <Button onClick={toggleModalOpen} className="w-full">
-        {messageType}
+        {btnLabel}
       </Button>
       <Modal open={isOpen}>
         <Modal.Body>
@@ -254,7 +254,7 @@ export const SenderName = ({ senderName }) => {
     : "National Weather Service";
 
   return (
-    <AlertCardSubComponent className="flex items-center text-lg">
+    <AlertCardSubComponent className="flex items-center">
       <NextImage src="/images/logo-nws.png" height={40} width={40} />
       <span className="ml-3">{wfo}</span>
     </AlertCardSubComponent>
