@@ -1,7 +1,8 @@
 import { PageLayout } from "components";
+import { AlertBar } from "features/active-alerts";
 import { ActiveAlertMap } from "features/active-alert-map";
 import { ActiveAlertCounts } from "features/ActiveAlertCounts";
-import { AlertSection } from "features/active-alert-cards";
+import { AlertSection } from "features/active-alerts";
 import {
   CategoricalMap,
   ConvectiveOutlooks,
@@ -27,19 +28,17 @@ const HomeScreen = () => {
   const { data } = useActiveNwsAlertsByType(
     "Tornado Warning,Tornado Watch,Severe Thunderstorm Warning,Severe Thunderstorm Watch"
   );
-  let alerts;
+  let alerts = {
+    tornadoWarnings: [],
+    tornadoWatches: [],
+    stormWarnings: [],
+    stormWatches: [],
+  };
   let pdsAlerts;
   let tornadoEmergencyAlerts;
   let destructiveStormAlerts;
 
   const filterTornadoAndStormAlerts = (activeAlerts) => {
-    let alerts = {
-      tornadoWarnings: [],
-      tornadoWatches: [],
-      stormWarnings: [],
-      stormWatches: [],
-    };
-
     activeAlerts.forEach((alert) => {
       switch (alert.properties.event) {
         case "Tornado Warning":
@@ -104,6 +103,28 @@ const HomeScreen = () => {
       {/* <CategoricalMap outlookDay={1} /> */}
       <ConvectiveOutlooks />
       {/* </div> */}
+
+      <div className="my-2 grid gap-4 xl:grid-cols-4">
+        {alerts?.tornadoWarnings.map((alert) => (
+          <AlertBar key={alert.id} alert={alert} />
+        ))}
+      </div>
+      <div className="my-2 grid gap-4 xl:grid-cols-4">
+        {alerts?.tornadoWatches.map((alert) => (
+          <AlertBar key={alert.id} alert={alert} />
+        ))}
+      </div>
+      <div className="my-2 grid gap-4 xl:grid-cols-4">
+        {alerts?.stormWarnings.map((alert) => (
+          <AlertBar key={alert.id} alert={alert} />
+        ))}
+      </div>
+      <div className="my-2 grid gap-4 xl:grid-cols-4">
+        {alerts?.stormWatches.map((alert) => (
+          <AlertBar key={alert.id} alert={alert} />
+        ))}
+      </div>
+
       <AlertSection
         alerts={alerts?.tornadoWarnings}
         alertType="Tornado Warning"

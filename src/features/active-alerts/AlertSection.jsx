@@ -1,10 +1,11 @@
+import { Alert } from "react-daisyui";
 import { useFakeNwsAlertsByType } from "services/nws-api-web-service";
 import {
   TornadoWarningAlert,
   TornadoWatchAlert,
   SevereStormWarningAlert,
   SevereStormWatchAlert,
-} from "features/active-alert-cards/AlertCards";
+} from "features/active-alerts/AlertBar";
 
 export const AlertSection = ({ alerts, alertType }) => {
   const fakeAlerts = useFakeNwsAlertsByType(alertType);
@@ -48,7 +49,7 @@ const AlertSectionTitle = ({ title }) => {
 
 const AlertGridLayout = ({ children }) => {
   return (
-    <div className="grid gap-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
+    <div className="grid gap-8 grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 2xl:grid-cols-5">
       {children}
     </div>
   );

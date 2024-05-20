@@ -25,7 +25,7 @@ import { DayJSDateTime, USCountyMap } from "components";
 
 // -- BASE SUB-COMPONENT STYLES
 const AlertCardSubComponent = ({ children, className, ...props }) => {
-  const classes = twMerge("bg-black rounded-lg p-2 text-sm", className);
+  const classes = twMerge("bg-black rounded-lg p-2 text-sm flex", className);
 
   return (
     <div className={classes} {...props}>
@@ -39,20 +39,19 @@ export const AlertMessageButtons = ({ description, instruction }) => {
     <>
       {description && instruction ? (
         <div className="flex">
-          <AlertMessageModal messageType="Description" message={description} />
+          <AlertCardModal messageType="Description" message={description} />
           <div className="mx-2"></div>
-          <AlertMessageModal messageType="Instruction" message={instruction} />
+          <AlertCardModal messageType="Instruction" message={instruction} />
         </div>
       ) : description ? (
-        <AlertMessageModal messageType="Description" message={description} />
+        <AlertCardModal messageType="Description" message={description} />
       ) : instruction ? (
-        <AlertMessageModal messageType="Instruction" message={instruction} />
+        <AlertCardModal messageType="Instruction" message={instruction} />
       ) : null}
     </>
   );
 };
-
-export const AlertMessageModal = ({ messageType, message }) => {
+export const AlertCardModal = ({ messageType, message }) => {
   const [isOpen, setOpen] = useState(false);
 
   const toggleModalOpen = () => {
@@ -152,7 +151,6 @@ const AlertCountyLabels = ({ features, pathGen }) => {
     </g>
   );
 };
-
 const AlertPolygon = ({ feature, color, pathGen, winding }) => {
   return (
     <path
@@ -170,7 +168,15 @@ export const Body = ({ children }) => {
 
   return <Body className="p-0">{children}</Body>;
 };
+export const CardTitle = ({ children }) => {
+  const { Title } = Card;
 
+  return (
+    <AlertCardSubComponent className="mb-2 flex justify-between">
+      <Title>{children}</Title>
+    </AlertCardSubComponent>
+  );
+};
 export const ExpirationTime = ({ expiresTime }) => {
   return (
     <AlertCardSubComponent className="flex flex-wrap items-center justify-between">
@@ -183,7 +189,6 @@ export const ExpirationTime = ({ expiresTime }) => {
     </AlertCardSubComponent>
   );
 };
-
 export const ImpactedAreas = ({ areaDesc }) => {
   let impactedAreasMapEntries = null;
 
@@ -219,7 +224,6 @@ export const ImpactedAreas = ({ areaDesc }) => {
     </AlertCardSubComponent>
   );
 };
-
 export const Instruction = ({ instruction }) => {
   return (
     <>
@@ -231,7 +235,6 @@ export const Instruction = ({ instruction }) => {
     </>
   );
 };
-
 export const MaxHailSize = ({ maxHailSize }) => {
   //TODO: check for empty maxHailSize [] or null values
   const maxSizeFloat = maxHailSize[0].split(" ")[2];
@@ -243,7 +246,6 @@ export const MaxHailSize = ({ maxHailSize }) => {
     </AlertCardSubComponent>
   );
 };
-
 export const SenderName = ({ senderName }) => {
   // const wfo = senderName ?.replace("NWS ", "") ?? "National Weather Service";
 
@@ -258,17 +260,6 @@ export const SenderName = ({ senderName }) => {
     </AlertCardSubComponent>
   );
 };
-
-export const CardTitle = ({ children }) => {
-  const { Title } = Card;
-
-  return (
-    <AlertCardSubComponent className="mb-2 flex justify-between">
-      <Title>{children}</Title>
-    </AlertCardSubComponent>
-  );
-};
-
 export const TornadoDetection = ({ tornadoDetection }) => {
   return (
     <AlertCardSubComponent className="flex items-center">

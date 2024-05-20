@@ -14,13 +14,13 @@ export const ActiveAlertCounts = ({
     <Stats className="flex">
       <AlertStatItem
         count={tornadoEmergencies}
-        color="purple"
+        color="#651fff"
         title="TOR EMERGENCY"
       />
-      <AlertStatItem count={pds} color="pink" title="PDS" />
+      <AlertStatItem count={pds} color="#f0f" title="PDS" />
       <AlertStatItem
         count={destructiveStorms}
-        color="blue"
+        color="#00f"
         title="DESTRUCTIVE"
       />
       <AlertStatItem count={tornadoWarnings} color="red" title="TOR WARNINGS" />

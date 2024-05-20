@@ -1,8 +1,7 @@
-import { Card } from "react-daisyui";
-
+import { Alert, Button, Card } from "react-daisyui";
 import {
   AlertMessageButtons,
-  AlertMessageModal,
+  AlertCardModal,
   AlertPolygonMap,
   Body,
   Description,
@@ -13,18 +12,13 @@ import {
   SenderName,
   CardTitle,
   TornadoDetection,
-} from "./AlertCardElements";
-
+} from "./AlertModalSubComponents";
 import {
   alertIsDestructiveStorm,
   alertIsPDS,
   alertIsTornadoEmergency,
   NWS_STORM_SITUATIONS,
 } from "services/nws-api-web-service";
-
-import { checkStringForPhrase } from "utils";
-
-// TODO: add special messaging for TORNADO EMERGENCY & PARTICULARLY DANGEROUS SITUATION alerts
 
 export const TornadoWarningAlert = ({ alert }) => {
   const { id, type, geometry, properties } = alert;
@@ -144,6 +138,10 @@ export const SevereStormWatchAlert = ({ alert }) => {
   const bgColor = isPDS ? "#f0f" : isDestructiveStorm ? "#00f" : "lightgreen";
 
   return (
+    // <div style={{ backgroundColor: bgColor }} className="p-2 flex rounded">
+    //   <SenderName senderName={senderName} />
+    //   <ExpirationTime expiresTime={expires} />
+    // </div>
     <Card style={{ backgroundColor: bgColor }} className="p-2">
       <CardTitle>
         <SenderName senderName={senderName} />
@@ -159,5 +157,56 @@ export const SevereStormWatchAlert = ({ alert }) => {
         />
       </Body>
     </Card>
+  );
+};
+export const AlertBar = ({ alert }) => {
+  const {
+    areaDesc,
+    description,
+    effective,
+    event,
+    expires,
+    instruction,
+    senderName,
+    parameters: { maxHailSize, tornadoDetection },
+  } = alert?.properties;
+  const isTornadoEmergency = alertIsTornadoEmergency(description);
+  const isPDS = alertIsPDS(description);
+  const isDestructiveStorm = alertIsDestructiveStorm(description);
+
+  let alertLabel = isTornadoEmergency
+    ? "This is a TORNADO EMERGENCY!"
+    : isPDS
+    ? "This is a PARTICULARLY DANGEROUS SITUATION!"
+    : isDestructiveStorm
+    ? "This is a DESTRUCTIVE STORM!"
+    : null;
+
+  const alertColorMap = {
+    "Tornado Warning": "red",
+    "Tornado Watch": "yellow",
+    "Severe Thunderstorm Warning": "orange",
+    "Severe Thunderstorm Watch": "lightgreen",
+  };
+
+  const bgColor = isTornadoEmergency
+    ? "#651fff"
+    : isPDS
+    ? "#f0f"
+    : isDestructiveStorm
+    ? "#00f"
+    : alertColorMap[event];
+
+  return (
+    <div
+      style={{ backgroundColor: bgColor }}
+      className="flex justify-between p-2 rounded text-black"
+    >
+      <div>
+        <h4 className="font-bold">{senderName}</h4>
+        {alertLabel && <div className="text-xs">{alertLabel}</div>}
+      </div>
+      <Button size="sm">Details</Button>
+    </div>
   );
 };
