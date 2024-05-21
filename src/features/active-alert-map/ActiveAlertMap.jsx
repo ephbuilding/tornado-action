@@ -16,10 +16,7 @@ import {
   alertIsDestructiveStorm,
   alertIsPDS,
   alertIsTornadoEmergency,
-} from "services/nws-api-web-service";
-
-import { FaTornado } from "react-icons/fa6";
-import { IoThunderstorm } from "react-icons/io5";
+} from "services/nws-alerts";
 
 const projection = geoAlbers();
 const d3GeoPath = geoPath(projection);
@@ -190,7 +187,7 @@ const AlertModal = ({ isOpen, closeModalHandler, alertInfo }) => {
     "Severe Thunderstorm Watch": SevereStormWatchAlert,
   };
 
-  const CurrentAlertModal = ALERT_TYPE[alertInfo?.properties?.event];
+  const AlertTypeModal = ALERT_TYPE[alertInfo?.properties?.event];
 
   return (
     <>
@@ -205,7 +202,7 @@ const AlertModal = ({ isOpen, closeModalHandler, alertInfo }) => {
           >
             x
           </Button>
-          <CurrentAlertModal alert={alertInfo} />
+          <AlertTypeModal alert={alertInfo} />
         </Modal>
       ) : null}
     </>

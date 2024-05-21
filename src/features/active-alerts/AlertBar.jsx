@@ -18,7 +18,7 @@ import {
   alertIsPDS,
   alertIsTornadoEmergency,
   NWS_STORM_SITUATIONS,
-} from "services/nws-api-web-service";
+} from "services/nws-alerts";
 
 export const TornadoWarningAlert = ({ alert }) => {
   const { id, type, geometry, properties } = alert;
@@ -74,7 +74,6 @@ export const TornadoWarningAlert = ({ alert }) => {
     </Card>
   );
 };
-
 export const TornadoWatchAlert = ({ alert }) => {
   const { areaDesc, effective, expires, senderName, description, instruction } =
     alert?.properties;
@@ -99,7 +98,6 @@ export const TornadoWatchAlert = ({ alert }) => {
     </Card>
   );
 };
-
 export const SevereStormWarningAlert = ({ alert }) => {
   const { areaDesc, effective, expires, senderName, description, instruction } =
     alert?.properties;
@@ -129,7 +127,6 @@ export const SevereStormWarningAlert = ({ alert }) => {
     </Card>
   );
 };
-
 export const SevereStormWatchAlert = ({ alert }) => {
   const { areaDesc, effective, expires, senderName, description, instruction } =
     alert?.properties;
