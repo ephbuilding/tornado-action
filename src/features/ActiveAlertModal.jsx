@@ -19,13 +19,12 @@ import { IoBaseballOutline } from "react-icons/io5";
 import { Button, Card, Modal } from "react-daisyui";
 
 import { STATES_MAP } from "constants";
-import { changeWfoToCityState, createImpactedAreasMap } from "./utils";
+import { changeWfoToCityState, createImpactedAreasMap } from "./_utils";
 import { DayJSDateTime, USCountyMap } from "components";
-// import AlbersTopoJSONMap from "components/Maps/_constants/albers-topojson-map.json";
+import AlbersTopoJSONMap from "components/_constants/albers-map.topo.json";
 
-// -- BASE SUB-COMPONENT STYLES
 const AlertCardSubComponent = ({ children, className, ...props }) => {
-  const classes = twMerge("bg-black rounded-lg p-2 text-sm flex", className);
+  const classes = twMerge("bg-black rounded-lg p-2 text-sm", className);
 
   return (
     <div className={classes} {...props}>
@@ -33,25 +32,24 @@ const AlertCardSubComponent = ({ children, className, ...props }) => {
     </div>
   );
 };
-
 export const AlertMessageButtons = ({ description, instruction }) => {
   return (
     <>
       {description && instruction ? (
         <div className="flex">
-          <AlertCardModal btnLabel="Description" message={description} />
+          <AlertMessageModal messageType="Description" message={description} />
           <div className="mx-2"></div>
-          <AlertCardModal btnLabel="Instruction" message={instruction} />
+          <AlertMessageModal messageType="Instruction" message={instruction} />
         </div>
       ) : description ? (
-        <AlertCardModal btnLabel="Description" message={description} />
+        <AlertMessageModal messageType="Description" message={description} />
       ) : instruction ? (
-        <AlertCardModal btnLabel="Instruction" message={instruction} />
+        <AlertMessageModal messageType="Instruction" message={instruction} />
       ) : null}
     </>
   );
 };
-export const AlertCardModal = ({ btnLabel, message }) => {
+export const AlertMessageModal = ({ messageType, message }) => {
   const [isOpen, setOpen] = useState(false);
 
   const toggleModalOpen = () => {
@@ -61,9 +59,9 @@ export const AlertCardModal = ({ btnLabel, message }) => {
   return (
     <div className="font-sans flex-1">
       <Button onClick={toggleModalOpen} className="w-full">
-        {btnLabel}
+        {messageType}
       </Button>
-      <Modal open={isOpen}>
+      <Modal open={isOpen} className="m-10">
         <Modal.Body>
           <pre className="whitespace-break-spaces">{message}</pre>
         </Modal.Body>
@@ -84,7 +82,144 @@ export const AlertCardModal = ({ btnLabel, message }) => {
     </div>
   );
 };
+export const AlertModal = ({ isOpen, closeModalHandler, alertInfo }) => {
+  const ALERT_TYPE = {
+    "Tornado Warning": TornadoWarningAlert,
+    "Severe Thunderstorm Warning": SevereStormWarningAlert,
+    "Tornado Watch": TornadoWatchAlert,
+    "Severe Thunderstorm Watch": SevereStormWatchAlert,
+  };
 
+  const AlertTypeModal = ALERT_TYPE[alertInfo?.properties?.event];
+
+  return (
+    <>
+      {alertInfo !== null ? (
+        <Modal open={isOpen} className="overflow-auto">
+          <Button
+            size="sm"
+            color="ghost"
+            shape="circle"
+            className="absolute right-2 top-2"
+            onClick={closeModalHandler}
+          >
+            x
+          </Button>
+          <AlertTypeModal alert={alertInfo} />
+        </Modal>
+      ) : null}
+    </>
+  );
+};
+// ? --- ORIGINAL ALERT TYPE-BASED MODALS
+export const TornadoWarningAlert = ({ alert }) => {
+  const { id, type, geometry, properties } = alert;
+  const alertFeature = { id, type, geometry };
+  const {
+    areaDesc,
+    description,
+    effective,
+    expires,
+    instruction,
+    senderName,
+
+    // ! -- ALL PARAMETER VALUES RETURNED IN AN []
+    parameters: { maxHailSize, tornadoDetection },
+  } = properties;
+
+  return (
+    <Card className="bg-gradient-to-br from-red-500 to-red-800 p-2">
+      <CardTitle>
+        <SenderName senderName={senderName} />
+      </CardTitle>
+
+      <Body>
+        <div className="flex justify-between">
+          <TornadoDetection tornadoDetection={tornadoDetection} />
+          <div className="mx-2" />
+          <ExpirationTime expiresTime={expires} />
+        </div>
+        {/* <MaxHailSize maxHailSize={maxHailSize} /> */}
+        {/* <AlertPolygonMap alertFeature={alert} /> */}
+        <ImpactedAreas areaDesc={areaDesc} />
+        <AlertMessageButtons
+          description={description}
+          instruction={instruction}
+        />
+      </Body>
+    </Card>
+  );
+};
+export const TornadoWatchAlert = ({ alert }) => {
+  const { properties } = alert;
+  const { areaDesc, effective, expires, senderName, description, instruction } =
+    properties;
+
+  return (
+    <Card className="bg-gradient-to-br from-yellow-300 to-yellow-600 p-2">
+      <CardTitle>
+        <SenderName senderName={senderName} />
+      </CardTitle>
+
+      <Body>
+        <ExpirationTime expiresTime={expires} />
+        <ImpactedAreas areaDesc={areaDesc} />
+        <AlertMessageButtons
+          description={description}
+          instruction={instruction}
+        />
+      </Body>
+    </Card>
+  );
+};
+export const SevereStormWarningAlert = ({ alert }) => {
+  const { id, type, geometry, properties } = alert;
+
+  const { areaDesc, effective, expires, senderName, description, instruction } =
+    alert?.properties;
+
+  return (
+    <Card className="bg-gradient-to-br from-orange-400 to-orange-600 p-2">
+      <CardTitle>
+        <SenderName senderName={senderName} />
+      </CardTitle>
+
+      <Body>
+        <ExpirationTime expiresTime={expires} />
+        <ImpactedAreas areaDesc={areaDesc} />
+        {/* <AlertPolygonMap alertFeature={alert} /> */}
+        <AlertMessageButtons
+          description={description}
+          instruction={instruction}
+        />
+      </Body>
+    </Card>
+  );
+};
+export const SevereStormWatchAlert = ({ alert }) => {
+  const { properties } = alert;
+  const { areaDesc, effective, expires, senderName, description, instruction } =
+    properties;
+
+  return (
+    <Card className="bg-gradient-to-br from-green-400 to-green-700 p-2">
+      <CardTitle>
+        <SenderName senderName={senderName} />
+      </CardTitle>
+
+      <Body>
+        <ExpirationTime expiresTime={expires} />
+        <ImpactedAreas areaDesc={areaDesc} />
+        {/* <p>{instruction}</p> */}
+        <AlertMessageButtons
+          description={description}
+          instruction={instruction}
+        />
+      </Body>
+    </Card>
+  );
+};
+// ? --- ORIGINAL ALERT TYPE-BASED MODALS
 // TODO /////////////////////////////////////
 // TODO: optimize polygon rendering
 // TODO /////////////////////////////////////
@@ -100,6 +235,8 @@ export const AlertPolygonMap = ({ alertFeature }) => {
       : event === "Severe Thunderstorm Warning"
       ? "orange"
       : "green";
+
+  // const canvasContext = d3.select("canvas").node().getContext("2d");
 
   const albersFitExtent = d3.geoAlbers().fitExtent(
     [
@@ -123,7 +260,6 @@ export const AlertPolygonMap = ({ alertFeature }) => {
     </AlertCardSubComponent>
   );
 };
-
 const AlertCountyLabels = ({ features, pathGen }) => {
   return (
     <g>
@@ -162,20 +298,10 @@ const AlertPolygon = ({ feature, color, pathGen, winding }) => {
     />
   );
 };
-
 export const Body = ({ children }) => {
   const { Body } = Card;
 
   return <Body className="p-0">{children}</Body>;
-};
-export const CardTitle = ({ children }) => {
-  const { Title } = Card;
-
-  return (
-    <AlertCardSubComponent className="mb-2 flex justify-between">
-      <Title>{children}</Title>
-    </AlertCardSubComponent>
-  );
 };
 export const ExpirationTime = ({ expiresTime }) => {
   return (
@@ -201,11 +327,6 @@ export const ImpactedAreas = ({ areaDesc }) => {
     <AlertCardSubComponent className="mb-2">
       {impactedAreasMapEntries
         ? impactedAreasMapEntries.map(([state, areas]) => {
-            {
-              /* console.log("STATE: ", state, "-->");
-            console.log(areas); */
-            }
-
             const joinedAreaDescStr = areas.join(", ");
 
             return (
@@ -254,18 +375,29 @@ export const SenderName = ({ senderName }) => {
     : "National Weather Service";
 
   return (
-    <AlertCardSubComponent className="flex items-center">
+    <AlertCardSubComponent className="flex items-center text-lg">
       <NextImage src="/images/logo-nws.png" height={40} width={40} />
       <span className="ml-3">{wfo}</span>
     </AlertCardSubComponent>
   );
 };
+export const CardTitle = ({ children }) => {
+  const { Title } = Card;
+
+  return (
+    <AlertCardSubComponent className="mb-2 flex justify-between">
+      <Title>{children}</Title>
+    </AlertCardSubComponent>
+  );
+};
 export const TornadoDetection = ({ tornadoDetection }) => {
+  const isValidProp = tornadoDetection && tornadoDetection.length > 0;
+
   return (
     <AlertCardSubComponent className="flex items-center">
       <FaTornado size={30} />
       <span className="text-sm font-bold ml-4">
-        {tornadoDetection?.length > 0 ? tornadoDetection[0] : "N/A"}
+        {isValidProp ? tornadoDetection[0] : "N/A"}
       </span>
     </AlertCardSubComponent>
   );

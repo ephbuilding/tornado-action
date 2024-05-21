@@ -5,7 +5,7 @@ import {
   TornadoWatchAlert,
   SevereStormWarningAlert,
   SevereStormWatchAlert,
-} from "features/active-alerts/AlertBar";
+} from "features/active-alert-cards/AlertCard";
 
 export const AlertSection = ({ alerts, alertType }) => {
   const fakeAlerts = useFakeNwsAlertsByType(alertType);

@@ -1,8 +1,8 @@
 import { PageLayout } from "components";
-import { AlertBar } from "features/active-alerts";
-import { ActiveAlertMap } from "features/active-alert-map";
+import { AlertBar } from "features/active-alert-cards";
+import { ActiveAlertMap } from "features/ActiveAlertMap";
 import { ActiveAlertCounts } from "features/ActiveAlertCounts";
-import { AlertSection } from "features/active-alerts";
+import { AlertSection } from "features/active-alert-cards";
 import {
   CategoricalMap,
   ConvectiveOutlooks,
@@ -125,26 +125,26 @@ const HomeScreen = () => {
         ))}
       </div>
 
-      <AlertSection
+      {/* <AlertSection
         alerts={alerts?.tornadoWarnings}
         alertType="Tornado Warning"
-        // alerts={fake_tornado_warnings}
+        alerts={fake_tornado_warnings}
       />
       <AlertSection
         alerts={alerts?.tornadoWatches}
         alertType="Tornado Watch"
-        // alerts={fake_tornado_watches}
+        alerts={fake_tornado_watches}
       />
       <AlertSection
         alerts={alerts?.stormWarnings}
         alertType="Severe Thunderstorm Warning"
-        // alerts={fake_severe_storm_warnings}
+        alerts={fake_severe_storm_warnings}
       />
       <AlertSection
         alerts={alerts?.stormWatches}
         alertType="Severe Thunderstorm Watch"
-        // alerts={fake_severe_storm_watches}
-      />
+        alerts={fake_severe_storm_watches}
+      /> */}
     </PageLayout>
   );
 };

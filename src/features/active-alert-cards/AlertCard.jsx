@@ -12,7 +12,7 @@ import {
   SenderName,
   CardTitle,
   TornadoDetection,
-} from "./AlertModalSubComponents";
+} from "features/ActiveAlertModal";
 import {
   alertIsDestructiveStorm,
   alertIsPDS,
