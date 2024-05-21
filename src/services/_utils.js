@@ -1,3 +1,5 @@
+import axios from "axios";
+
 export const countPropertyValueOccurrences = (objArr, property) => {
   let uniqueValues = new Map();
 
@@ -12,6 +14,12 @@ export const countPropertyValueOccurrences = (objArr, property) => {
       // ELSE: push value to countValues[] with countValues[value].count = 1
       propValueCounts[property].count = 1;
     }
+  });
+};
+export const createHTTPClient = ({ baseURL, timeout = 5000 }) => {
+  return axios.create({
+    baseURL,
+    timeout,
   });
 };
 export const createMonthRangeDates = (year, month, day = "01") => {
