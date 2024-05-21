@@ -19,7 +19,10 @@ import { IoBaseballOutline } from "react-icons/io5";
 import { Button, Card, Modal } from "react-daisyui";
 
 import { STATES_MAP } from "constants";
-import { changeWfoToCityState, createImpactedAreasMap } from "./_utils";
+import {
+  changeWfoToCityState,
+  createImpactedAreasMap,
+} from "./_utils/nws-alerts";
 import { DayJSDateTime, USCountyMap } from "components";
 import AlbersTopoJSONMap from "components/_constants/albers-map.topo.json";
 

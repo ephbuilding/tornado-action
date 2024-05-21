@@ -16,11 +16,9 @@ export const createImpactedAreasMap = (areaDesc) => {
 
   return impactedAreasMap;
 };
-
 const createImpactedAreasArray = (areaDesc) => {
   return areaDesc.split(/(?:;\s)/gm);
 };
-
 const assignToMapStateKey = ({ map, area, state }) => {
   if (map.get(state) === undefined) {
     map.set(state, new Array(area));
