@@ -1,5 +1,5 @@
 import { Alert } from "react-daisyui";
-import { useFakeNwsAlertsByType } from "services/nws-api-web-service";
+import { useFakeNwsAlertsByType } from "services/nws-alerts";
 import {
   TornadoWarningAlert,
   TornadoWatchAlert,

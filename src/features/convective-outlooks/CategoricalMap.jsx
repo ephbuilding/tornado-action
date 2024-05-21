@@ -3,7 +3,7 @@ import { Modal } from "react-daisyui";
 import { AiOutlineCloseCircle as CloseIcon } from "react-icons/ai";
 
 import { USStateMap, USMapLoading } from "components";
-import { useCategoricalOutlookByLayerId } from "services/convective-outlook-mapserver";
+import { useCategoricalOutlookByLayerId } from "services/convective-outlook-geometry";
 import { rewindPathGenerator } from "components/_constants/path-generators";
 import { CATEGORICAL } from "features/convective-outlooks/_constants/outlook-feature-details";
 

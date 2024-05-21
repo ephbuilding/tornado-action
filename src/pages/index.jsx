@@ -14,7 +14,7 @@ import {
   parseAlertDescription,
   useActiveNwsAlertsByType,
   useFakeNwsAlertsByType,
-} from "services/nws-api-web-service";
+} from "services/nws-alerts";
 
 const HomeScreen = () => {
   const fake_tornado_warnings = useFakeNwsAlertsByType("Tornado Warning");
@@ -101,7 +101,7 @@ const HomeScreen = () => {
         // stormWatches={fake_severe_storm_watches}
       />
       {/* <CategoricalMap outlookDay={1} /> */}
-      <ConvectiveOutlooks />
+      {/* <ConvectiveOutlooks /> */}
       {/* </div> */}
 
       <div className="my-2 grid gap-4 xl:grid-cols-4">
