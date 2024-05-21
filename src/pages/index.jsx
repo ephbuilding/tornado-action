@@ -1,8 +1,7 @@
 import { PageLayout } from "components";
-import { AlertBar } from "features/active-alert-cards";
 import { ActiveAlertMap } from "features/ActiveAlertMap";
+import { ActiveAlertCard } from "features/ActiveAlertCard";
 import { ActiveAlertCounts } from "features/ActiveAlertCounts";
-import { AlertSection } from "features/active-alert-cards";
 import {
   CategoricalMap,
   ConvectiveOutlooks,
@@ -106,22 +105,22 @@ const HomeScreen = () => {
 
       <div className="my-2 grid gap-4 xl:grid-cols-4">
         {alerts?.tornadoWarnings.map((alert) => (
-          <AlertBar key={alert.id} alert={alert} />
+          <ActiveAlertCard key={alert.id} alert={alert} />
         ))}
       </div>
       <div className="my-2 grid gap-4 xl:grid-cols-4">
         {alerts?.tornadoWatches.map((alert) => (
-          <AlertBar key={alert.id} alert={alert} />
+          <ActiveAlertCard key={alert.id} alert={alert} />
         ))}
       </div>
       <div className="my-2 grid gap-4 xl:grid-cols-4">
         {alerts?.stormWarnings.map((alert) => (
-          <AlertBar key={alert.id} alert={alert} />
+          <ActiveAlertCard key={alert.id} alert={alert} />
         ))}
       </div>
       <div className="my-2 grid gap-4 xl:grid-cols-4">
         {alerts?.stormWatches.map((alert) => (
-          <AlertBar key={alert.id} alert={alert} />
+          <ActiveAlertCard key={alert.id} alert={alert} />
         ))}
       </div>
 

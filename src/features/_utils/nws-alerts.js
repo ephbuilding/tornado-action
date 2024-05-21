@@ -1,3 +1,6 @@
+import { checkStringForPhrase } from "utils";
+import { NWS_STORM_SITUATIONS } from "../_constants/nws-alerts";
+
 // ex: 'NWS Charlotte NC' --> 'Charlotte, NC'
 export const changeWfoToCityState = (senderName) => {
   return senderName
@@ -25,4 +28,26 @@ const assignToMapStateKey = ({ map, area, state }) => {
   } else {
     map.set(state, [...map.get(state), area]);
   }
+};
+// ? --- NWS STORM SITUATIONS
+export const alertIsDestructiveStorm = (alertDescription) => {
+  return checkStringForPhrase(
+    alertDescription,
+    NWS_STORM_SITUATIONS.destructive_storm
+  );
+};
+export const alertIsPDS = (alertDescription) => {
+  return checkStringForPhrase(
+    alertDescription,
+    NWS_STORM_SITUATIONS.particularly_dangerous_situation
+  );
+};
+export const alertIsTornadoEmergency = (alertDescription) => {
+  return checkStringForPhrase(
+    alertDescription,
+    NWS_STORM_SITUATIONS.tornado_emergency
+  );
+};
+export const parseAlertDescription = (alert) => {
+  return alert.properties.description.toLowerCase();
 };
