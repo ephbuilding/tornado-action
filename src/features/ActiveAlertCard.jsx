@@ -64,7 +64,7 @@ export const ActiveAlertCard = ({ alert, showAlertModalFunc }) => {
           </div>
         )}
       </div>
-      <Button size="sm" onClick={showAlertModalFunc}>
+      <Button size="sm" onClick={() => showAlertModalFunc(alert)}>
         Details
       </Button>
     </div>
