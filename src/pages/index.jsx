@@ -1,11 +1,9 @@
+import { useState } from "react";
 import { PageLayout } from "components";
 import { ActiveAlertMap } from "features/ActiveAlertMap";
 import { ActiveAlertCard } from "features/ActiveAlertCard";
+import { ActiveAlertModal } from "features/ActiveAlertModal";
 import { ActiveAlertCounts } from "features/ActiveAlertCounts";
-import {
-  CategoricalMap,
-  ConvectiveOutlooks,
-} from "features/convective-outlooks";
 import {
   alertIsDestructiveStorm,
   alertIsPDS,
@@ -16,6 +14,18 @@ import {
 } from "services/nws-alerts";
 
 const HomeScreen = () => {
+  const [alertModalIsOpen, setAlertModalIsOpen] = useState(false);
+  const [alertModalData, setAlertModalData] = useState(null);
+
+  const showAlertModal = (alert) => {
+    setAlertModalData(alert);
+    setAlertModalIsOpen((isOpen) => !isOpen);
+  };
+
+  const closeAlertModal = () => {
+    setAlertModalIsOpen(false);
+  };
+
   const fake_tornado_warnings = useFakeNwsAlertsByType("Tornado Warning");
   const fake_tornado_watches = useFakeNwsAlertsByType("Tornado Watch");
   const fake_severe_storm_warnings = useFakeNwsAlertsByType(
@@ -75,6 +85,11 @@ const HomeScreen = () => {
 
   return (
     <PageLayout>
+      <ActiveAlertModal
+        alertData={alertModalData}
+        isOpen={alertModalIsOpen}
+        closeFunc={closeAlertModal}
+      />
       <ActiveAlertCounts
         tornadoEmergencies={tornadoEmergencyAlerts?.length}
         pds={pdsAlerts?.length}
@@ -88,12 +103,12 @@ const HomeScreen = () => {
         // stormWarnings={fake_severe_storm_warnings.length}
         // stormWatches={fake_severe_storm_watches.length}
       />
-      {/* <div className="flex-1"> */}
       <ActiveAlertMap
         tornadoWarnings={alerts?.tornadoWarnings}
         tornadoWatches={alerts?.tornadoWatches}
         stormWarnings={alerts?.stormWarnings}
         stormWatches={alerts?.stormWatches}
+        showAlertModalFunc={showAlertModal}
         // tornadoWarnings={fake_tornado_warnings}
         // tornadoWatches={fake_tornado_watches}
         // stormWarnings={fake_severe_storm_warnings}
@@ -101,26 +116,41 @@ const HomeScreen = () => {
       />
       {/* <CategoricalMap outlookDay={1} /> */}
       {/* <ConvectiveOutlooks /> */}
-      {/* </div> */}
 
       <div className="my-2 grid gap-4 xl:grid-cols-4">
         {alerts?.tornadoWarnings.map((alert) => (
-          <ActiveAlertCard key={alert.id} alert={alert} />
+          <ActiveAlertCard
+            key={alert.id}
+            alert={alert}
+            showAlertModalFunc={showAlertModal}
+          />
         ))}
       </div>
       <div className="my-2 grid gap-4 xl:grid-cols-4">
         {alerts?.tornadoWatches.map((alert) => (
-          <ActiveAlertCard key={alert.id} alert={alert} />
+          <ActiveAlertCard
+            key={alert.id}
+            alert={alert}
+            showAlertModalFunc={showAlertModal}
+          />
         ))}
       </div>
       <div className="my-2 grid gap-4 xl:grid-cols-4">
         {alerts?.stormWarnings.map((alert) => (
-          <ActiveAlertCard key={alert.id} alert={alert} />
+          <ActiveAlertCard
+            key={alert.id}
+            alert={alert}
+            showAlertModalFunc={showAlertModal}
+          />
         ))}
       </div>
       <div className="my-2 grid gap-4 xl:grid-cols-4">
         {alerts?.stormWatches.map((alert) => (
-          <ActiveAlertCard key={alert.id} alert={alert} />
+          <ActiveAlertCard
+            key={alert.id}
+            alert={alert}
+            showAlertModalFunc={showAlertModal}
+          />
         ))}
       </div>
 

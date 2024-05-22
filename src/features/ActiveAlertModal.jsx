@@ -3,21 +3,9 @@ import { twMerge } from "tailwind-merge";
 import { useState } from "react";
 import NextImage from "next/image";
 import TurfRewind from "@turf/rewind";
-import * as topojson from "topojson-client";
-
-import {
-  GiBinoculars,
-  GiRadarSweep,
-  GiGolfTee,
-  GiMarbles,
-} from "react-icons/gi";
 import { FaTornado } from "react-icons/fa6";
-import { BiCreditCard } from "react-icons/bi";
-import { TbToiletPaper } from "react-icons/tb";
 import { AiFillCloseCircle } from "react-icons/ai";
-import { IoBaseballOutline } from "react-icons/io5";
 import { Button, Card, Modal } from "react-daisyui";
-
 import { STATES_MAP } from "constants";
 import {
   changeWfoToCityState,
@@ -25,6 +13,39 @@ import {
 } from "./_utils/nws-alerts";
 import { DayJSDateTime, USCountyMap } from "components";
 import AlbersTopoJSONMap from "components/_constants/albers-map.topo.json";
+
+export const ActiveAlertModal = ({ isOpen, closeFunc, alertData }) => {
+  const ALERT_MODAL_TYPE = {
+    "Tornado Warning": TornadoWarningAlert,
+    "Severe Thunderstorm Warning": SevereStormWarningAlert,
+    "Tornado Watch": TornadoWatchAlert,
+    "Severe Thunderstorm Watch": SevereStormWatchAlert,
+  };
+
+  const AlertTypeModal = ALERT_MODAL_TYPE[alertData?.properties?.event];
+
+  return (
+    <>
+      {alertData !== null ? (
+        <Modal open={isOpen} className="overflow-auto">
+          <Button
+            size="sm"
+            color="ghost"
+            shape="circle"
+            className="absolute right-2 top-2"
+            onClick={closeFunc}
+          >
+            x
+          </Button>
+          {/* ALERT/SITUATION-SPECIFIC ALERT MODALS */}
+          <span className="bg-red-400 text-white uppercase text-2xl">
+            modal works!
+          </span>
+        </Modal>
+      ) : null}
+    </>
+  );
+};
 
 const AlertCardSubComponent = ({ children, className, ...props }) => {
   const classes = twMerge("bg-black rounded-lg p-2 text-sm", className);
@@ -85,36 +106,12 @@ export const AlertMessageModal = ({ messageType, message }) => {
     </div>
   );
 };
-export const AlertModal = ({ isOpen, closeModalHandler, alertInfo }) => {
-  const ALERT_TYPE = {
-    "Tornado Warning": TornadoWarningAlert,
-    "Severe Thunderstorm Warning": SevereStormWarningAlert,
-    "Tornado Watch": TornadoWatchAlert,
-    "Severe Thunderstorm Watch": SevereStormWatchAlert,
-  };
 
-  const AlertTypeModal = ALERT_TYPE[alertInfo?.properties?.event];
+// --- ALERT/SITUATION-SPECIFIC ALERT MODALS
+const TornadoEmergencyAlertModal = ({}) => {};
+const ParticularlyDangerousSituationAlertModal = ({}) => {};
+const DestructiveStormAlertModal = ({}) => {};
 
-  return (
-    <>
-      {alertInfo !== null ? (
-        <Modal open={isOpen} className="overflow-auto">
-          <Button
-            size="sm"
-            color="ghost"
-            shape="circle"
-            className="absolute right-2 top-2"
-            onClick={closeModalHandler}
-          >
-            x
-          </Button>
-          <AlertTypeModal alert={alertInfo} />
-        </Modal>
-      ) : null}
-    </>
-  );
-};
-// ? --- ORIGINAL ALERT TYPE-BASED MODALS
 export const TornadoWarningAlert = ({ alert }) => {
   const { id, type, geometry, properties } = alert;
   const alertFeature = { id, type, geometry };
@@ -222,10 +219,13 @@ export const SevereStormWatchAlert = ({ alert }) => {
     </Card>
   );
 };
-// ? --- ORIGINAL ALERT TYPE-BASED MODALS
+
 // TODO /////////////////////////////////////
 // TODO: optimize polygon rendering
 // TODO /////////////////////////////////////
+
+// --- ALERT MODAL SUB-COMPONENTS
+
 export const AlertPolygonMap = ({ alertFeature }) => {
   const {
     properties: { event },
@@ -238,8 +238,6 @@ export const AlertPolygonMap = ({ alertFeature }) => {
       : event === "Severe Thunderstorm Warning"
       ? "orange"
       : "green";
-
-  // const canvasContext = d3.select("canvas").node().getContext("2d");
 
   const albersFitExtent = d3.geoAlbers().fitExtent(
     [

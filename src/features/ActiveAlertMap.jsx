@@ -7,12 +7,6 @@ import { geoAlbers, geoPath } from "d3";
 import AlbersTopo from "components/_constants/albers-map.topo.json";
 import { USStateMap } from "components";
 import {
-  TornadoWarningAlert,
-  SevereStormWarningAlert,
-  TornadoWatchAlert,
-  SevereStormWatchAlert,
-} from "./ActiveAlertModal";
-import {
   alertIsDestructiveStorm,
   alertIsPDS,
   alertIsTornadoEmergency,
@@ -65,18 +59,19 @@ export const ActiveAlertMap = ({
   tornadoWatches,
   stormWarnings,
   stormWatches,
+  showAlertModalFunc,
 }) => {
-  const [isOpen, setIsOpen] = useState(false);
-  const [alertInfo, setAlertInfo] = useState(null);
+  // const [isOpen, setIsOpen] = useState(false);
+  // const [alertInfo, setAlertInfo] = useState(null);
 
-  const handleShowAlertModal = (alert) => {
-    setAlertInfo(alert);
-    setIsOpen((isOpen) => !isOpen);
-  };
+  // const handleShowAlertModal = (alert) => {
+  //   setAlertInfo(alert);
+  //   setIsOpen((isOpen) => !isOpen);
+  // };
 
-  const handleCloseModal = () => {
-    setIsOpen(false);
-  };
+  // const handleCloseModal = () => {
+  //   setIsOpen(false);
+  // };
 
   return (
     <div>
@@ -84,30 +79,30 @@ export const ActiveAlertMap = ({
         <WatchPolygons
           alerts={tornadoWatches}
           color="yellow"
-          callback={handleShowAlertModal}
+          callback={showAlertModalFunc}
         />
         <WatchPolygons
           alerts={stormWatches}
           color="limegreen"
-          callback={handleShowAlertModal}
+          callback={showAlertModalFunc}
         />
         <WarningPolygons
           alerts={stormWarnings}
           color="orange"
-          callback={handleShowAlertModal}
+          callback={showAlertModalFunc}
         />
         <WarningPolygons
           alerts={tornadoWarnings}
           color="red"
-          callback={handleShowAlertModal}
+          callback={showAlertModalFunc}
         />
       </USStateMap>
 
-      <AlertModal
+      {/* <AlertModal
         isOpen={isOpen}
         alertInfo={alertInfo}
         closeModalHandler={handleCloseModal}
-      />
+      /> */}
     </div>
   );
 };
@@ -229,34 +224,5 @@ const WatchPolygon = ({ alert, color, feature, onClick }) => {
       strokeOpacity={0.75}
       strokeWidth={0.5}
     />
-  );
-};
-const AlertModal = ({ isOpen, closeModalHandler, alertInfo }) => {
-  const ALERT_TYPE = {
-    "Tornado Warning": TornadoWarningAlert,
-    "Severe Thunderstorm Warning": SevereStormWarningAlert,
-    "Tornado Watch": TornadoWatchAlert,
-    "Severe Thunderstorm Watch": SevereStormWatchAlert,
-  };
-
-  const AlertTypeModal = ALERT_TYPE[alertInfo?.properties?.event];
-
-  return (
-    <>
-      {alertInfo !== null ? (
-        <Modal open={isOpen} className="overflow-auto">
-          <Button
-            size="sm"
-            color="ghost"
-            shape="circle"
-            className="absolute right-2 top-2"
-            onClick={closeModalHandler}
-          >
-            x
-          </Button>
-          <AlertTypeModal alert={alertInfo} />
-        </Modal>
-      ) : null}
-    </>
   );
 };

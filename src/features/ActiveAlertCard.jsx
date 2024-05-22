@@ -9,7 +9,7 @@ import {
   NWS_STORM_SITUATIONS,
 } from "./_constants/nws-alerts";
 
-export const ActiveAlertCard = ({ alert }) => {
+export const ActiveAlertCard = ({ alert, showAlertModalFunc }) => {
   const {
     areaDesc,
     description,
@@ -54,7 +54,7 @@ export const ActiveAlertCard = ({ alert }) => {
       className="flex justify-between p-2 rounded text-black"
     >
       <div>
-        <span className="font-bold text-sm">{senderName}</span>
+        <span className="font-bold text-sm">{senderName.slice(4)}</span>
         {situation && (
           <div
             style={{ backgroundColor: situationColor }}
@@ -64,7 +64,9 @@ export const ActiveAlertCard = ({ alert }) => {
           </div>
         )}
       </div>
-      <Button size="sm">Details</Button>
+      <Button size="sm" onClick={showAlertModalFunc}>
+        Details
+      </Button>
     </div>
   );
 };
