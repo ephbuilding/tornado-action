@@ -16,12 +16,10 @@ import {
 const HomeScreen = () => {
   const [alertModalIsOpen, setAlertModalIsOpen] = useState(false);
   const [alertModalData, setAlertModalData] = useState(null);
-
   const showAlertModal = (alert) => {
     setAlertModalData(alert);
     setAlertModalIsOpen((isOpen) => !isOpen);
   };
-
   const closeAlertModal = () => {
     setAlertModalIsOpen(false);
   };
@@ -86,7 +84,7 @@ const HomeScreen = () => {
   return (
     <PageLayout>
       <ActiveAlertModal
-        alertData={alertModalData}
+        alert={alertModalData}
         isOpen={alertModalIsOpen}
         closeFunc={closeAlertModal}
       />
