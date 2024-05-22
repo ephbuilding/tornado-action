@@ -14,7 +14,23 @@ import {
 import { DayJSDateTime, USCountyMap } from "components";
 import AlbersTopoJSONMap from "components/_constants/albers-map.topo.json";
 
-export const ActiveAlertModal = ({ isOpen, closeFunc, alertData }) => {
+export const ActiveAlertModal = ({ isOpen, closeFunc, alert }) => {
+  const {
+    id,
+    type,
+    geometry,
+    properties: {
+      areaDesc,
+      description,
+      effective,
+      event,
+      expires,
+      instruction,
+      senderName,
+      parameters: { maxHailSize, tornadoDetection },
+    },
+  } = alert;
+
   const ALERT_MODAL_TYPE = {
     "Tornado Warning": TornadoWarningAlert,
     "Severe Thunderstorm Warning": SevereStormWarningAlert,
@@ -22,12 +38,10 @@ export const ActiveAlertModal = ({ isOpen, closeFunc, alertData }) => {
     "Severe Thunderstorm Watch": SevereStormWatchAlert,
   };
 
-  const AlertTypeModal = ALERT_MODAL_TYPE[alertData?.properties?.event];
-
   return (
     <>
-      {alertData !== null ? (
-        <Modal open={isOpen} className="overflow-auto">
+      {alert !== null ? (
+        <Modal open={isOpen} className="max-w-6xl">
           <Button
             size="sm"
             color="ghost"
@@ -37,10 +51,7 @@ export const ActiveAlertModal = ({ isOpen, closeFunc, alertData }) => {
           >
             x
           </Button>
-          {/* ALERT/SITUATION-SPECIFIC ALERT MODALS */}
-          <span className="bg-red-400 text-white uppercase text-2xl">
-            modal works!
-          </span>
+          {geometry && <AlertPolygonMap alert={alert} />}
         </Modal>
       ) : null}
     </>
@@ -226,10 +237,10 @@ export const SevereStormWatchAlert = ({ alert }) => {
 
 // --- ALERT MODAL SUB-COMPONENTS
 
-export const AlertPolygonMap = ({ alertFeature }) => {
+export const AlertPolygonMap = ({ alert }) => {
   const {
     properties: { event },
-  } = alertFeature;
+  } = alert;
   let polygonColor =
     event === "Tornado Warning"
       ? "red"
@@ -244,16 +255,16 @@ export const AlertPolygonMap = ({ alertFeature }) => {
       [150, 100],
       [825, 510],
     ],
-    alertFeature
+    alert
   );
   const alberPathGen = d3.geoPath(albersFitExtent);
 
   return (
     <AlertCardSubComponent>
       <USCountyMap pathGen={alberPathGen}>
-        <AlertPolygon
+        <WarningPolygon
           color={polygonColor}
-          feature={alertFeature}
+          feature={alert}
           pathGen={alberPathGen}
           winding={TurfRewind}
         />
@@ -288,7 +299,7 @@ const AlertCountyLabels = ({ features, pathGen }) => {
     </g>
   );
 };
-const AlertPolygon = ({ feature, color, pathGen, winding }) => {
+const WarningPolygon = ({ feature, color, pathGen, winding }) => {
   return (
     <path
       d={pathGen(winding(feature, { reverse: true }))}
@@ -299,6 +310,8 @@ const AlertPolygon = ({ feature, color, pathGen, winding }) => {
     />
   );
 };
+const WatchPolygon = ({}) => {};
+
 export const Body = ({ children }) => {
   const { Body } = Card;
 
