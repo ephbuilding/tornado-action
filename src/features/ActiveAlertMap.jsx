@@ -3,7 +3,7 @@ import rewind from "@turf/rewind";
 import * as topojson from "topojson-client";
 import { Button, Card, Modal } from "react-daisyui";
 import { geoAlbers, geoPath } from "d3";
-
+import { NWS_ALERT_COLORS } from "./_constants/nws-alerts";
 import AlbersTopo from "components/_constants/albers-map.topo.json";
 import { USStateMap } from "components";
 import {
@@ -61,18 +61,6 @@ export const ActiveAlertMap = ({
   stormWatches,
   showAlertModalFunc,
 }) => {
-  // const [isOpen, setIsOpen] = useState(false);
-  // const [alertInfo, setAlertInfo] = useState(null);
-
-  // const handleShowAlertModal = (alert) => {
-  //   setAlertInfo(alert);
-  //   setIsOpen((isOpen) => !isOpen);
-  // };
-
-  // const handleCloseModal = () => {
-  //   setIsOpen(false);
-  // };
-
   return (
     <div>
       <USStateMap>
@@ -138,11 +126,11 @@ const WarningPolygons = ({ alerts, color, callback }) => {
             const isPDS = alertIsPDS(description);
             const isDestructiveStorm = alertIsDestructiveStorm(description);
             const polygonColor = isTornadoEmergency
-              ? "#651fff"
+              ? NWS_ALERT_COLORS.tornado_emergency
               : isPDS
-              ? "#f0f"
+              ? NWS_ALERT_COLORS.particularly_dangerous_situation
               : isDestructiveStorm
-              ? "#00f"
+              ? NWS_ALERT_COLORS.destructive_storm
               : color;
 
             return (
@@ -186,7 +174,9 @@ const WatchPolygons = ({ alerts, color, callback }) => {
             const affectedCountyIds = alert.properties.geocode.SAME;
             const { description } = alert.properties;
             const isPDS = alertIsPDS(description);
-            const fillColor = isPDS ? "#f0f" : color;
+            const fillColor = isPDS
+              ? NWS_ALERT_COLORS.particularly_dangerous_situation
+              : color;
 
             {
               /* merges individual counties into single watch polygon */
@@ -194,6 +184,9 @@ const WatchPolygons = ({ alerts, color, callback }) => {
             const watchFeature = topojson.merge(
               AlbersTopo,
               AlbersTopo.objects.counties.geometries.filter((geometry) => {
+                {
+                  /* prepend '0' to Albers map county ID to match NWS county ID format */
+                }
                 const id = `0${geometry.id}`;
                 return affectedCountyIds.includes(id);
               })
