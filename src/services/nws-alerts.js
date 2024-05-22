@@ -1699,7 +1699,7 @@ const fetchActiveNwsAlertsByType = async (event) => {
   const encodedEvent = encodeURIComponent(event);
   const endpoint = `/alerts/active?status=actual&message_type=alert,update&event=${encodedEvent}`;
 
-  console.log(">> NWS API Web Service Called <<");
+  // console.log(">> NWS API Web Service Called <<");
 
   try {
     const response = await AXIOS_CLIENT.get(endpoint);
