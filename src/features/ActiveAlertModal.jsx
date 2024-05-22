@@ -15,21 +15,21 @@ import { DayJSDateTime, USCountyMap } from "components";
 import AlbersTopoJSONMap from "components/_constants/albers-map.topo.json";
 
 export const ActiveAlertModal = ({ isOpen, closeFunc, alert }) => {
-  const {
-    id,
-    type,
-    geometry,
-    properties: {
-      areaDesc,
-      description,
-      effective,
-      event,
-      expires,
-      instruction,
-      senderName,
-      parameters: { maxHailSize, tornadoDetection },
-    },
-  } = alert;
+  // const {
+  //   id,
+  //   type,
+  //   geometry,
+  //   properties: {
+  //     areaDesc,
+  //     description,
+  //     effective,
+  //     event,
+  //     expires,
+  //     instruction,
+  //     senderName,
+  //     parameters: { maxHailSize, tornadoDetection },
+  //   },
+  // } = alert;
 
   const ALERT_MODAL_TYPE = {
     "Tornado Warning": TornadoWarningAlert,
@@ -40,7 +40,7 @@ export const ActiveAlertModal = ({ isOpen, closeFunc, alert }) => {
 
   return (
     <>
-      {alert !== null ? (
+      {alert ? (
         <Modal open={isOpen} className="max-w-6xl">
           <Button
             size="sm"
@@ -51,12 +51,23 @@ export const ActiveAlertModal = ({ isOpen, closeFunc, alert }) => {
           >
             x
           </Button>
-          {geometry && <AlertPolygonMap alert={alert} />}
+          <div className="flex">
+            <SenderName senderName={alert?.properties.senderName} />
+            <ExpirationTime expires={alert?.properties.expires} />
+          </div>
+          <ImpactedAreas areaDesc={alert?.properties.areaDesc} />
+          <div className="flex">
+            <PreText text={alert?.properties.description} />
+            <PreText text={alert?.properties.instruction} />
+          </div>
+          {alert?.geometry && <AlertPolygonMap alert={alert} />}
         </Modal>
       ) : null}
     </>
   );
 };
+
+// --- ALERT MODAL SUB-COMPONENTS
 
 const AlertCardSubComponent = ({ children, className, ...props }) => {
   const classes = twMerge("bg-black rounded-lg p-2 text-sm", className);
@@ -117,8 +128,183 @@ export const AlertMessageModal = ({ messageType, message }) => {
     </div>
   );
 };
+export const AlertPolygonMap = ({ alert }) => {
+  const {
+    properties: { event },
+  } = alert;
+  let polygonColor =
+    event === "Tornado Warning"
+      ? "red"
+      : event === "Tornado Watch"
+      ? "yellow"
+      : event === "Severe Thunderstorm Warning"
+      ? "orange"
+      : "green";
 
-// --- ALERT/SITUATION-SPECIFIC ALERT MODALS
+  const albersFitExtent = d3.geoAlbers().fitExtent(
+    [
+      [150, 100],
+      [825, 510],
+    ],
+    alert
+  );
+  const alberPathGen = d3.geoPath(albersFitExtent);
+
+  return (
+    <AlertCardSubComponent>
+      <USCountyMap pathGen={alberPathGen}>
+        <WarningPolygon
+          color={polygonColor}
+          feature={alert}
+          pathGen={alberPathGen}
+          winding={TurfRewind}
+        />
+      </USCountyMap>
+    </AlertCardSubComponent>
+  );
+};
+const AlertCountyLabels = ({ features, pathGen }) => {
+  return (
+    <g>
+      {features.map((feature) => {
+        const centroid = pathGen.centroid(feature);
+        const {
+          id,
+          properties: { name },
+        } = feature;
+
+        return (
+          <g key={`${id}`}>
+            <text
+              x={centroid[0]}
+              y={centroid[1]}
+              fontSize="35"
+              fill="white"
+              textAnchor="middle"
+            >
+              {name}
+            </text>
+          </g>
+        );
+      })}
+    </g>
+  );
+};
+const WarningPolygon = ({ feature, color, pathGen, winding }) => {
+  return (
+    <path
+      d={pathGen(winding(feature, { reverse: true }))}
+      fill={color}
+      stroke={`dark${color}`}
+      strokeWidth={10}
+      opacity={0.5}
+    />
+  );
+};
+const WatchPolygon = ({}) => {};
+export const Body = ({ children }) => {
+  const { Body } = Card;
+
+  return <Body className="p-0">{children}</Body>;
+};
+export const CardTitle = ({ children }) => {
+  const { Title } = Card;
+
+  return (
+    <AlertCardSubComponent className="mb-2 flex justify-between">
+      <Title>{children}</Title>
+    </AlertCardSubComponent>
+  );
+};
+export const ExpirationTime = ({ expires }) => {
+  return (
+    <AlertCardSubComponent className="flex flex-wrap items-center justify-between">
+      <span className="mr-3">Expires:</span>
+      {expires ? <DayJSDateTime utcDate={expires} format="LT" /> : "Unknown"}
+    </AlertCardSubComponent>
+  );
+};
+export const ImpactedAreas = ({ areaDesc }) => {
+  let impactedAreasMapEntries = null;
+
+  if (areaDesc) {
+    const impactedAreasMap = createImpactedAreasMap(areaDesc);
+    impactedAreasMapEntries = Array.from(impactedAreasMap.entries());
+  }
+
+  return (
+    <AlertCardSubComponent className="mb-2">
+      {impactedAreasMapEntries
+        ? impactedAreasMapEntries.map(([state, areas]) => {
+            const joinedAreaDescStr = areas.join(", ");
+
+            return (
+              <div key={state}>
+                {state ? (
+                  <h4 className="text-md font-bold mb-2 uppercase">
+                    {STATES_MAP[state]}
+                  </h4>
+                ) : null}
+
+                <p className="text-sm mb-2">{joinedAreaDescStr}</p>
+              </div>
+            );
+          })
+        : "NWS Error: Impacted areas not available at this time..."}
+    </AlertCardSubComponent>
+  );
+};
+export const MaxHailSize = ({ maxHailSize }) => {
+  //TODO: check for empty maxHailSize [] or null values
+  const maxSizeFloat = maxHailSize[0].split(" ")[2];
+
+  return (
+    <AlertCardSubComponent className="flex justify-between items-center">
+      <span className="text-sm ">Max Hail Size:</span>
+      <span className="ml-3">{`${maxSizeFloat}"`}</span>
+    </AlertCardSubComponent>
+  );
+};
+export const PreText = ({ text }) => {
+  return (
+    <>
+      {text ? (
+        <AlertCardSubComponent>
+          <pre className="whitespace-break-spaces">{text}</pre>
+        </AlertCardSubComponent>
+      ) : null}
+    </>
+  );
+};
+export const SenderName = ({ senderName }) => {
+  // const wfo = senderName ?.replace("NWS ", "") ?? "National Weather Service";
+
+  const wfo = senderName
+    ? changeWfoToCityState(senderName)
+    : "National Weather Service";
+
+  return (
+    <AlertCardSubComponent className="flex items-center text-lg">
+      <NextImage src="/images/logo-nws.png" height={40} width={40} />
+      <span className="ml-3">{wfo}</span>
+    </AlertCardSubComponent>
+  );
+};
+export const TornadoDetection = ({ tornadoDetection }) => {
+  const isValidProp = tornadoDetection && tornadoDetection.length > 0;
+
+  return (
+    <AlertCardSubComponent className="flex items-center">
+      <FaTornado size={30} />
+      <span className="text-sm font-bold ml-4">
+        {isValidProp ? tornadoDetection[0] : "N/A"}
+      </span>
+    </AlertCardSubComponent>
+  );
+};
+
+// --- OG ALERT TYPE MODALS
+
 const TornadoEmergencyAlertModal = ({}) => {};
 const ParticularlyDangerousSituationAlertModal = ({}) => {};
 const DestructiveStormAlertModal = ({}) => {};
@@ -228,191 +414,5 @@ export const SevereStormWatchAlert = ({ alert }) => {
         />
       </Body>
     </Card>
-  );
-};
-
-// TODO /////////////////////////////////////
-// TODO: optimize polygon rendering
-// TODO /////////////////////////////////////
-
-// --- ALERT MODAL SUB-COMPONENTS
-
-export const AlertPolygonMap = ({ alert }) => {
-  const {
-    properties: { event },
-  } = alert;
-  let polygonColor =
-    event === "Tornado Warning"
-      ? "red"
-      : event === "Tornado Watch"
-      ? "yellow"
-      : event === "Severe Thunderstorm Warning"
-      ? "orange"
-      : "green";
-
-  const albersFitExtent = d3.geoAlbers().fitExtent(
-    [
-      [150, 100],
-      [825, 510],
-    ],
-    alert
-  );
-  const alberPathGen = d3.geoPath(albersFitExtent);
-
-  return (
-    <AlertCardSubComponent>
-      <USCountyMap pathGen={alberPathGen}>
-        <WarningPolygon
-          color={polygonColor}
-          feature={alert}
-          pathGen={alberPathGen}
-          winding={TurfRewind}
-        />
-      </USCountyMap>
-    </AlertCardSubComponent>
-  );
-};
-const AlertCountyLabels = ({ features, pathGen }) => {
-  return (
-    <g>
-      {features.map((feature) => {
-        const centroid = pathGen.centroid(feature);
-        const {
-          id,
-          properties: { name },
-        } = feature;
-
-        return (
-          <g key={`${id}`}>
-            <text
-              x={centroid[0]}
-              y={centroid[1]}
-              fontSize="35"
-              fill="white"
-              textAnchor="middle"
-            >
-              {name}
-            </text>
-          </g>
-        );
-      })}
-    </g>
-  );
-};
-const WarningPolygon = ({ feature, color, pathGen, winding }) => {
-  return (
-    <path
-      d={pathGen(winding(feature, { reverse: true }))}
-      fill={color}
-      stroke={`dark${color}`}
-      strokeWidth={10}
-      opacity={0.5}
-    />
-  );
-};
-const WatchPolygon = ({}) => {};
-
-export const Body = ({ children }) => {
-  const { Body } = Card;
-
-  return <Body className="p-0">{children}</Body>;
-};
-export const ExpirationTime = ({ expiresTime }) => {
-  return (
-    <AlertCardSubComponent className="flex flex-wrap items-center justify-between">
-      <span className="mr-3">Expires:</span>
-      {expiresTime ? (
-        <DayJSDateTime utcDate={expiresTime} format="LT" />
-      ) : (
-        "Unknown"
-      )}
-    </AlertCardSubComponent>
-  );
-};
-export const ImpactedAreas = ({ areaDesc }) => {
-  let impactedAreasMapEntries = null;
-
-  if (areaDesc) {
-    const impactedAreasMap = createImpactedAreasMap(areaDesc);
-    impactedAreasMapEntries = Array.from(impactedAreasMap.entries());
-  }
-
-  return (
-    <AlertCardSubComponent className="mb-2">
-      {impactedAreasMapEntries
-        ? impactedAreasMapEntries.map(([state, areas]) => {
-            const joinedAreaDescStr = areas.join(", ");
-
-            return (
-              <div key={state}>
-                {state ? (
-                  <h4 className="text-md font-bold mb-2 uppercase">
-                    {STATES_MAP[state]}
-                  </h4>
-                ) : null}
-
-                <p className="text-sm mb-2">{joinedAreaDescStr}</p>
-              </div>
-            );
-          })
-        : "NWS Error: Impacted areas not available at this time..."}
-    </AlertCardSubComponent>
-  );
-};
-export const Instruction = ({ instruction }) => {
-  return (
-    <>
-      {instruction ? (
-        <AlertCardSubComponent>
-          <pre className="whitespace-break-spaces">{instruction}</pre>
-        </AlertCardSubComponent>
-      ) : null}
-    </>
-  );
-};
-export const MaxHailSize = ({ maxHailSize }) => {
-  //TODO: check for empty maxHailSize [] or null values
-  const maxSizeFloat = maxHailSize[0].split(" ")[2];
-
-  return (
-    <AlertCardSubComponent className="flex justify-between items-center">
-      <span className="text-sm ">Max Hail Size:</span>
-      <span className="ml-3">{`${maxSizeFloat}"`}</span>
-    </AlertCardSubComponent>
-  );
-};
-export const SenderName = ({ senderName }) => {
-  // const wfo = senderName ?.replace("NWS ", "") ?? "National Weather Service";
-
-  const wfo = senderName
-    ? changeWfoToCityState(senderName)
-    : "National Weather Service";
-
-  return (
-    <AlertCardSubComponent className="flex items-center text-lg">
-      <NextImage src="/images/logo-nws.png" height={40} width={40} />
-      <span className="ml-3">{wfo}</span>
-    </AlertCardSubComponent>
-  );
-};
-export const CardTitle = ({ children }) => {
-  const { Title } = Card;
-
-  return (
-    <AlertCardSubComponent className="mb-2 flex justify-between">
-      <Title>{children}</Title>
-    </AlertCardSubComponent>
-  );
-};
-export const TornadoDetection = ({ tornadoDetection }) => {
-  const isValidProp = tornadoDetection && tornadoDetection.length > 0;
-
-  return (
-    <AlertCardSubComponent className="flex items-center">
-      <FaTornado size={30} />
-      <span className="text-sm font-bold ml-4">
-        {isValidProp ? tornadoDetection[0] : "N/A"}
-      </span>
-    </AlertCardSubComponent>
   );
 };

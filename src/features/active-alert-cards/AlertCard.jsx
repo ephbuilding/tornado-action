@@ -5,7 +5,7 @@ import {
   AlertPolygonMap,
   Body,
   Description,
-  Instruction,
+  PreText,
   ExpirationTime,
   ImpactedAreas,
   MaxHailSize,
