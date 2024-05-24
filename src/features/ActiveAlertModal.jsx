@@ -60,6 +60,11 @@ export const ActiveAlertModal = ({ isOpen, closeFunc, alert }) => {
           <div className="flex">
             <SenderName senderName={alert?.properties.senderName} />
             <ExpirationTime expires={alert?.properties.expires} />
+            {alert?.properties?.parameters?.tornadoDetection && (
+              <TornadoDetection
+                tornadoDetection={alert.properties.parameters.tornadoDetection}
+              />
+            )}
           </div>
           <ImpactedAreas areaDesc={alert?.properties.areaDesc} />
           <div className="flex">
