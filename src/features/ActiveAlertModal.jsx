@@ -13,6 +13,12 @@ import {
 } from "./_utils/nws-alerts";
 import { DayJSDateTime, USCountyMap } from "components";
 import AlbersTopoJSONMap from "components/_constants/albers-map.topo.json";
+import * as topojson from "topojson-client";
+
+const { features: countyFeatures } = topojson.feature(
+  AlbersTopoJSONMap,
+  "counties"
+);
 
 export const ActiveAlertModal = ({ isOpen, closeFunc, alert }) => {
   // const {
@@ -159,6 +165,7 @@ export const AlertPolygonMap = ({ alert }) => {
           pathGen={alberPathGen}
           winding={TurfRewind}
         />
+        <AlertCountyLabels features={countyFeatures} pathGen={alberPathGen} />
       </USCountyMap>
     </AlertCardSubComponent>
   );
@@ -270,7 +277,9 @@ export const PreText = ({ text }) => {
     <>
       {text ? (
         <AlertCardSubComponent>
-          <pre className="whitespace-break-spaces">{text}</pre>
+          {/* <pre className="whitespace-break-spaces">{text}</pre> */}
+
+          <pre className="">{text}</pre>
         </AlertCardSubComponent>
       ) : null}
     </>

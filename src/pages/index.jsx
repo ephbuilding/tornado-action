@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { PageLayout } from "components";
+import { CategoricalMap } from "features/convective-outlooks";
 import { ActiveAlertMap } from "features/ActiveAlertMap";
 import { ActiveAlertCard } from "features/ActiveAlertCard";
 import { ActiveAlertModal } from "features/ActiveAlertModal";
@@ -101,18 +102,20 @@ const HomeScreen = () => {
         // stormWarnings={fake_severe_storm_warnings.length}
         // stormWatches={fake_severe_storm_watches.length}
       />
-      <ActiveAlertMap
-        tornadoWarnings={alerts?.tornadoWarnings}
-        tornadoWatches={alerts?.tornadoWatches}
-        stormWarnings={alerts?.stormWarnings}
-        stormWatches={alerts?.stormWatches}
-        showAlertModalFunc={showAlertModal}
-        // tornadoWarnings={fake_tornado_warnings}
-        // tornadoWatches={fake_tornado_watches}
-        // stormWarnings={fake_severe_storm_warnings}
-        // stormWatches={fake_severe_storm_watches}
-      />
-      {/* <CategoricalMap outlookDay={1} /> */}
+      <div className="grid grid-cols-2">
+        <ActiveAlertMap
+          tornadoWarnings={alerts?.tornadoWarnings}
+          tornadoWatches={alerts?.tornadoWatches}
+          stormWarnings={alerts?.stormWarnings}
+          stormWatches={alerts?.stormWatches}
+          showAlertModalFunc={showAlertModal}
+          // tornadoWarnings={fake_tornado_warnings}
+          // tornadoWatches={fake_tornado_watches}
+          // stormWarnings={fake_severe_storm_warnings}
+          // stormWatches={fake_severe_storm_watches}
+        />
+        <CategoricalMap outlookDay={1} />
+      </div>
       {/* <ConvectiveOutlooks /> */}
 
       <div className="my-2 grid gap-4 xl:grid-cols-4">
