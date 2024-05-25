@@ -11,12 +11,10 @@ import {
 const ConvectiveOutlookScreen = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [outlookDay, setOutlookDay] = useState(1);
-
   const showModalHandler = (outlookDay) => {
     setOutlookDay(outlookDay);
     setIsOpen(true);
   };
-
   const closeModalHandler = () => {
     setIsOpen(false);
   };
@@ -26,13 +24,6 @@ const ConvectiveOutlookScreen = () => {
       <h1 className="text-3xl uppercase font-bold mb-3 text-center bg-clip-text text-transparent bg-gradient-to-br from-primary to-base-content">
         Convective Outlooks
       </h1>
-      {/* <p className="text-center text-sm mb-10">
-        Convective Outlooks are organized severe storm forecasts created by the
-        Storm Prediction Center in Norman, OK. Click or tap on any of the
-        colored map areas to see what they mean. Click the &quot;Details&quot;
-        button below any of the maps to read the day&apos;s full convective
-        outlook.
-      </p> */}
 
       <OutlooksGrid>
         <OutlookGridItem dayNumber={1} showOutlookText={showModalHandler} />
