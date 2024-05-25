@@ -60,7 +60,6 @@ export const CATEGORICAL = Object.freeze({
       "severe weather outbreak anticipated with tornadoes and/or derechoes.  expect widespread damage and hurricane force winds.",
   },
 });
-
 export const PROBABILISTIC = Object.freeze({
   2: {
     label: "2%",
@@ -91,7 +90,6 @@ export const PROBABILISTIC = Object.freeze({
     color: "rgb(0, 77, 168)",
   },
 });
-
 export const SIGNIFICANT = Object.freeze({
   10: {
     label: "Significant",

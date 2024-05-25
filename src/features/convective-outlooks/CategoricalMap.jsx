@@ -7,27 +7,14 @@ import { useCategoricalOutlookByLayerId } from "services/convective-outlook-geom
 import { rewindPathGenerator } from "components/_constants/path-generators";
 import { CATEGORICAL } from "features/convective-outlooks/_constants/outlook-feature-details";
 
-export const CategoricalMap = ({ outlookDay }) => {
-  const DAY_TO_LAYERS = {
-    1: 1,
-    2: 9,
-    3: 17,
-  };
-
-  const { data: features } = useCategoricalOutlookByLayerId(
-    DAY_TO_LAYERS[outlookDay]
-  );
-
-  // console.log(`DAY ${outlookDay} Features: \n`, features);
-
+// TODO: refactor --> pass SPC Outlook MapServer layer ID instead of converting day to layer
+export const CategoricalMap = ({ features, colorMap }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [category, setCategory] = useState("");
-
   const openModalHandler = (category) => {
     setCategory(category);
     setIsOpen(true);
   };
-
   const closeModalHandler = () => setIsOpen(false);
 
   return (
