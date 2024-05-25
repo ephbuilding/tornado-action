@@ -99,4 +99,83 @@ export const SIGNIFICANT = Object.freeze({
   },
 });
 
-// TODO: create hatched feature object
+// STYLE CONSTANTS COPIED FROM OUTLOOK MAPSERVER
+// KEYS BASED ON "dn" VALUE
+const CAT_OUTLOOK = Object.freeze({
+  2: {
+    label: "Thunderstorm",
+    fill: rgba(189, 255, 189, 255),
+  },
+  3: {
+    label: "Marginal",
+    fill: rgba(115, 178, 115, 255),
+  },
+  4: {
+    label: "Slight",
+    fill: rgba(247, 247, 143, 255),
+  },
+  5: {
+    label: "Enhanced",
+    fill: rgba(230, 152, 0, 255),
+  },
+  6: {
+    label: "Moderate",
+    fill: rgba(255, 0, 0, 255),
+  },
+  8: {
+    label: "High",
+    fill: rgba(255, 0, 197, 255),
+  },
+});
+const PROB_TORNADO = Object.freeze({
+  2: {
+    label: "2%",
+    fill: rgba(56, 168, 0, 255),
+  },
+  5: {
+    label: "5%",
+    fill: rgba(111, 25, 3, 255),
+  },
+  10: {
+    label: "10%",
+    fill: rgba(255, 198, 0, 255),
+  },
+  15: {
+    label: "15%",
+    fill: rgba(230, 0, 0, 255),
+  },
+  30: {
+    label: "30%",
+    fill: rgba(250, 0, 255, 255),
+  },
+  45: {
+    label: "45%",
+    fill: rgba(119, 6, 244, 255),
+  },
+  60: {
+    label: "60%",
+    fill: rgba(0, 77, 168, 255),
+  },
+});
+const PROB_WIND_HAIL = Object.freeze({
+  5: {
+    label: "5%",
+    fill: rgba(198, 162, 148, 255),
+  },
+  15: {
+    label: "15%",
+    fill: rgba(255, 255, 0, 255),
+  },
+  30: {
+    label: "30%",
+    fill: rgba(255, 0, 0, 255),
+  },
+  45: {
+    label: "45%",
+    fill: rgba(255, 0, 197, 255),
+  },
+  60: {
+    label: "60%",
+    fill: rgba(168, 0, 132, 255),
+  },
+});
