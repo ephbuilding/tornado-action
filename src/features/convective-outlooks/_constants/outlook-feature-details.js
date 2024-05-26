@@ -102,78 +102,88 @@ export const SIGNIFICANT = Object.freeze({
 const CAT_OUTLOOK = Object.freeze({
   2: {
     label: "Thunderstorm",
-    fill: "rgb(189, 255, 189)",
+    color: "rgb(189, 255, 189)",
   },
   3: {
     label: "Marginal",
-    fill: "rgb(115, 178, 115)",
+    color: "rgb(115, 178, 115)",
   },
   4: {
     label: "Slight",
-    fill: "rgb(247, 247, 143)",
+    color: "rgb(247, 247, 143)",
   },
   5: {
     label: "Enhanced",
-    fill: "rgb(230, 152, 0)",
+    color: "rgb(230, 152, 0)",
   },
   6: {
     label: "Moderate",
-    fill: "rgb(255, 0, 0)",
+    color: "rgb(255, 0, 0)",
   },
   8: {
     label: "High",
-    fill: "rgb(255, 0, 197)",
+    color: "rgb(255, 0, 197)",
   },
 });
 const PROB_TORNADO = Object.freeze({
   2: {
     label: "2%",
-    fill: "rgb(56, 168, 0)",
+    color: "rgb(56, 168, 0)",
   },
   5: {
     label: "5%",
-    fill: "rgb(111, 25, 3)",
+    color: "rgb(111, 25, 3)",
   },
   10: {
     label: "10%",
-    fill: "rgb(255, 198, 0)",
+    color: "rgb(255, 198, 0)",
   },
   15: {
     label: "15%",
-    fill: "rgb(230, 0, 0)",
+    color: "rgb(230, 0, 0)",
   },
   30: {
     label: "30%",
-    fill: "rgb(250, 0, 255)",
+    color: "rgb(250, 0, 255)",
   },
   45: {
     label: "45%",
-    fill: "rgb(119, 6, 244)",
+    color: "rgb(119, 6, 244)",
   },
   60: {
     label: "60%",
-    fill: "rgb(0, 77, 168)",
+    color: "rgb(0, 77, 168)",
   },
 });
 const PROB_WIND_HAIL = Object.freeze({
   5: {
     label: "5%",
-    fill: "rgb(198, 162, 148)",
+    color: "rgb(198, 162, 148)",
   },
   15: {
     label: "15%",
-    fill: "rgb(255, 255, 0)",
+    color: "rgb(255, 255, 0)",
   },
   30: {
     label: "30%",
-    fill: "rgb(255, 0, 0)",
+    color: "rgb(255, 0, 0)",
   },
   45: {
     label: "45%",
-    fill: "rgb(255, 0, 197)",
+    color: "rgb(255, 0, 197)",
   },
   60: {
     label: "60%",
-    fill: "rgb(168, 0, 132)",
+    color: "rgb(168, 0, 132)",
+  },
+});
+const DAYS_4_8_PROB = Object.freeze({
+  15: {
+    label: "15%",
+    color: "rgb(255, 255, 0)",
+  },
+  30: {
+    label: "30%",
+    color: "rgb(230, 152, 0)",
   },
 });

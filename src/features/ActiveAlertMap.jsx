@@ -151,16 +151,18 @@ const WarningPolygon = ({ color, feature, onClick }) => {
   // const polygonGeometry = geoJsonPath(feature.geometry);
 
   return (
-    <path
-      // TODO: create new geoJsonPath(geometry)
-      d={d3GeoPath(rewind(feature.geometry, { reverse: true }))}
-      fill={color}
-      fillOpacity={0.65}
-      stroke={color}
-      strokeOpacity={0.85}
-      strokeWidth={1}
-      onClick={() => onClick(feature)}
-    />
+    feature?.geometry && (
+      <path
+        // TODO: create new geoJsonPath(geometry)
+        d={d3GeoPath(rewind(feature.geometry, { reverse: true }))}
+        fill={color}
+        fillOpacity={0.65}
+        stroke={color}
+        strokeOpacity={0.85}
+        strokeWidth={1}
+        onClick={() => onClick(feature)}
+      />
+    )
   );
 };
 const WatchPolygons = ({ alerts, color, callback }) => {

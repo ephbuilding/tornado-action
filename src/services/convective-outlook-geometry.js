@@ -15,7 +15,7 @@ const fetchOutlookMapServerLayerById = async (layerId) => {
     // console.log(">> fetchLayerGeoJSON:\n", error);
   }
 };
-export const useOutlookMapServerLayerById = (layerId) => {
+export const useOutlookLayerById = (layerId) => {
   return useQuery(["convective outlooks", `layer ${layerId}`], () =>
     fetchOutlookMapServerLayerById(layerId)
   );

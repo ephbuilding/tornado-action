@@ -6,7 +6,7 @@ import {
   DayInfo,
   TextProductModal,
 } from "features/convective-outlooks";
-import { useOutlookMapServerLayerById } from "services/convective-outlook-geometry";
+import { useOutlookLayerById } from "services/convective-outlook-geometry";
 
 const ConvectiveOutlookScreen = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -46,37 +46,6 @@ const ConvectiveOutlookScreen = () => {
     day_7_prob: "24",
     day_8_prob: "25",
   });
-
-  const { data: day1CatFeatures } = useOutlookMapServerLayerById(
-    LAYER_IDS.day_1_categorical
-  );
-  const { data: day1ProbTornadoFeatures } = useOutlookMapServerLayerById(
-    LAYER_IDS.day_1_prob_tornado
-  );
-  const { data: day1ProbWindFeatures } = useOutlookMapServerLayerById(
-    LAYER_IDS.day_1_prob_wind
-  );
-  const { data: day1ProbHailFeatures } = useOutlookMapServerLayerById(
-    LAYER_IDS.day_1_prob_hail
-  );
-  const { data: day2CatFeatures } = useOutlookMapServerLayerById(
-    LAYER_IDS.day_2_categorical
-  );
-  const { data: day2ProbTornadoFeatures } = useOutlookMapServerLayerById(
-    LAYER_IDS.day_2_prob_tornado
-  );
-  const { data: day2ProbWindFeatures } = useOutlookMapServerLayerById(
-    LAYER_IDS.day_2_prob_wind
-  );
-  const { data: day2ProbHailFeatures } = useOutlookMapServerLayerById(
-    LAYER_IDS.day_2_prob_hail
-  );
-  const { data: day3CatFeatures } = useOutlookMapServerLayerById(
-    LAYER_IDS.day_3_categorical
-  );
-  const { data: day3ProbFeatures } = useOutlookMapServerLayerById(
-    LAYER_IDS.day_3_prob
-  );
 
   return (
     <PageLayout>
