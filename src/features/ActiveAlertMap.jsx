@@ -10,7 +10,7 @@ import {
   alertIsDestructiveStorm,
   alertIsPDS,
   alertIsTornadoEmergency,
-} from "services/nws-alerts";
+} from "features/_utils/nws-alerts";
 
 const projection = geoAlbers();
 const d3GeoPath = geoPath(projection);
@@ -122,9 +122,9 @@ const WarningPolygons = ({ alerts, color, callback }) => {
             {
               /* const [centX, centY] = d3GeoPath.centroid(alert.geometry); */
             }
-            const isTornadoEmergency = alertIsTornadoEmergency(description);
-            const isPDS = alertIsPDS(description);
-            const isDestructiveStorm = alertIsDestructiveStorm(description);
+            const isTornadoEmergency = alertIsTornadoEmergency(alert);
+            const isPDS = alertIsPDS(alert);
+            const isDestructiveStorm = alertIsDestructiveStorm(alert);
             const polygonColor = isTornadoEmergency
               ? NWS_ALERT_COLORS.tornado_emergency
               : isPDS
@@ -172,34 +172,21 @@ const WatchPolygons = ({ alerts, color, callback }) => {
     <>
       {isValidFeatures
         ? alerts.map((alert) => {
-            // TODO: move watch poly creation logic to util func
-            const affectedCountyIds = alert.properties.geocode.SAME;
-            const { description } = alert.properties;
-            const isPDS = alertIsPDS(description);
+            const watchGeometry = createWatchPolygonGeometry({
+              alert,
+              topoJsonClient: topojson,
+            });
+            const isPDS = alertIsPDS(alert);
             const fillColor = isPDS
               ? NWS_ALERT_COLORS.particularly_dangerous_situation
               : color;
-
-            {
-              /* merges individual counties into single watch polygon */
-            }
-            const watchFeature = topojson.merge(
-              AlbersTopo,
-              AlbersTopo.objects.counties.geometries.filter((geometry) => {
-                {
-                  /* prepend '0' to Albers map county ID to match NWS county ID format */
-                }
-                const id = `0${geometry.id}`;
-                return affectedCountyIds.includes(id);
-              })
-            );
 
             return (
               <WatchPolygon
                 key={alert.id}
                 alert={alert}
                 color={fillColor}
-                feature={watchFeature}
+                feature={watchGeometry}
                 onClick={callback}
               />
             );
@@ -220,4 +207,15 @@ const WatchPolygon = ({ alert, color, feature, onClick }) => {
       strokeWidth={0.5}
     />
   );
+};
+const createWatchPolygonGeometry = ({ alert, topoJsonClient }) => {
+  const affectedCountyIds = alert.properties.geocode.SAME;
+  const watchGeometry = topoJsonClient.merge(
+    AlbersTopo,
+    AlbersTopo.objects.counties.geometries.filter((geometry) => {
+      const countyID = `0${geometry.id}`;
+      return affectedCountyIds.includes(countyID);
+    })
+  );
+  return watchGeometry;
 };
