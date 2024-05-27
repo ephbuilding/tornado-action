@@ -9,7 +9,8 @@ import {
   alertIsDestructiveStorm,
   alertIsPDS,
   alertIsTornadoEmergency,
-  parseAlertDescription,
+} from "features/_utils/nws-alerts";
+import {
   useActiveNwsAlertsByType,
   useFakeNwsAlertsByType,
 } from "services/nws-alerts";
@@ -68,16 +69,13 @@ const HomeScreen = () => {
   };
   if (data) {
     destructiveStormAlerts = data.filter((alert) => {
-      const alertDescription = parseAlertDescription(alert);
-      return alertIsDestructiveStorm(alertDescription);
+      return alertIsDestructiveStorm(alert);
     });
     pdsAlerts = data.filter((alert) => {
-      const alertDescription = parseAlertDescription(alert);
-      return alertIsPDS(alertDescription);
+      return alertIsPDS(alert);
     });
     tornadoEmergencyAlerts = data.filter((alert) => {
-      const alertDescription = parseAlertDescription(alert);
-      return alertIsTornadoEmergency(alertDescription);
+      return alertIsTornadoEmergency(alert);
     });
     alerts = filterTornadoAndStormAlerts(data);
   }
