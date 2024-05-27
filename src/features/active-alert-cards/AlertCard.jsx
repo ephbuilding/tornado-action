@@ -35,9 +35,9 @@ export const TornadoWarningAlert = ({ alert }) => {
     parameters: { maxHailSize, tornadoDetection },
   } = properties;
 
-  const isTornadoEmergency = alertIsTornadoEmergency(description);
-  const isPDS = alertIsPDS(description);
-  const isDestructiveStorm = alertIsDestructiveStorm(description);
+  const isTornadoEmergency = alertIsTornadoEmergency(alert);
+  const isPDS = alertIsPDS(alert);
+  const isDestructiveStorm = alertIsDestructiveStorm(alert);
 
   const bgColor = isTornadoEmergency
     ? "#651fff"
@@ -77,7 +77,7 @@ export const TornadoWarningAlert = ({ alert }) => {
 export const TornadoWatchAlert = ({ alert }) => {
   const { areaDesc, effective, expires, senderName, description, instruction } =
     alert?.properties;
-  const isPDS = alertIsPDS(description);
+  const isPDS = alertIsPDS(alert);
   const bgColor = isPDS ? "#f0f" : "yellow";
 
   return (
@@ -101,8 +101,8 @@ export const TornadoWatchAlert = ({ alert }) => {
 export const SevereStormWarningAlert = ({ alert }) => {
   const { areaDesc, effective, expires, senderName, description, instruction } =
     alert?.properties;
-  const isPDS = alertIsPDS(description);
-  const isDestructiveStorm = alertIsDestructiveStorm(description);
+  const isPDS = alertIsPDS(alert);
+  const isDestructiveStorm = alertIsDestructiveStorm(alert);
   const bgColor = isPDS ? "#f0f" : isDestructiveStorm ? "#00f" : "orange";
 
   return (
@@ -130,8 +130,8 @@ export const SevereStormWarningAlert = ({ alert }) => {
 export const SevereStormWatchAlert = ({ alert }) => {
   const { areaDesc, effective, expires, senderName, description, instruction } =
     alert?.properties;
-  const isPDS = alertIsPDS(description);
-  const isDestructiveStorm = alertIsDestructiveStorm(description);
+  const isPDS = alertIsPDS(alert);
+  const isDestructiveStorm = alertIsDestructiveStorm(alert);
   const bgColor = isPDS ? "#f0f" : isDestructiveStorm ? "#00f" : "lightgreen";
 
   return (
@@ -167,9 +167,9 @@ export const AlertBar = ({ alert }) => {
     senderName,
     parameters: { maxHailSize, tornadoDetection },
   } = alert?.properties;
-  const isTornadoEmergency = alertIsTornadoEmergency(description);
-  const isPDS = alertIsPDS(description);
-  const isDestructiveStorm = alertIsDestructiveStorm(description);
+  const isTornadoEmergency = alertIsTornadoEmergency(alert);
+  const isPDS = alertIsPDS(alert);
+  const isDestructiveStorm = alertIsDestructiveStorm(alert);
 
   let alertLabel = isTornadoEmergency
     ? "This is a TORNADO EMERGENCY!"
