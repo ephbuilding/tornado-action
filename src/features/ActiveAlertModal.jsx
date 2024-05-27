@@ -159,18 +159,18 @@ export const AlertPolygonMap = ({ alert }) => {
     ],
     alert
   );
-  const alberPathGen = d3.geoPath(albersFitExtent);
+  const extentPathGen = d3.geoPath(albersFitExtent);
 
   return (
     <AlertCardSubComponent>
-      <USCountyMap pathGen={alberPathGen}>
+      <USCountyMap pathGen={extentPathGen}>
         <WarningPolygon
           color={polygonColor}
           feature={alert}
-          pathGen={alberPathGen}
+          pathGen={extentPathGen}
           winding={TurfRewind}
         />
-        <AlertCountyLabels features={countyFeatures} pathGen={alberPathGen} />
+        <AlertCountyLabels features={countyFeatures} pathGen={extentPathGen} />
       </USCountyMap>
     </AlertCardSubComponent>
   );

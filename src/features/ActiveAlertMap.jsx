@@ -11,6 +11,7 @@ import {
   alertIsPDS,
   alertIsTornadoEmergency,
 } from "features/_utils/nws-alerts";
+import { reverseAlbersGeoPath } from "utils/geometry";
 
 const projection = geoAlbers();
 const d3GeoPath = geoPath(projection);
@@ -153,8 +154,7 @@ const WarningPolygon = ({ color, feature, onClick }) => {
   return (
     feature?.geometry && (
       <path
-        // TODO: create new geoJsonPath(geometry)
-        d={d3GeoPath(rewind(feature.geometry, { reverse: true }))}
+        d={reverseAlbersGeoPath(feature.geometry)}
         fill={color}
         fillOpacity={0.65}
         stroke={color}
@@ -208,6 +208,7 @@ const WatchPolygon = ({ alert, color, feature, onClick }) => {
     />
   );
 };
+// TODO: move to utils/nws-alerts.js
 const createWatchPolygonGeometry = ({ alert, topoJsonClient }) => {
   const affectedCountyIds = alert.properties.geocode.SAME;
   const watchGeometry = topoJsonClient.merge(

@@ -62,6 +62,9 @@ const MainNav = () => {
         <NextLink href="/convective-outlooks">signatures</NextLink>
       </Menu.Item>
       <Menu.Item className="text-sm">
+        <NextLink href="/convective-outlooks">storm reports</NextLink>
+      </Menu.Item>
+      <Menu.Item className="text-sm">
         <NextLink href="/convective-outlooks">tornado stats</NextLink>
       </Menu.Item>
     </Menu>

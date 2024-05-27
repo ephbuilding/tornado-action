@@ -68,15 +68,13 @@ const HomeScreen = () => {
     return alerts;
   };
   if (data) {
-    destructiveStormAlerts = data.filter((alert) => {
-      return alertIsDestructiveStorm(alert);
-    });
-    pdsAlerts = data.filter((alert) => {
-      return alertIsPDS(alert);
-    });
-    tornadoEmergencyAlerts = data.filter((alert) => {
-      return alertIsTornadoEmergency(alert);
-    });
+    destructiveStormAlerts = data.filter((alert) =>
+      alertIsDestructiveStorm(alert)
+    );
+    pdsAlerts = data.filter((alert) => alertIsPDS(alert));
+    tornadoEmergencyAlerts = data.filter((alert) =>
+      alertIsTornadoEmergency(alert)
+    );
     alerts = filterTornadoAndStormAlerts(data);
   }
 
