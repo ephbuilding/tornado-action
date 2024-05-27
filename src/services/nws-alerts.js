@@ -1712,28 +1712,6 @@ const fetchActiveNwsAlertsByType = async (event) => {
 };
 
 // ! --- SERVICE FUNCTIONS
-
-export const alertIsDestructiveStorm = (alertDescription) => {
-  return checkStringForPhrase(
-    alertDescription,
-    NWS_STORM_SITUATIONS.destructive_storm
-  );
-};
-export const alertIsPDS = (alertDescription) => {
-  return checkStringForPhrase(
-    alertDescription,
-    NWS_STORM_SITUATIONS.particularly_dangerous_situation
-  );
-};
-export const alertIsTornadoEmergency = (alertDescription) => {
-  return checkStringForPhrase(
-    alertDescription,
-    NWS_STORM_SITUATIONS.tornado_emergency
-  );
-};
-export const parseAlertDescription = (alert) => {
-  return alert.properties.description.toLowerCase();
-};
 export const useActiveNwsAlertsByType = (eventTypeString) => {
   return useQuery({
     queryKey: ["NWS API Web Service", "Alerts", "Active", eventTypeString],

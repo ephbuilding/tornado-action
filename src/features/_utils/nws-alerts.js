@@ -29,22 +29,25 @@ const assignToMapStateKey = ({ map, area, state }) => {
     map.set(state, [...map.get(state), area]);
   }
 };
-// ? --- NWS STORM SITUATIONS
-export const alertIsDestructiveStorm = (alertDescription) => {
+// ALERT SITUATIONS
+export const alertIsDestructiveStorm = (alert) => {
+  const description = parseAlertDescription(alert);
   return checkStringForPhrase(
-    alertDescription,
+    description,
     NWS_STORM_SITUATIONS.destructive_storm
   );
 };
-export const alertIsPDS = (alertDescription) => {
+export const alertIsPDS = (alert) => {
+  const description = parseAlertDescription(alert);
   return checkStringForPhrase(
-    alertDescription,
+    description,
     NWS_STORM_SITUATIONS.particularly_dangerous_situation
   );
 };
-export const alertIsTornadoEmergency = (alertDescription) => {
+export const alertIsTornadoEmergency = (alert) => {
+  const description = parseAlertDescription(alert);
   return checkStringForPhrase(
-    alertDescription,
+    description,
     NWS_STORM_SITUATIONS.tornado_emergency
   );
 };
