@@ -24,9 +24,9 @@ export const ActiveAlertCard = ({ alert, showAlertModalFunc }) => {
   let situation = null;
   let situationColor = null;
 
-  const isTornadoEmergency = alertIsTornadoEmergency(description);
-  const isPDS = alertIsPDS(description);
-  const isDestructiveStorm = alertIsDestructiveStorm(description);
+  const isTornadoEmergency = alertIsTornadoEmergency(alert);
+  const isPDS = alertIsPDS(alert);
+  const isDestructiveStorm = alertIsDestructiveStorm(alert);
 
   if (isTornadoEmergency) {
     situation = NWS_STORM_SITUATIONS.tornado_emergency;
