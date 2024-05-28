@@ -1,20 +1,13 @@
-import { useState } from "react";
-import rewind from "@turf/rewind";
-import * as topojson from "topojson-client";
-import { Button, Card, Modal } from "react-daisyui";
-import { geoAlbers, geoPath } from "d3";
-import { NWS_ALERT_COLORS } from "./_constants/nws-alerts";
-import AlbersTopo from "components/_constants/albers-map.topo.json";
-import { USStateMap } from "components";
 import {
   alertIsDestructiveStorm,
   alertIsPDS,
   alertIsTornadoEmergency,
-} from "features/_utils/nws-alerts";
-import { reverseAlbersGeoPath } from "utils/geometry";
-
-const projection = geoAlbers();
-const d3GeoPath = geoPath(projection);
+} from "utils/nws-alerts";
+import { Card } from "react-daisyui";
+import { USStateMap } from "components";
+import { NWS_ALERT_COLORS } from "constants/nws-alerts";
+import { WarningPolygon, WatchPolygon } from "components/AlertPolygons";
+import { createWatchAlertGeometry, reverseAlbersGeoPath } from "utils/geometry";
 
 const EVENTS = [
   {
@@ -67,23 +60,23 @@ export const ActiveAlertMap = ({
       <USStateMap>
         <WatchPolygons
           alerts={tornadoWatches}
-          color="yellow"
-          callback={showAlertModalFunc}
+          color={NWS_ALERT_COLORS.tornado_watch}
+          onClickCallback={showAlertModalFunc}
         />
         <WatchPolygons
           alerts={stormWatches}
-          color="limegreen"
-          callback={showAlertModalFunc}
+          color={NWS_ALERT_COLORS.severe_storm_watch}
+          onClickCallback={showAlertModalFunc}
         />
         <WarningPolygons
           alerts={stormWarnings}
-          color="orange"
-          callback={showAlertModalFunc}
+          color={NWS_ALERT_COLORS.severe_storm_warning}
+          onClickCallback={showAlertModalFunc}
         />
         <WarningPolygons
           alerts={tornadoWarnings}
-          color="red"
-          callback={showAlertModalFunc}
+          color={NWS_ALERT_COLORS.tornado_warning}
+          onClickCallback={showAlertModalFunc}
         />
       </USStateMap>
 
@@ -113,33 +106,20 @@ export const ActiveAlertMapLegend = () => {
   );
 };
 
-const WarningPolygons = ({ alerts, color, callback }) => {
+// D3 CENTROID --> const [centX, centY] = d3GeoPath.centroid(alert.geometry);
+
+const WarningPolygons = ({ alerts, color, onClickCallback }) => {
   return (
     <>
       {alerts && alerts.length > 0 ? (
         <g>
           {alerts.map((alert) => {
-            const { description } = alert.properties;
-            {
-              /* const [centX, centY] = d3GeoPath.centroid(alert.geometry); */
-            }
-            const isTornadoEmergency = alertIsTornadoEmergency(alert);
-            const isPDS = alertIsPDS(alert);
-            const isDestructiveStorm = alertIsDestructiveStorm(alert);
-            const polygonColor = isTornadoEmergency
-              ? NWS_ALERT_COLORS.tornado_emergency
-              : isPDS
-              ? NWS_ALERT_COLORS.particularly_dangerous_situation
-              : isDestructiveStorm
-              ? NWS_ALERT_COLORS.destructive_storm
-              : color;
-
             return (
               <WarningPolygon
                 key={alert.id}
-                feature={alert}
-                color={polygonColor}
-                onClick={callback}
+                alert={alert}
+                color={color}
+                onClickCallback={onClickCallback}
               />
             );
           })}
@@ -148,75 +128,24 @@ const WarningPolygons = ({ alerts, color, callback }) => {
     </>
   );
 };
-const WarningPolygon = ({ color, feature, onClick }) => {
-  // const polygonGeometry = geoJsonPath(feature.geometry);
 
-  return (
-    feature?.geometry && (
-      <path
-        d={reverseAlbersGeoPath(feature.geometry)}
-        fill={color}
-        fillOpacity={0.65}
-        stroke={color}
-        strokeOpacity={0.85}
-        strokeWidth={1}
-        onClick={() => onClick(feature)}
-      />
-    )
-  );
-};
-const WatchPolygons = ({ alerts, color, callback }) => {
-  const isValidFeatures = alerts && alerts.length > 0;
+const WatchPolygons = ({ alerts, color, onClickCallback }) => {
+  const isValidFeatures = alerts?.length > 0;
 
   return (
     <>
       {isValidFeatures
         ? alerts.map((alert) => {
-            const watchGeometry = createWatchPolygonGeometry({
-              alert,
-              topoJsonClient: topojson,
-            });
-            const isPDS = alertIsPDS(alert);
-            const fillColor = isPDS
-              ? NWS_ALERT_COLORS.particularly_dangerous_situation
-              : color;
-
             return (
               <WatchPolygon
                 key={alert.id}
                 alert={alert}
-                color={fillColor}
-                feature={watchGeometry}
-                onClick={callback}
+                color={color}
+                onClickCallback={onClickCallback}
               />
             );
           })
         : null}
     </>
   );
-};
-const WatchPolygon = ({ alert, color, feature, onClick }) => {
-  return (
-    <path
-      d={d3GeoPath(rewind(feature, { reverse: true }))}
-      fill={color}
-      onClick={() => onClick(alert)}
-      fillOpacity={0.5}
-      stroke={color}
-      strokeOpacity={0.75}
-      strokeWidth={0.5}
-    />
-  );
-};
-// TODO: move to utils/nws-alerts.js
-const createWatchPolygonGeometry = ({ alert, topoJsonClient }) => {
-  const affectedCountyIds = alert.properties.geocode.SAME;
-  const watchGeometry = topoJsonClient.merge(
-    AlbersTopo,
-    AlbersTopo.objects.counties.geometries.filter((geometry) => {
-      const countyID = `0${geometry.id}`;
-      return affectedCountyIds.includes(countyID);
-    })
-  );
-  return watchGeometry;
 };
