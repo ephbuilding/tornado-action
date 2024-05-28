@@ -1,12 +1,13 @@
 import * as TopoJSONClient from "topojson-client";
 import AlbersTopoJSONMap from "json/topojson-albers-map.json";
+import { albersGeoPath } from "utils/geometry";
 
 const meshedCountyFeatures = TopoJSONClient.mesh(
   AlbersTopoJSONMap,
   AlbersTopoJSONMap.objects.counties
   // (a, b) => a !== b
 );
-
+// TODO: replace 3 US maps with this single file
 // console.log(">> MESHED COUNTY FEATURES >>\n", meshedCountyFeatures);
 
 export const USCountyMap = ({ children, pathGen }) => {
