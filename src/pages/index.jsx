@@ -9,7 +9,7 @@ import {
   alertIsDestructiveStorm,
   alertIsPDS,
   alertIsTornadoEmergency,
-} from "features/_utils/nws-alerts";
+} from "utils/nws-alerts";
 import {
   useActiveNwsAlertsByType,
   useFakeNwsAlertsByType,

@@ -3,7 +3,7 @@ import {
   alertIsDestructiveStorm,
   alertIsPDS,
   alertIsTornadoEmergency,
-} from "./_utils/nws-alerts";
+} from "utils/nws-alerts";
 import {
   NWS_ALERT_COLORS,
   NWS_STORM_SITUATIONS,
