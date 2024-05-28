@@ -1,10 +1,6 @@
 import * as topojson from "topojson-client";
-import { geoAlbers, geoPath } from "d3-geo";
-
-import AlbersTopoJSONMap from "./_constants/albers-map.topo.json";
-
-const albersProjection = geoAlbers();
-const albersGeoPath = geoPath(albersProjection);
+import { albersGeoPath } from "utils/geometry";
+import AlbersTopoJSONMap from "json/topojson-albers-map.json";
 
 export const USStateMap = ({ children }) => {
   const states = topojson.feature(AlbersTopoJSONMap, "states");

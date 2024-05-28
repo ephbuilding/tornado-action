@@ -1,6 +1,5 @@
 import * as topojson from "topojson-client";
-
-import AlbersTopoJSONMap from "./_constants/albers-map.topo.json";
+import AlbersTopoJSONMap from "json/topojson-albers-map.json";
 
 const { features: countyFeatures } = topojson.feature(
   AlbersTopoJSONMap,
@@ -29,7 +28,6 @@ const CountyFeatures = ({ pathGen, features }) => {
   return (
     <path
       d={pathGen({ type: "FeatureCollection", features: features })}
-      // d={pathGen(features)}
       stroke="white"
       fill="grey"
     />

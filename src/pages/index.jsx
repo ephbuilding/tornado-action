@@ -1,10 +1,3 @@
-import { useState } from "react";
-import { PageLayout } from "components";
-import { CategoricalMap } from "features/convective-outlooks";
-import { ActiveAlertMap } from "features/ActiveAlertMap";
-import { ActiveAlertCard } from "features/ActiveAlertCard";
-import { ActiveAlertModal } from "features/ActiveAlertModal";
-import { ActiveAlertCounts } from "features/ActiveAlertCounts";
 import {
   alertIsDestructiveStorm,
   alertIsPDS,
@@ -14,6 +7,13 @@ import {
   useActiveNwsAlertsByType,
   useFakeNwsAlertsByType,
 } from "services/nws-alerts";
+import { useState } from "react";
+import { PageLayout } from "components";
+import { ActiveAlertMap } from "features/ActiveAlertMap";
+import { ActiveAlertCard } from "features/ActiveAlertCard";
+import { ActiveAlertModal } from "features/ActiveAlertModal";
+import { CategoricalMap } from "features/convective-outlooks";
+import { ActiveAlertCounts } from "features/ActiveAlertCounts";
 
 const HomeScreen = () => {
   const [alertModalIsOpen, setAlertModalIsOpen] = useState(false);

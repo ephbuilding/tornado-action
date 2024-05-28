@@ -4,7 +4,7 @@ import { AiOutlineCloseCircle as CloseIcon } from "react-icons/ai";
 
 import { USStateMap, USMapLoading } from "components";
 import { useOutlookByLayerId } from "services/convective-outlook-geometry";
-import { rewindPathGenerator } from "components/_constants/path-generators";
+import { reverseAlbersGeoPath } from "utils/geometry";
 import { CATEGORICAL } from "features/convective-outlooks/_constants/outlook-feature-details";
 
 // TODO: refactor --> pass SPC Outlook MapServer layer ID instead of converting day to layer
@@ -144,7 +144,7 @@ const ConvectiveFeature = ({ feature, openModalHandler }) => {
   return dn === 0 ? null : (
     <path
       key={`${idp_source}-${id}`}
-      d={rewindPathGenerator(feature)}
+      d={reverseAlbersGeoPath(feature)}
       fill={category.bgColor}
       opacity={0.7}
       stroke={category.stroke}
@@ -206,7 +206,7 @@ const CategoricalFeature = ({ feature, showModal }) => {
   return dn === 0 ? null : (
     <path
       key={`${idp_source}-${id}`}
-      d={rewindPathGenerator(feature)}
+      d={reverseAlbersGeoPath(feature)}
       fill={category.bgColor}
       opacity={0.7}
       stroke={category.stroke}

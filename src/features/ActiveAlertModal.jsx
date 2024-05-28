@@ -9,7 +9,7 @@ import { Button, Card, Modal } from "react-daisyui";
 import { STATES_MAP } from "constants";
 import { changeWfoToCityState, createImpactedAreasMap } from "utils/nws-alerts";
 import { DayJSDateTime, USCountyMap } from "components";
-import AlbersTopoJSONMap from "components/_constants/albers-map.topo.json";
+import AlbersTopoJSONMap from "json/topojson-albers-map.json";
 import * as topojson from "topojson-client";
 
 const { features: countyFeatures } = topojson.feature(
