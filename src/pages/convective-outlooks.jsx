@@ -3,7 +3,11 @@ import { Button, Modal } from "react-daisyui";
 import { PageLayout } from "components";
 import { DayInfo, TextProductModal } from "features/convective-outlooks";
 import { LAYER_IDS } from "constants/convective-outlooks";
-import { CategoricalMap } from "features/ConvectiveOutlookMaps";
+import {
+  CategoricalMap,
+  ProbabilisticTornadoMap,
+  ProbabilisticWindHailMap,
+} from "features/ConvectiveOutlookMaps";
 
 const ConvectiveOutlookScreen = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -22,8 +26,39 @@ const ConvectiveOutlookScreen = () => {
         Convective Outlooks
       </h1>
 
-      <CategoricalMap layerID={LAYER_IDS.day_1_categorical} />
-
+      <OutlooksGrid>
+        <CategoricalMap layerID={LAYER_IDS.day_1_categorical} />
+        <ProbabilisticTornadoMap
+          probLayerId={LAYER_IDS.day_1_prob_tornado}
+          sigLayerId={LAYER_IDS.day_1_sig_tornado}
+        />
+        <ProbabilisticWindHailMap
+          probLayerId={LAYER_IDS.day_1_prob_wind}
+          sigLayerId={LAYER_IDS.day_1_sig_wind}
+        />
+        <ProbabilisticWindHailMap
+          probLayerId={LAYER_IDS.day_1_prob_hail}
+          sigLayerId={LAYER_IDS.day_1_sig_hail}
+        />
+      </OutlooksGrid>
+      <OutlooksGrid>
+        <CategoricalMap layerID={LAYER_IDS.day_2_categorical} />
+        <ProbabilisticTornadoMap
+          probLayerId={LAYER_IDS.day_2_prob_tornado}
+          sigLayerId={LAYER_IDS.day_2_sig_tornado}
+        />
+        <ProbabilisticWindHailMap
+          probLayerId={LAYER_IDS.day_2_prob_wind}
+          sigLayerId={LAYER_IDS.day_2_sig_wind}
+        />
+        <ProbabilisticWindHailMap
+          probLayerId={LAYER_IDS.day_2_prob_hail}
+          sigLayerId={LAYER_IDS.day_2_sig_hail}
+        />
+      </OutlooksGrid>
+      <OutlooksGrid>
+        <CategoricalMap layerID={LAYER_IDS.day_3_categorical} />
+      </OutlooksGrid>
       {/* <OutlooksGrid>
         <OutlookGridItem dayNumber={1} showOutlookText={showModalHandler} />
         <OutlookGridItem dayNumber={2} showOutlookText={showModalHandler} />
@@ -40,8 +75,11 @@ const ConvectiveOutlookScreen = () => {
 
 export default ConvectiveOutlookScreen;
 
+// SUB-COMPONENTS
 const OutlooksGrid = ({ children }) => (
-  <div className="md:grid md:grid-cols-2 xl:grid-cols-3">{children}</div>
+  <div className="md:grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+    {children}
+  </div>
 );
 
 const OutlookGridItem = ({ dayNumber, showOutlookText }) => (

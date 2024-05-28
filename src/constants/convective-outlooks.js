@@ -87,6 +87,10 @@ export const PROB_WIND_HAIL_STYLES = Object.freeze({
     label: "5%",
     color: "rgb(198, 162, 148)",
   },
+  10: {
+    label: "Significant",
+    color: "rgb(212, 208, 200)",
+  },
   15: {
     label: "15%",
     color: "rgb(255, 255, 0)",

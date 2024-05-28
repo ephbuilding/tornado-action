@@ -15,35 +15,148 @@ export const CategoricalMap = ({ layerID }) => {
 
   if (features) hasFeatures = features[0].properties.dn > 0;
 
-  console.log("hasFeatures: ", hasFeatures);
-
   return (
     <div className="w-full h-full">
       <USStateMap>
         <g>
           {hasFeatures
-            ? features.map((feature) => (
-                <ConvectiveFeature key={feature.id} feature={feature} />
-              ))
+            ? features.map((feature) => {
+                const keyID = `${feature.properties.idp_source}-${feature.id}`;
+                return <CategoricalFeature key={keyID} feature={feature} />;
+              })
             : null}
         </g>
       </USStateMap>
     </div>
   );
 };
-export const ProbabilisticMap = ({ probabilisticLayerID, sigLayerID }) => {};
+export const ProbabilisticTornadoMap = ({ probLayerId, sigLayerId }) => {
+  let hasProbFeatures = false;
+  let hasSigFeatures = false;
+  const { data: probFeatures } = useOutlookLayerById(probLayerId);
+  const { data: sigFeatures } = useOutlookLayerById(sigLayerId);
+
+  if (probFeatures) hasProbFeatures = probFeatures[0].properties.dn > 0;
+  if (sigFeatures) hasSigFeatures = sigFeatures[0].properties.dn > 0;
+
+  return (
+    <div className="w-full h-full">
+      <USStateMap>
+        <g>
+          {hasProbFeatures
+            ? probFeatures.map((feature) => {
+                const keyID = `${feature.properties.idp_source}-${feature.id}`;
+                return (
+                  <ProbabilisticTornadoFeature key={keyID} feature={feature} />
+                );
+              })
+            : null}
+          {hasSigFeatures
+            ? sigFeatures.map((feature) => {
+                const keyID = `${feature.properties.idp_source}-${feature.id}`;
+                return <SignificantFeature key={keyID} feature={feature} />;
+              })
+            : null}
+        </g>
+      </USStateMap>
+    </div>
+  );
+};
+export const ProbabilisticWindHailMap = ({ probLayerId, sigLayerId }) => {
+  let hasProbFeatures = false;
+  let hasSigFeatures = false;
+  const { data: probFeatures } = useOutlookLayerById(probLayerId);
+  const { data: sigFeatures } = useOutlookLayerById(sigLayerId);
+
+  if (probFeatures) hasProbFeatures = probFeatures[0].properties.dn > 0;
+  if (sigFeatures) hasSigFeatures = sigFeatures[0].properties.dn > 0;
+
+  return (
+    <div className="w-full h-full">
+      <USStateMap>
+        <g>
+          {hasProbFeatures
+            ? probFeatures.map((feature) => {
+                const keyID = `${feature.properties.idp_source}-${feature.id}`;
+                return (
+                  <ProbabilisticWindHailFeature key={keyID} feature={feature} />
+                );
+              })
+            : null}
+          {hasSigFeatures
+            ? sigFeatures.map((feature) => {
+                const keyID = `${feature.properties.idp_source}-${feature.id}`;
+                return <SignificantFeature key={keyID} feature={feature} />;
+              })
+            : null}
+        </g>
+      </USStateMap>
+    </div>
+  );
+};
 
 // SUB-COMPONENTS
-const ConvectiveFeature = ({ feature }) => {
+const CategoricalFeature = ({ feature }) => {
   const {
-    id,
-    properties: { dn, idp_source },
+    properties: { dn },
   } = feature;
   const color = CAT_OUTLOOK_STYLES[dn].color;
 
   return (
     <path
-      key={`${idp_source}-${id}`}
+      d={reverseAlbersGeoPath(feature)}
+      fill={color}
+      stroke={color}
+      fillOpacity={0.7}
+      strokeOpacity={0.9}
+      strokeWidth={4}
+    />
+  );
+};
+const ProbabilisticTornadoFeature = ({ feature }) => {
+  const {
+    properties: { dn },
+  } = feature;
+  const color = PROB_TORNADO_STYLES[dn].color;
+
+  return (
+    <path
+      d={reverseAlbersGeoPath(feature)}
+      fill={color}
+      stroke={color}
+      fillOpacity={0.7}
+      strokeOpacity={0.9}
+      strokeWidth={4}
+    />
+  );
+};
+const ProbabilisticWindHailFeature = ({ feature }) => {
+  const {
+    id,
+    properties: { dn },
+  } = feature;
+  console.log(feature.properties.idp_source + "-" + id + " >> DN: ", dn);
+  const color = PROB_WIND_HAIL_STYLES[dn].color;
+
+  return (
+    <path
+      d={reverseAlbersGeoPath(feature)}
+      fill={color}
+      stroke={color}
+      fillOpacity={0.7}
+      strokeOpacity={0.9}
+      strokeWidth={4}
+    />
+  );
+};
+const SignificantFeature = ({ feature }) => {
+  const {
+    properties: { dn },
+  } = feature;
+  const color = SIGNIFICANT_STYLES[dn].color;
+
+  return (
+    <path
       d={reverseAlbersGeoPath(feature)}
       fill={color}
       stroke={color}
