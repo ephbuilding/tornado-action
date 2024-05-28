@@ -6,7 +6,7 @@ import AlbersMapTopoJSON from "components/_constants/albers-map.topo.json";
 const albersProjection = geoAlbers();
 const albersGeoPath = geoPath(albersProjection);
 
-export const createNWSWatchGeometry = (alert) => {
+export const createWatchAlertGeometry = (alert) => {
   const affectedCountyIds = alert.properties.geocode.SAME;
   const watchGeometry = topojsonClient.merge(
     AlbersMapTopoJSON,
@@ -18,7 +18,6 @@ export const createNWSWatchGeometry = (alert) => {
   );
   return watchGeometry;
 };
-
 export const reverseAlbersGeoPath = (geometry) => {
   return albersGeoPath(turfRewind(geometry, { reverse: true }));
 };

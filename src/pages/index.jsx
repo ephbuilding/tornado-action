@@ -20,7 +20,7 @@ const HomeScreen = () => {
   const [alertModalData, setAlertModalData] = useState(null);
   const showAlertModal = (alert) => {
     setAlertModalData(alert);
-    setAlertModalIsOpen((isOpen) => !isOpen);
+    setAlertModalIsOpen(true);
   };
   const closeAlertModal = () => {
     setAlertModalIsOpen(false);
