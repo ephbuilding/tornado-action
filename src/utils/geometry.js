@@ -1,11 +1,10 @@
 import turfRewind from "@turf/rewind";
 import { geoAlbers, geoPath } from "d3";
 import * as topojsonClient from "topojson-client";
-import AlbersMapTopoJSON from "components/_constants/albers-map.topo.json";
+import AlbersMapTopoJSON from "json/topojson-albers-map.json";
 
 const albersProjection = geoAlbers();
-const albersGeoPath = geoPath(albersProjection);
-
+export const albersGeoPath = geoPath(albersProjection);
 export const createWatchAlertGeometry = (alert) => {
   const affectedCountyIds = alert.properties.geocode.SAME;
   const watchGeometry = topojsonClient.merge(
