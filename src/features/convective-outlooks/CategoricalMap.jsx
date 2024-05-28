@@ -1,101 +1,11 @@
 import { useState } from "react";
 import { Modal } from "react-daisyui";
-import { AiOutlineCloseCircle as CloseIcon } from "react-icons/ai";
-
-import { USStateMap, USMapLoading } from "components";
-import { useOutlookByLayerId } from "services/convective-outlook-geometry";
 import { reverseAlbersGeoPath } from "utils/geometry";
-import { CATEGORICAL } from "features/convective-outlooks/_constants/outlook-feature-details";
+import { USStateMap, USMapLoading } from "components";
+import { AiOutlineCloseCircle as CloseIcon } from "react-icons/ai";
+import { useOutlookByLayerId } from "services/convective-outlook-geometry";
+import { CAT_OUTLOOK_STYLES } from "constants/convective-outlooks";
 
-// TODO: refactor --> pass SPC Outlook MapServer layer ID instead of converting day to layer
-const CAT_OUTLOOK = Object.freeze({
-  2: {
-    label: "Thunderstorm",
-    color: "rgb(189, 255, 189)",
-  },
-  3: {
-    label: "Marginal",
-    color: "rgb(115, 178, 115)",
-  },
-  4: {
-    label: "Slight",
-    color: "rgb(247, 247, 143)",
-  },
-  5: {
-    label: "Enhanced",
-    color: "rgb(230, 152, 0)",
-  },
-  6: {
-    label: "Moderate",
-    color: "rgb(255, 0, 0)",
-  },
-  8: {
-    label: "High",
-    color: "rgb(255, 0, 197)",
-  },
-});
-const PROB_TORNADO = Object.freeze({
-  2: {
-    label: "2%",
-    color: "rgb(56, 168, 0)",
-  },
-  5: {
-    label: "5%",
-    color: "rgb(111, 25, 3)",
-  },
-  10: {
-    label: "10%",
-    color: "rgb(255, 198, 0)",
-  },
-  15: {
-    label: "15%",
-    color: "rgb(230, 0, 0)",
-  },
-  30: {
-    label: "30%",
-    color: "rgb(250, 0, 255)",
-  },
-  45: {
-    label: "45%",
-    color: "rgb(119, 6, 244)",
-  },
-  60: {
-    label: "60%",
-    color: "rgb(0, 77, 168)",
-  },
-});
-const PROB_WIND_HAIL = Object.freeze({
-  5: {
-    label: "5%",
-    color: "rgb(198, 162, 148)",
-  },
-  15: {
-    label: "15%",
-    color: "rgb(255, 255, 0)",
-  },
-  30: {
-    label: "30%",
-    color: "rgb(255, 0, 0)",
-  },
-  45: {
-    label: "45%",
-    color: "rgb(255, 0, 197)",
-  },
-  60: {
-    label: "60%",
-    color: "rgb(168, 0, 132)",
-  },
-});
-const DAYS_4_8_PROB = Object.freeze({
-  15: {
-    label: "15%",
-    color: "rgb(255, 255, 0)",
-  },
-  30: {
-    label: "30%",
-    color: "rgb(230, 152, 0)",
-  },
-});
 export const CategoricalMap = ({ features, colorMap }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [category, setCategory] = useState("");
@@ -139,7 +49,7 @@ const ConvectiveFeature = ({ feature, openModalHandler }) => {
 
   let category;
 
-  if (dn != 0) category = CATEGORICAL[dn];
+  if (dn != 0) category = CAT_OUTLOOK_STYLES[dn];
 
   return dn === 0 ? null : (
     <path

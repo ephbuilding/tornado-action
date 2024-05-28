@@ -12,8 +12,8 @@ import { PageLayout } from "components";
 import { ActiveAlertMap } from "features/ActiveAlertMap";
 import { ActiveAlertCard } from "features/ActiveAlertCard";
 import { ActiveAlertModal } from "features/ActiveAlertModal";
-import { CategoricalMap } from "features/convective-outlooks";
 import { ActiveAlertCounts } from "features/ActiveAlertCounts";
+// import { CategoricalMap } from "features/ConvectiveOutlookMaps";
 
 const HomeScreen = () => {
   const [alertModalIsOpen, setAlertModalIsOpen] = useState(false);
@@ -110,7 +110,7 @@ const HomeScreen = () => {
           // stormWarnings={fake_severe_storm_warnings}
           // stormWatches={fake_severe_storm_watches}
         />
-        <CategoricalMap outlookDay={1} />
+        {/* <CategoricalMap layerID={1} /> */}
       </div>
       {/* <ConvectiveOutlooks /> */}
 

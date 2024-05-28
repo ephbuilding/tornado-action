@@ -1,12 +1,9 @@
 import { useState } from "react";
 import { Button, Modal } from "react-daisyui";
 import { PageLayout } from "components";
-import {
-  CategoricalMap,
-  DayInfo,
-  TextProductModal,
-} from "features/convective-outlooks";
-import { useOutlookLayerById } from "services/convective-outlook-geometry";
+import { DayInfo, TextProductModal } from "features/convective-outlooks";
+import { LAYER_IDS } from "constants/convective-outlooks";
+import { CategoricalMap } from "features/ConvectiveOutlookMaps";
 
 const ConvectiveOutlookScreen = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -18,40 +15,14 @@ const ConvectiveOutlookScreen = () => {
   const closeModalHandler = () => {
     setIsOpen(false);
   };
-  const LAYER_IDS = Object.freeze({
-    day_1_convective: "0",
-    day_1_categorical: "1",
-    day_1_sig_tornado: "2",
-    day_1_prob_tornado: "3",
-    day_1_sig_hail: "4",
-    day_1_prob_hail: "5",
-    day_1_sig_wind: "6",
-    day_1_prob_wind: "7",
-    day_2_convective: "8",
-    day_2_categorical: "9",
-    day_2_sig_tornado: "10",
-    day_2_prob_tornado: "11",
-    day_2_sig_hail: "12",
-    day_2_prob_hail: "13",
-    day_2_sig_wind: "14",
-    day_2_prob_wind: "15",
-    day_3_convective: "16",
-    day_3_categorical: "17",
-    day_3_prob: "18",
-    day_3_sig_severe: "19",
-    days_4_thru_8_convective: "20",
-    day_4_prob: "21",
-    day_5_prob: "22",
-    day_6_prob: "23",
-    day_7_prob: "24",
-    day_8_prob: "25",
-  });
 
   return (
     <PageLayout>
       <h1 className="text-3xl uppercase font-bold mb-3 text-center bg-clip-text text-transparent bg-gradient-to-br from-primary to-base-content">
         Convective Outlooks
       </h1>
+
+      <CategoricalMap layerID={LAYER_IDS.day_1_categorical} />
 
       {/* <OutlooksGrid>
         <OutlookGridItem dayNumber={1} showOutlookText={showModalHandler} />
