@@ -4,10 +4,7 @@ import {
   alertIsPDS,
   alertIsTornadoEmergency,
 } from "utils/nws-alerts";
-import {
-  NWS_ALERT_COLORS,
-  NWS_STORM_SITUATIONS,
-} from "./_constants/nws-alerts";
+import { NWS_ALERT_COLORS, NWS_STORM_SITUATIONS } from "constants/nws-alerts";
 
 export const ActiveAlertCard = ({ alert, showAlertModalFunc }) => {
   const {
