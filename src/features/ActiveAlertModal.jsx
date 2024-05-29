@@ -62,6 +62,11 @@ export const ActiveAlertModal = ({ isOpen, closeFunc, alert }) => {
                 tornadoDetection={alert.properties.parameters.tornadoDetection}
               />
             )}
+            {alert?.properties?.parameters?.maxHailSize && (
+              <MaxHailSize
+                maxHailSize={alert.properties.parameters.maxHailSize}
+              />
+            )}
           </div>
           <ImpactedAreas areaDesc={alert?.properties.areaDesc} />
           <div className="flex">
@@ -270,7 +275,7 @@ export const MaxHailSize = ({ maxHailSize }) => {
   return (
     <AlertCardSubComponent className="flex justify-between items-center">
       <span className="text-sm ">Max Hail Size:</span>
-      <span className="ml-3">{`${maxSizeFloat}"`}</span>
+      <span className="ml-3">{`${maxSizeFloat}`}</span>
     </AlertCardSubComponent>
   );
 };
