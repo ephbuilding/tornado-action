@@ -58,6 +58,10 @@ const ConvectiveOutlookScreen = () => {
       </OutlooksGrid>
       <OutlooksGrid>
         <CategoricalMap layerID={LAYER_IDS.day_3_categorical} />
+        <ProbabilisticWindHailMap
+          probLayerId={LAYER_IDS.day_3_prob}
+          sigLayerId={LAYER_IDS.day_3_sig_severe}
+        />
       </OutlooksGrid>
       {/* <OutlooksGrid>
         <OutlookGridItem dayNumber={1} showOutlookText={showModalHandler} />
