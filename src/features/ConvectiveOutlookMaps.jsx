@@ -10,16 +10,18 @@ import { reverseAlbersGeoPath } from "utils/geometry";
 import { useOutlookLayerById } from "services/convective-outlook-mapserver";
 
 export const CategoricalMap = ({ catLayer }) => {
-  let hasFeatures = false;
   const { id, name } = catLayer;
   const { data: features } = useOutlookLayerById(id);
-  if (features) hasFeatures = features[0].properties.dn > 0;
+  let showConvFeatures = false;
+  if (features) showConvFeatures = hasConvectiveFeatures(features);
 
   return (
     <div className="w-full h-full">
       <MapServerLayerName name={name} />
       <USStateMap>
-        <g>{hasFeatures ? <MappedCatFeatures features={features} /> : null}</g>
+        <g>
+          {showConvFeatures ? <MappedCatFeatures features={features} /> : null}
+        </g>
       </USStateMap>
     </div>
   );
@@ -27,22 +29,22 @@ export const CategoricalMap = ({ catLayer }) => {
 export const ProbabilisticTornadoMap = ({ probLayer, sigLayer }) => {
   const { id: probLayerId, name: probLayerName } = probLayer;
   const { id: sigLayerId } = sigLayer;
-  let hasProbFeatures = false;
-  let hasSigFeatures = false;
   const { data: probFeatures } = useOutlookLayerById(probLayerId);
   const { data: sigFeatures } = useOutlookLayerById(sigLayerId);
-  if (probFeatures) hasProbFeatures = probFeatures[0].properties.dn > 0;
-  if (sigFeatures) hasSigFeatures = sigFeatures[0].properties.dn > 0;
+  let showProbFeatures = false;
+  let showSigFeatures = false;
+  if (probFeatures) showProbFeatures = hasConvectiveFeatures(probFeatures);
+  if (sigFeatures) showSigFeatures = hasConvectiveFeatures(sigFeatures);
 
   return (
     <div className="w-full h-full">
       <MapServerLayerName name={probLayerName} />
       <USStateMap>
         <g>
-          {hasProbFeatures ? (
+          {showProbFeatures ? (
             <MappedProbTornadoFeatures features={probFeatures} />
           ) : null}
-          {hasSigFeatures ? (
+          {showSigFeatures ? (
             <MappedHatchedSigFeatures features={sigFeatures} />
           ) : null}
         </g>
@@ -53,22 +55,22 @@ export const ProbabilisticTornadoMap = ({ probLayer, sigLayer }) => {
 export const ProbabilisticWindHailMap = ({ probLayer, sigLayer }) => {
   const { id: probLayerId, name: probLayerName } = probLayer;
   const { id: sigLayerId } = sigLayer;
-  let hasProbFeatures = false;
-  let hasSigFeatures = false;
   const { data: probFeatures } = useOutlookLayerById(probLayerId);
   const { data: sigFeatures } = useOutlookLayerById(sigLayerId);
-  if (probFeatures) hasProbFeatures = probFeatures[0].properties.dn > 0;
-  if (sigFeatures) hasSigFeatures = sigFeatures[0].properties.dn > 0;
+  let showProbFeatures = false;
+  let showSigFeatures = false;
+  if (probFeatures) showProbFeatures = hasConvectiveFeatures(probFeatures);
+  if (sigFeatures) showSigFeatures = hasConvectiveFeatures(sigFeatures);
 
   return (
     <div className="w-full h-full">
       <MapServerLayerName name={probLayerName} />
       <USStateMap>
         <g>
-          {hasProbFeatures ? (
+          {showProbFeatures ? (
             <MappedProbWindHailFeatures features={probFeatures} />
           ) : null}
-          {hasSigFeatures ? (
+          {showSigFeatures ? (
             <MappedHatchedSigFeatures features={sigFeatures} />
           ) : null}
         </g>
@@ -78,16 +80,16 @@ export const ProbabilisticWindHailMap = ({ probLayer, sigLayer }) => {
 };
 export const Days4_8_ProbabilisticMap = ({ probLayer }) => {
   const { id: probLayerId, name: probLayerName } = probLayer;
-  let hasProbFeatures = false;
   const { data: probFeatures } = useOutlookLayerById(probLayerId);
-  if (probFeatures) hasProbFeatures = probFeatures[0].properties.dn > 0;
+  let showProbFeatures = false;
+  if (probFeatures) showProbFeatures = hasConvectiveFeatures(probFeatures);
 
   return (
     <div className="w-full h-full">
       <MapServerLayerName name={probLayerName} />
       <USStateMap>
         <g>
-          {hasProbFeatures ? (
+          {showProbFeatures ? (
             <MappedProbDays4_8Features features={probFeatures} />
           ) : null}
         </g>
@@ -104,7 +106,7 @@ const MapServerLayerName = ({ name }) => {
     </div>
   );
 };
-// CATEGORICAL FEATURES
+// CATEGORICAL
 const MappedCatFeatures = ({ features }) => {
   return features.map((feature) => {
     const key = createConvectiveFeatureKey(feature);
@@ -115,7 +117,7 @@ const CategoricalFeature = ({ feature }) => {
   const color = CAT_OUTLOOK_STYLES[feature.properties.dn].color;
   return <ConvectiveFeaturePath feature={feature} color={color} />;
 };
-// PROBABILISTIC TORNADO FEATURES
+// PROBABILISTIC
 const MappedProbTornadoFeatures = ({ features }) => {
   return features.map((feature) => {
     const key = createConvectiveFeatureKey(feature);
@@ -126,7 +128,6 @@ const ProbabilisticTornadoFeature = ({ feature }) => {
   const color = PROB_TORNADO_STYLES[feature.properties.dn].color;
   return <ConvectiveFeaturePath feature={feature} color={color} />;
 };
-// PROBABILISTIC WIND & HAIL FEATURES
 const MappedProbWindHailFeatures = ({ features }) => {
   return features.map((feature) => {
     const key = createConvectiveFeatureKey(feature);
@@ -137,7 +138,6 @@ const ProbabilisticWindHailFeature = ({ feature }) => {
   const color = PROB_WIND_HAIL_STYLES[feature.properties.dn].color;
   return <ConvectiveFeaturePath feature={feature} color={color} />;
 };
-// DAYS 4-8 PROBABILISTIC FEATURES
 const MappedProbDays4_8Features = ({ features }) => {
   return features.map((feature) => {
     const key = createConvectiveFeatureKey(feature);
@@ -148,7 +148,7 @@ const ProbabilisticDays4_8Feature = ({ feature }) => {
   const color = PROB_DAYS_4_8_STYLES[feature.properties.dn].color;
   return <ConvectiveFeaturePath feature={feature} color={color} />;
 };
-// SIGNIFICANT (hatched) FEATURES
+// SIGNIFICANT (hatched)
 const MappedHatchedSigFeatures = ({ features }) => {
   return features.map((feature) => {
     const key = createConvectiveFeatureKey(feature);
@@ -196,4 +196,8 @@ const ConvectiveFeaturePath = ({ feature, color }) => (
 // ! --- UTILS
 const createConvectiveFeatureKey = (feature) => {
   return `${feature.properties.idp_source}-${feature.id}`;
+};
+const hasConvectiveFeatures = (features) => {
+  // SPC MapServer returns single feature obj with [dn:0] if no convective features
+  return features[0].properties.dn > 0;
 };
