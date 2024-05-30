@@ -3,7 +3,6 @@ import {
   PROB_TORNADO_STYLES,
   PROB_WIND_HAIL_STYLES,
   PROB_DAYS_4_8_STYLES,
-  SIGNIFICANT_STYLES,
 } from "constants/convective-outlooks";
 import { USStateMap } from "components/D3Maps";
 import { reverseAlbersGeoPath } from "utils/geometry";

@@ -18,7 +18,11 @@ export const TextProductModal = ({ isOpen, closeHandler, outlookDay }) => {
       <Modal.Body>
         {outlookText ? (
           <pre className="whitespace-break-spaces">{outlookText}</pre>
-        ) : null}
+        ) : (
+          <pre className="whitespace-break-spaces">
+            Convective Outlook report not available...
+          </pre>
+        )}
       </Modal.Body>
     </Modal>
   );

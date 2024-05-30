@@ -81,7 +81,6 @@ export default ConvectiveOutlookScreen;
 const OutlooksGrid = ({ children }) => (
   <div className="md:grid md:grid-cols-2 lg:grid-cols-3">{children}</div>
 );
-
 const OutlookGridItem = ({ dayNumber, showOutlookText }) => (
   <div className="flex flex-col items-center md:flex-1 mb-5">
     <DayInfo day={dayNumber} />
@@ -89,7 +88,6 @@ const OutlookGridItem = ({ dayNumber, showOutlookText }) => (
     <OutlookTextModalBtn openHandler={showOutlookText} outlookDay={dayNumber} />
   </div>
 );
-
 const OutlookTextModalBtn = ({ openHandler, outlookDay }) => (
   <Button
     variant="outline"
