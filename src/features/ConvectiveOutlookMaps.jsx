@@ -9,9 +9,10 @@ import { USStateMap } from "components/D3Maps";
 import { reverseAlbersGeoPath } from "utils/geometry";
 import { useOutlookLayerById } from "services/convective-outlook-mapserver";
 
-export const CategoricalMap = ({ layerID }) => {
+export const CategoricalMap = ({ mapserverLayer }) => {
   let hasFeatures = false;
-  const { data: features } = useOutlookLayerById(layerID);
+  const { id, name } = mapserverLayer;
+  const { data: features } = useOutlookLayerById(id);
   if (features) hasFeatures = features[0].properties.dn > 0;
 
   return (
@@ -87,6 +88,7 @@ export const Days4_8_ProbabilisticMap = ({ probLayerId }) => {
 };
 
 // ! --- SUB-COMPONENTS
+
 // CATEGORICAL FEATURES
 const MappedCatFeatures = ({ features }) => {
   return features.map((feature) => {

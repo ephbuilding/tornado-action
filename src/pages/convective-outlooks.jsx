@@ -2,7 +2,7 @@ import { useState } from "react";
 import { PageLayout } from "components";
 import { Button, Modal } from "react-daisyui";
 import { DayInfo, TextProductModal } from "features/convective-outlooks";
-import { LAYER_IDS } from "constants/convective-outlooks";
+import { LAYER_IDS, MAPSERVER_LAYERS } from "constants/convective-outlooks";
 import {
   CategoricalMap,
   ProbabilisticTornadoMap,
@@ -23,12 +23,9 @@ const ConvectiveOutlookScreen = () => {
 
   return (
     <PageLayout>
-      <h1 className="text-3xl uppercase font-bold mb-3 text-center bg-clip-text text-transparent bg-gradient-to-br from-primary to-base-content">
-        Convective Outlooks
-      </h1>
-
       <OutlooksGrid>
-        <CategoricalMap layerID={LAYER_IDS.day_1_categorical} />
+        {/* --- DAY 1 --- */}
+        <CategoricalMap mapserverLayer={MAPSERVER_LAYERS.day_1_categorical} />
         <ProbabilisticTornadoMap
           probLayerId={LAYER_IDS.day_1_prob_tornado}
           sigLayerId={LAYER_IDS.day_1_sig_tornado}
@@ -41,7 +38,8 @@ const ConvectiveOutlookScreen = () => {
           probLayerId={LAYER_IDS.day_1_prob_hail}
           sigLayerId={LAYER_IDS.day_1_sig_hail}
         />
-        <CategoricalMap layerID={LAYER_IDS.day_2_categorical} />
+        {/* --- DAY 2 --- */}
+        <CategoricalMap mapserverLayer={MAPSERVER_LAYERS.day_2_categorical} />
         <ProbabilisticTornadoMap
           probLayerId={LAYER_IDS.day_2_prob_tornado}
           sigLayerId={LAYER_IDS.day_2_sig_tornado}
@@ -54,11 +52,13 @@ const ConvectiveOutlookScreen = () => {
           probLayerId={LAYER_IDS.day_2_prob_hail}
           sigLayerId={LAYER_IDS.day_2_sig_hail}
         />
-        <CategoricalMap layerID={LAYER_IDS.day_3_categorical} />
+        {/* --- DAY 3 --- */}
+        <CategoricalMap mapserverLayer={MAPSERVER_LAYERS.day_3_categorical} />
         <ProbabilisticWindHailMap
           probLayerId={LAYER_IDS.day_3_prob}
           sigLayerId={LAYER_IDS.day_3_sig_severe}
         />
+        {/* --- DAYS 4-8 --- */}
         <Days4_8_ProbabilisticMap probLayerId={LAYER_IDS.day_4_prob} />
         <Days4_8_ProbabilisticMap probLayerId={LAYER_IDS.day_5_prob} />
         <Days4_8_ProbabilisticMap probLayerId={LAYER_IDS.day_6_prob} />
