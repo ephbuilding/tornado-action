@@ -120,22 +120,22 @@ const ProbabilisticWindHailFeature = ({ feature }) => {
   const color = PROB_WIND_HAIL_STYLES[feature.properties.dn].color;
   return <ConvectiveFeaturePath feature={feature} color={color} />;
 };
-// SIGNIFICANT FEATURES
-const MappedHatchedSigFeatures = ({ features }) => {
+// DAYS 4-8 PROBABILISTIC FEATURES
+const MappedProbDays4_8Features = ({ features }) => {
   return features.map((feature) => {
     const key = createConvectiveFeatureKey(feature);
-    return <HatchedSignificantFeature key={key} feature={feature} />;
+    return <ProbabilisticDays4_8Feature key={key} feature={feature} />;
   });
 };
 const ProbabilisticDays4_8Feature = ({ feature }) => {
   const color = PROB_DAYS_4_8_STYLES[feature.properties.dn].color;
   return <ConvectiveFeaturePath feature={feature} color={color} />;
 };
-// DAYS 4-8 PROBABILISTIC FEATURES
-const MappedProbDays4_8Features = ({ features }) => {
+// SIGNIFICANT (hatched) FEATURES
+const MappedHatchedSigFeatures = ({ features }) => {
   return features.map((feature) => {
     const key = createConvectiveFeatureKey(feature);
-    return <ProbabilisticDays4_8Feature key={key} feature={feature} />;
+    return <HatchedSignificantFeature key={key} feature={feature} />;
   });
 };
 const HatchedSignificantFeature = ({ feature }) => {
@@ -159,8 +159,8 @@ const HatchedSignificantFeature = ({ feature }) => {
         d={reverseAlbersGeoPath(feature)}
         fill="url(#hatchPattern)"
         stroke="#000"
-        fillOpacity={0.7}
-        strokeOpacity={0.9}
+        // fillOpacity={0.7}
+        // strokeOpacity={0.9}
         strokeWidth={1}
       />
     </>
