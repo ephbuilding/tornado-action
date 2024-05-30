@@ -99,7 +99,7 @@ export const ProbabilisticWindHailMap = ({ probLayerId, sigLayerId }) => {
   );
 };
 
-// SUB-COMPONENTS
+// ! --- SUB-COMPONENTS
 const CategoricalFeature = ({ feature }) => {
   const color = CAT_OUTLOOK_STYLES[feature.properties.dn].color;
   return <ConvectiveFeaturePath feature={feature} color={color} />;
@@ -124,7 +124,7 @@ const HatchedSignificantFeature = ({ feature }) => {
         >
           <path
             d="M-1,1 l2,-2 M0,8 l8,-8 M7,9 l2,-2"
-            stroke="#f00"
+            stroke="#000"
             strokeWidth={1}
           />
         </pattern>
@@ -132,7 +132,7 @@ const HatchedSignificantFeature = ({ feature }) => {
       <path
         d={reverseAlbersGeoPath(feature)}
         fill="url(#hatchPattern)"
-        stroke="#f00"
+        stroke="#000"
         fillOpacity={0.7}
         strokeOpacity={0.9}
         strokeWidth={1}
