@@ -7,6 +7,7 @@ import {
   CategoricalMap,
   ProbabilisticTornadoMap,
   ProbabilisticWindHailMap,
+  Days4_8_ProbabilisticMap,
 } from "features/ConvectiveOutlookMaps";
 
 const ConvectiveOutlookScreen = () => {
@@ -40,8 +41,6 @@ const ConvectiveOutlookScreen = () => {
           probLayerId={LAYER_IDS.day_1_prob_hail}
           sigLayerId={LAYER_IDS.day_1_sig_hail}
         />
-      </OutlooksGrid>
-      <OutlooksGrid>
         <CategoricalMap layerID={LAYER_IDS.day_2_categorical} />
         <ProbabilisticTornadoMap
           probLayerId={LAYER_IDS.day_2_prob_tornado}
@@ -55,19 +54,18 @@ const ConvectiveOutlookScreen = () => {
           probLayerId={LAYER_IDS.day_2_prob_hail}
           sigLayerId={LAYER_IDS.day_2_sig_hail}
         />
-      </OutlooksGrid>
-      <OutlooksGrid>
         <CategoricalMap layerID={LAYER_IDS.day_3_categorical} />
         <ProbabilisticWindHailMap
           probLayerId={LAYER_IDS.day_3_prob}
           sigLayerId={LAYER_IDS.day_3_sig_severe}
         />
+        <Days4_8_ProbabilisticMap probLayerId={21} />
+        <Days4_8_ProbabilisticMap probLayerId={22} />
+        <Days4_8_ProbabilisticMap probLayerId={23} />
+        <Days4_8_ProbabilisticMap probLayerId={24} />
+        <Days4_8_ProbabilisticMap probLayerId={25} />
       </OutlooksGrid>
-      {/* <OutlooksGrid>
-        <OutlookGridItem dayNumber={1} showOutlookText={showModalHandler} />
-        <OutlookGridItem dayNumber={2} showOutlookText={showModalHandler} />
-        <OutlookGridItem dayNumber={3} showOutlookText={showModalHandler} />
-      </OutlooksGrid>
+      {/* 
       <TextProductModal
         isOpen={isOpen}
         outlookDay={outlookDay}

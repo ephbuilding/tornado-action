@@ -12,20 +12,12 @@ import { useOutlookLayerById } from "services/convective-outlook-geometry";
 export const CategoricalMap = ({ layerID }) => {
   let hasFeatures = false;
   const { data: features } = useOutlookLayerById(layerID);
-
   if (features) hasFeatures = features[0].properties.dn > 0;
 
   return (
     <div className="w-full h-full">
       <USStateMap>
-        <g>
-          {hasFeatures
-            ? features.map((feature) => {
-                const keyID = `${feature.properties.idp_source}-${feature.id}`;
-                return <CategoricalFeature key={keyID} feature={feature} />;
-              })
-            : null}
-        </g>
+        <g>{hasFeatures ? <MappedCatFeatures features={features} /> : null}</g>
       </USStateMap>
     </div>
   );
@@ -35,7 +27,6 @@ export const ProbabilisticTornadoMap = ({ probLayerId, sigLayerId }) => {
   let hasSigFeatures = false;
   const { data: probFeatures } = useOutlookLayerById(probLayerId);
   const { data: sigFeatures } = useOutlookLayerById(sigLayerId);
-
   if (probFeatures) hasProbFeatures = probFeatures[0].properties.dn > 0;
   if (sigFeatures) hasSigFeatures = sigFeatures[0].properties.dn > 0;
 
@@ -43,22 +34,12 @@ export const ProbabilisticTornadoMap = ({ probLayerId, sigLayerId }) => {
     <div className="w-full h-full">
       <USStateMap>
         <g>
-          {hasProbFeatures
-            ? probFeatures.map((feature) => {
-                const keyID = `${feature.properties.idp_source}-${feature.id}`;
-                return (
-                  <ProbabilisticTornadoFeature key={keyID} feature={feature} />
-                );
-              })
-            : null}
-          {hasSigFeatures
-            ? sigFeatures.map((feature) => {
-                const keyID = `${feature.properties.idp_source}-${feature.id}`;
-                return (
-                  <HatchedSignificantFeature key={keyID} feature={feature} />
-                );
-              })
-            : null}
+          {hasProbFeatures ? (
+            <MappedProbTornadoFeatures features={probFeatures} />
+          ) : null}
+          {hasSigFeatures ? (
+            <MappedHatchedSigFeatures features={sigFeatures} />
+          ) : null}
         </g>
       </USStateMap>
     </div>
@@ -69,7 +50,6 @@ export const ProbabilisticWindHailMap = ({ probLayerId, sigLayerId }) => {
   let hasSigFeatures = false;
   const { data: probFeatures } = useOutlookLayerById(probLayerId);
   const { data: sigFeatures } = useOutlookLayerById(sigLayerId);
-
   if (probFeatures) hasProbFeatures = probFeatures[0].properties.dn > 0;
   if (sigFeatures) hasSigFeatures = sigFeatures[0].properties.dn > 0;
 
@@ -77,22 +57,29 @@ export const ProbabilisticWindHailMap = ({ probLayerId, sigLayerId }) => {
     <div className="w-full h-full">
       <USStateMap>
         <g>
-          {hasProbFeatures
-            ? probFeatures.map((feature) => {
-                const keyID = `${feature.properties.idp_source}-${feature.id}`;
-                return (
-                  <ProbabilisticWindHailFeature key={keyID} feature={feature} />
-                );
-              })
-            : null}
-          {hasSigFeatures
-            ? sigFeatures.map((feature) => {
-                const keyID = `${feature.properties.idp_source}-${feature.id}`;
-                return (
-                  <HatchedSignificantFeature key={keyID} feature={feature} />
-                );
-              })
-            : null}
+          {hasProbFeatures ? (
+            <MappedProbWindHailFeatures features={probFeatures} />
+          ) : null}
+          {hasSigFeatures ? (
+            <MappedHatchedSigFeatures features={sigFeatures} />
+          ) : null}
+        </g>
+      </USStateMap>
+    </div>
+  );
+};
+export const Days4_8_ProbabilisticMap = ({ probLayerId }) => {
+  let hasProbFeatures = false;
+  const { data: probFeatures } = useOutlookLayerById(probLayerId);
+  if (probFeatures) hasProbFeatures = probFeatures[0].properties.dn > 0;
+
+  return (
+    <div className="w-full h-full">
+      <USStateMap>
+        <g>
+          {hasProbFeatures ? (
+            <MappedProbDays4_8Features features={probFeatures} />
+          ) : null}
         </g>
       </USStateMap>
     </div>
@@ -100,17 +87,56 @@ export const ProbabilisticWindHailMap = ({ probLayerId, sigLayerId }) => {
 };
 
 // ! --- SUB-COMPONENTS
+// CATEGORICAL FEATURES
+const MappedCatFeatures = ({ features }) => {
+  return features.map((feature) => {
+    const key = createConvectiveFeatureKey(feature);
+    return <CategoricalFeature key={key} feature={feature} />;
+  });
+};
 const CategoricalFeature = ({ feature }) => {
   const color = CAT_OUTLOOK_STYLES[feature.properties.dn].color;
   return <ConvectiveFeaturePath feature={feature} color={color} />;
+};
+// PROBABILISTIC TORNADO FEATURES
+const MappedProbTornadoFeatures = ({ features }) => {
+  return features.map((feature) => {
+    const key = createConvectiveFeatureKey(feature);
+    return <ProbabilisticTornadoFeature key={key} feature={feature} />;
+  });
 };
 const ProbabilisticTornadoFeature = ({ feature }) => {
   const color = PROB_TORNADO_STYLES[feature.properties.dn].color;
   return <ConvectiveFeaturePath feature={feature} color={color} />;
 };
+// PROBABILISTIC WIND & HAIL FEATURES
+const MappedProbWindHailFeatures = ({ features }) => {
+  return features.map((feature) => {
+    const key = createConvectiveFeatureKey(feature);
+    return <ProbabilisticWindHailFeature key={key} feature={feature} />;
+  });
+};
 const ProbabilisticWindHailFeature = ({ feature }) => {
   const color = PROB_WIND_HAIL_STYLES[feature.properties.dn].color;
   return <ConvectiveFeaturePath feature={feature} color={color} />;
+};
+// SIGNIFICANT FEATURES
+const MappedHatchedSigFeatures = ({ features }) => {
+  return features.map((feature) => {
+    const key = createConvectiveFeatureKey(feature);
+    return <HatchedSignificantFeature key={key} feature={feature} />;
+  });
+};
+const ProbabilisticDays4_8Feature = ({ feature }) => {
+  const color = PROB_DAYS_4_8_STYLES[feature.properties.dn].color;
+  return <ConvectiveFeaturePath feature={feature} color={color} />;
+};
+// DAYS 4-8 PROBABILISTIC FEATURES
+const MappedProbDays4_8Features = ({ features }) => {
+  return features.map((feature) => {
+    const key = createConvectiveFeatureKey(feature);
+    return <ProbabilisticDays4_8Feature key={key} feature={feature} />;
+  });
 };
 const HatchedSignificantFeature = ({ feature }) => {
   return (
@@ -140,6 +166,7 @@ const HatchedSignificantFeature = ({ feature }) => {
     </>
   );
 };
+// SINGLE CONVECTIVE FEATURE SVG PATH
 const ConvectiveFeaturePath = ({ feature, color }) => (
   <path
     d={reverseAlbersGeoPath(feature)}
@@ -149,3 +176,7 @@ const ConvectiveFeaturePath = ({ feature, color }) => (
     strokeWidth={3}
   />
 );
+// ! --- UTILS
+const createConvectiveFeatureKey = (feature) => {
+  return `${feature.properties.idp_source}-${feature.id}`;
+};
