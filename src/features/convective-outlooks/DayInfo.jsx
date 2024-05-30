@@ -1,8 +1,7 @@
 import { DayJSDateTime } from "components";
-
 import { useCategoricalOutlookByLayerId } from "services/convective-outlook-geometry.js";
 
-// TODO: refactor --> only pass valid,expire to component
+// TODO: refactor --> only pass [valid,expire] to component
 export const DayInfo = ({ day }) => {
   let valid, expire;
 
