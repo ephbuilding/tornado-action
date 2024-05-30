@@ -87,9 +87,10 @@ export const PROB_WIND_HAIL_STYLES = Object.freeze({
     label: "5%",
     color: "rgb(198, 162, 148)",
   },
+  // created clear significant style for any probabilistic [dn: 10] value that gets returned from MapServer
   10: {
     label: "Significant",
-    color: "rgb(212, 208, 200)",
+    color: "rgba(212, 208, 200,0)",
   },
   15: {
     label: "15%",
