@@ -79,9 +79,7 @@ export default ConvectiveOutlookScreen;
 
 // SUB-COMPONENTS
 const OutlooksGrid = ({ children }) => (
-  <div className="md:grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-    {children}
-  </div>
+  <div className="md:grid md:grid-cols-2 lg:grid-cols-3">{children}</div>
 );
 
 const OutlookGridItem = ({ dayNumber, showOutlookText }) => (

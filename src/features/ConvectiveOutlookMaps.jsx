@@ -15,16 +15,16 @@ export const CategoricalMap = ({ catLayer }) => {
   let showConvFeatures = false;
   if (features) showConvFeatures = hasConvectiveFeatures(features);
 
-  return (
-    <div className="w-full h-full">
+  return showConvFeatures ? (
+    <FullHeightWidthContainer>
       <MapServerLayerName name={name} />
       <USStateMap>
         <g>
-          {showConvFeatures ? <MappedCatFeatures features={features} /> : null}
+          <MappedCatFeatures features={features} />
         </g>
       </USStateMap>
-    </div>
-  );
+    </FullHeightWidthContainer>
+  ) : null;
 };
 export const ProbabilisticTornadoMap = ({ probLayer, sigLayer }) => {
   const { id: probLayerId, name: probLayerName } = probLayer;
@@ -36,21 +36,20 @@ export const ProbabilisticTornadoMap = ({ probLayer, sigLayer }) => {
   if (probFeatures) showProbFeatures = hasConvectiveFeatures(probFeatures);
   if (sigFeatures) showSigFeatures = hasConvectiveFeatures(sigFeatures);
 
-  return (
-    <div className="w-full h-full">
+  return showProbFeatures ? (
+    <FullHeightWidthContainer>
       <MapServerLayerName name={probLayerName} />
       <USStateMap>
         <g>
-          {showProbFeatures ? (
-            <MappedProbTornadoFeatures features={probFeatures} />
-          ) : null}
+          <MappedProbTornadoFeatures features={probFeatures} />
+
           {showSigFeatures ? (
             <MappedHatchedSigFeatures features={sigFeatures} />
           ) : null}
         </g>
       </USStateMap>
-    </div>
-  );
+    </FullHeightWidthContainer>
+  ) : null;
 };
 export const ProbabilisticWindHailMap = ({ probLayer, sigLayer }) => {
   const { id: probLayerId, name: probLayerName } = probLayer;
@@ -62,21 +61,20 @@ export const ProbabilisticWindHailMap = ({ probLayer, sigLayer }) => {
   if (probFeatures) showProbFeatures = hasConvectiveFeatures(probFeatures);
   if (sigFeatures) showSigFeatures = hasConvectiveFeatures(sigFeatures);
 
-  return (
-    <div className="w-full h-full">
+  return showProbFeatures ? (
+    <FullHeightWidthContainer>
       <MapServerLayerName name={probLayerName} />
       <USStateMap>
         <g>
-          {showProbFeatures ? (
-            <MappedProbWindHailFeatures features={probFeatures} />
-          ) : null}
+          <MappedProbWindHailFeatures features={probFeatures} />
+
           {showSigFeatures ? (
             <MappedHatchedSigFeatures features={sigFeatures} />
           ) : null}
         </g>
       </USStateMap>
-    </div>
-  );
+    </FullHeightWidthContainer>
+  ) : null;
 };
 export const Days4_8_ProbabilisticMap = ({ probLayer }) => {
   const { id: probLayerId, name: probLayerName } = probLayer;
@@ -84,21 +82,22 @@ export const Days4_8_ProbabilisticMap = ({ probLayer }) => {
   let showProbFeatures = false;
   if (probFeatures) showProbFeatures = hasConvectiveFeatures(probFeatures);
 
-  return (
-    <div className="w-full h-full">
+  return showProbFeatures ? (
+    <FullHeightWidthContainer>
       <MapServerLayerName name={probLayerName} />
       <USStateMap>
         <g>
-          {showProbFeatures ? (
-            <MappedProbDays4_8Features features={probFeatures} />
-          ) : null}
+          <MappedProbDays4_8Features features={probFeatures} />
         </g>
       </USStateMap>
-    </div>
-  );
+    </FullHeightWidthContainer>
+  ) : null;
 };
 
-// ! --- SUB-COMPONENTS
+// ! ---> SUB-COMPONENTS
+const FullHeightWidthContainer = ({ children }) => {
+  return <div className="w-full h-full">{children}</div>;
+};
 const MapServerLayerName = ({ name }) => {
   return (
     <div className="text-center">
@@ -193,7 +192,7 @@ const ConvectiveFeaturePath = ({ feature, color }) => (
     strokeWidth={3}
   />
 );
-// ! --- UTILS
+// ! ---> UTILS
 const createConvectiveFeatureKey = (feature) => {
   return `${feature.properties.idp_source}-${feature.id}`;
 };
