@@ -3,7 +3,7 @@ import { Modal } from "react-daisyui";
 import { reverseAlbersGeoPath } from "utils/geometry";
 import { USStateMap, USMapLoading } from "components";
 import { AiOutlineCloseCircle as CloseIcon } from "react-icons/ai";
-import { useOutlookByLayerId } from "services/convective-outlook-geometry";
+import { useOutlookByLayerId } from "services/convective-outlook-mapserver";
 import { CAT_OUTLOOK_STYLES } from "constants/convective-outlooks";
 
 export const CategoricalMap = ({ features, colorMap }) => {

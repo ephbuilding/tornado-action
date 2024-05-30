@@ -7,7 +7,7 @@ import {
 } from "constants/convective-outlooks";
 import { USStateMap } from "components/D3Maps";
 import { reverseAlbersGeoPath } from "utils/geometry";
-import { useOutlookLayerById } from "services/convective-outlook-geometry";
+import { useOutlookLayerById } from "services/convective-outlook-mapserver";
 
 export const CategoricalMap = ({ layerID }) => {
   let hasFeatures = false;

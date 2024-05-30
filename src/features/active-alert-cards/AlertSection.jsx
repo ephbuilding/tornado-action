@@ -26,7 +26,6 @@ export const AlertSection = ({ alerts, alertType }) => {
               <AlertComponent key={alert.id} alert={alert} />
             ))
           : null}
-        {/* TODO: create "no active alerts" component */}
         {/* {fakeAlerts
           ? fakeAlerts.map((alert) => (
               <AlertComponent key={alert.id} alert={alert} />

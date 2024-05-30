@@ -7,9 +7,7 @@ const meshedCountyFeatures = TopoJSONClient.mesh(
   AlbersTopoJSONMap.objects.counties
   // (a, b) => a !== b
 );
-// TODO: replace 3 US maps with this single file
 // console.log(">> MESHED COUNTY FEATURES >>\n", meshedCountyFeatures);
-
 export const USCountyMap = ({ children, pathGen }) => {
   return (
     <svg viewBox="0 0 975 610" xmlns="http://www.w3.org/2000/svg">

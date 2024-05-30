@@ -269,7 +269,6 @@ export const ImpactedAreas = ({ areaDesc }) => {
   );
 };
 export const MaxHailSize = ({ maxHailSize }) => {
-  //TODO: check for empty maxHailSize [] or null values
   const maxSizeFloat = maxHailSize[0].split(" ")[2];
 
   return (
