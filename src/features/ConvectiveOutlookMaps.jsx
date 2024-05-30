@@ -9,21 +9,24 @@ import { USStateMap } from "components/D3Maps";
 import { reverseAlbersGeoPath } from "utils/geometry";
 import { useOutlookLayerById } from "services/convective-outlook-mapserver";
 
-export const CategoricalMap = ({ mapserverLayer }) => {
+export const CategoricalMap = ({ catLayer }) => {
   let hasFeatures = false;
-  const { id, name } = mapserverLayer;
+  const { id, name } = catLayer;
   const { data: features } = useOutlookLayerById(id);
   if (features) hasFeatures = features[0].properties.dn > 0;
 
   return (
     <div className="w-full h-full">
+      <MapServerLayerName name={name} />
       <USStateMap>
         <g>{hasFeatures ? <MappedCatFeatures features={features} /> : null}</g>
       </USStateMap>
     </div>
   );
 };
-export const ProbabilisticTornadoMap = ({ probLayerId, sigLayerId }) => {
+export const ProbabilisticTornadoMap = ({ probLayer, sigLayer }) => {
+  const { id: probLayerId, name: probLayerName } = probLayer;
+  const { id: sigLayerId } = sigLayer;
   let hasProbFeatures = false;
   let hasSigFeatures = false;
   const { data: probFeatures } = useOutlookLayerById(probLayerId);
@@ -33,6 +36,7 @@ export const ProbabilisticTornadoMap = ({ probLayerId, sigLayerId }) => {
 
   return (
     <div className="w-full h-full">
+      <MapServerLayerName name={probLayerName} />
       <USStateMap>
         <g>
           {hasProbFeatures ? (
@@ -46,7 +50,9 @@ export const ProbabilisticTornadoMap = ({ probLayerId, sigLayerId }) => {
     </div>
   );
 };
-export const ProbabilisticWindHailMap = ({ probLayerId, sigLayerId }) => {
+export const ProbabilisticWindHailMap = ({ probLayer, sigLayer }) => {
+  const { id: probLayerId, name: probLayerName } = probLayer;
+  const { id: sigLayerId } = sigLayer;
   let hasProbFeatures = false;
   let hasSigFeatures = false;
   const { data: probFeatures } = useOutlookLayerById(probLayerId);
@@ -56,6 +62,7 @@ export const ProbabilisticWindHailMap = ({ probLayerId, sigLayerId }) => {
 
   return (
     <div className="w-full h-full">
+      <MapServerLayerName name={probLayerName} />
       <USStateMap>
         <g>
           {hasProbFeatures ? (
@@ -69,13 +76,15 @@ export const ProbabilisticWindHailMap = ({ probLayerId, sigLayerId }) => {
     </div>
   );
 };
-export const Days4_8_ProbabilisticMap = ({ probLayerId }) => {
+export const Days4_8_ProbabilisticMap = ({ probLayer }) => {
+  const { id: probLayerId, name: probLayerName } = probLayer;
   let hasProbFeatures = false;
   const { data: probFeatures } = useOutlookLayerById(probLayerId);
   if (probFeatures) hasProbFeatures = probFeatures[0].properties.dn > 0;
 
   return (
     <div className="w-full h-full">
+      <MapServerLayerName name={probLayerName} />
       <USStateMap>
         <g>
           {hasProbFeatures ? (
@@ -88,7 +97,13 @@ export const Days4_8_ProbabilisticMap = ({ probLayerId }) => {
 };
 
 // ! --- SUB-COMPONENTS
-
+const MapServerLayerName = ({ name }) => {
+  return (
+    <div className="text-center">
+      <span>{name}</span>
+    </div>
+  );
+};
 // CATEGORICAL FEATURES
 const MappedCatFeatures = ({ features }) => {
   return features.map((feature) => {
