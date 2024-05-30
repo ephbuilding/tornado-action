@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { Button, Modal } from "react-daisyui";
 import { PageLayout } from "components";
+import { Button, Modal } from "react-daisyui";
 import { DayInfo, TextProductModal } from "features/convective-outlooks";
 import { LAYER_IDS } from "constants/convective-outlooks";
 import {
@@ -59,11 +59,11 @@ const ConvectiveOutlookScreen = () => {
           probLayerId={LAYER_IDS.day_3_prob}
           sigLayerId={LAYER_IDS.day_3_sig_severe}
         />
-        <Days4_8_ProbabilisticMap probLayerId={21} />
-        <Days4_8_ProbabilisticMap probLayerId={22} />
-        <Days4_8_ProbabilisticMap probLayerId={23} />
-        <Days4_8_ProbabilisticMap probLayerId={24} />
-        <Days4_8_ProbabilisticMap probLayerId={25} />
+        <Days4_8_ProbabilisticMap probLayerId={LAYER_IDS.day_4_prob} />
+        <Days4_8_ProbabilisticMap probLayerId={LAYER_IDS.day_5_prob} />
+        <Days4_8_ProbabilisticMap probLayerId={LAYER_IDS.day_6_prob} />
+        <Days4_8_ProbabilisticMap probLayerId={LAYER_IDS.day_7_prob} />
+        <Days4_8_ProbabilisticMap probLayerId={LAYER_IDS.day_8_prob} />
       </OutlooksGrid>
       {/* 
       <TextProductModal
