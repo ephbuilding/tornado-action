@@ -44,24 +44,36 @@ export const ActiveAlertCard = ({ alert, showAlertModalFunc }) => {
     "Severe Thunderstorm Warning": NWS_ALERT_COLORS.severe_storm_warning,
     "Severe Thunderstorm Watch": NWS_ALERT_COLORS.severe_storm_watch,
   };
+  const alertColor = alertColorMap[event];
 
   return (
     <div
-      style={{ backgroundColor: alertColorMap[event] }}
+      style={{
+        backgroundColor: alertColor,
+      }}
       className="flex justify-between p-2 rounded text-black"
     >
       <div>
         <span className="font-bold text-sm">{senderName.slice(4)}</span>
-        {situation && (
+        {/* {situation && (
           <div
             style={{ backgroundColor: situationColor }}
             className="text-xs p-2 rounded"
           >
             {situation}
           </div>
-        )}
+        )} */}
       </div>
-      <Button size="sm" onClick={() => showAlertModalFunc(alert)}>
+      <Button
+        size="sm"
+        onClick={() =>
+          showAlertModalFunc({
+            alert: alert,
+            color: situationColor ?? alertColor,
+          })
+        }
+        style={{ backgroundColor: situationColor }}
+      >
         Details
       </Button>
     </div>

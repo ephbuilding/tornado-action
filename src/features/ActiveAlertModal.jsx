@@ -17,7 +17,7 @@ const { features: countyFeatures } = topojson.feature(
   "counties"
 );
 
-export const ActiveAlertModal = ({ isOpen, closeFunc, alert }) => {
+export const ActiveAlertModal = ({ isOpen, closeFunc, alert, color }) => {
   // const {
   //   id,
   //   type,
@@ -44,7 +44,11 @@ export const ActiveAlertModal = ({ isOpen, closeFunc, alert }) => {
   return (
     <>
       {alert ? (
-        <Modal open={isOpen} className="max-w-6xl">
+        <Modal
+          open={isOpen}
+          style={{ backgroundColor: color }}
+          className="max-w-6xl"
+        >
           <Button
             size="sm"
             color="ghost"
@@ -73,7 +77,7 @@ export const ActiveAlertModal = ({ isOpen, closeFunc, alert }) => {
             <PreText text={alert?.properties.description} />
             <PreText text={alert?.properties.instruction} />
           </div>
-          {alert?.geometry && <AlertPolygonMap alert={alert} />}
+          {alert?.geometry && <AlertPolygonMap alert={alert} color={color} />}
         </Modal>
       ) : null}
     </>
@@ -141,7 +145,7 @@ export const AlertMessageModal = ({ messageType, message }) => {
     </div>
   );
 };
-export const AlertPolygonMap = ({ alert }) => {
+export const AlertPolygonMap = ({ alert, color }) => {
   const {
     properties: { event },
   } = alert;
@@ -167,7 +171,7 @@ export const AlertPolygonMap = ({ alert }) => {
     <AlertCardSubComponent>
       <USCountyMap pathGen={extentPathGen}>
         <WarningPolygon
-          color={polygonColor}
+          color={color}
           feature={alert}
           pathGen={extentPathGen}
           winding={TurfRewind}
@@ -274,7 +278,8 @@ export const MaxHailSize = ({ maxHailSize }) => {
   return (
     <AlertCardSubComponent className="flex justify-between items-center">
       <span className="text-sm ">Max Hail Size:</span>
-      <span className="ml-3">{`${maxSizeFloat}`}</span>
+      {/* <span className="ml-3">{`${maxSizeFloat}`}</span> */}
+      <span className="ml-3">{`${maxHailSize}`}</span>
     </AlertCardSubComponent>
   );
 };

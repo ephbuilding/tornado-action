@@ -18,8 +18,8 @@ import { ActiveAlertCounts } from "features/ActiveAlertCounts";
 const HomeScreen = () => {
   const [alertModalIsOpen, setAlertModalIsOpen] = useState(false);
   const [alertModalData, setAlertModalData] = useState(null);
-  const showAlertModal = (alert) => {
-    setAlertModalData(alert);
+  const showAlertModal = ({ alert, color }) => {
+    setAlertModalData({ alert, color });
     setAlertModalIsOpen(true);
   };
   const closeAlertModal = () => {
@@ -81,7 +81,8 @@ const HomeScreen = () => {
   return (
     <PageLayout>
       <ActiveAlertModal
-        alert={alertModalData}
+        alert={alertModalData.alert}
+        color={alertModalData.color}
         isOpen={alertModalIsOpen}
         closeFunc={closeAlertModal}
       />
