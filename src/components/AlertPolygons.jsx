@@ -28,7 +28,7 @@ export const WarningPolygon = ({ alert, color, onClickCallback }) => {
         fillOpacity={0.65}
         strokeOpacity={0.85}
         strokeWidth={1}
-        onClick={() => onClickCallback(alert)}
+        onClick={() => onClickCallback({ alert, color: polygonColor })}
       />
     )
   );
@@ -52,7 +52,7 @@ export const WatchPolygon = ({ alert, color, onClickCallback }) => {
       fillOpacity={0.5}
       strokeOpacity={0.75}
       strokeWidth={0.5}
-      onClick={() => onClickCallback(alert)}
+      onClick={() => onClickCallback({ alert, color: polygonColor })}
     />
   );
 };
