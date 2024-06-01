@@ -1,7 +1,5 @@
 import { useState } from "react";
 import { PageLayout } from "components";
-import { Button, Modal } from "react-daisyui";
-import { DayInfo, TextProductModal } from "features/convective-outlooks";
 import { MAPSERVER_LAYERS } from "constants/convective-outlooks";
 import {
   CategoricalMap,
@@ -81,21 +79,21 @@ export default ConvectiveOutlookScreen;
 const OutlooksGrid = ({ children }) => (
   <div className="md:grid md:grid-cols-2 lg:grid-cols-3">{children}</div>
 );
-const OutlookGridItem = ({ dayNumber, showOutlookText }) => (
-  <div className="flex flex-col items-center md:flex-1 mb-5">
-    <DayInfo day={dayNumber} />
-    {/* <CategoricalMap outlookDay={dayNumber} /> */}
-    <OutlookTextModalBtn openHandler={showOutlookText} outlookDay={dayNumber} />
-  </div>
-);
-const OutlookTextModalBtn = ({ openHandler, outlookDay }) => (
-  <Button
-    variant="outline"
-    color="accent"
-    className="w-25"
-    size="xs"
-    onClick={() => openHandler(outlookDay)}
-  >
-    {`Day ${outlookDay} Details`}
-  </Button>
-);
+// const OutlookGridItem = ({ dayNumber, showOutlookText }) => (
+//   <div className="flex flex-col items-center md:flex-1 mb-5">
+//     <DayInfo day={dayNumber} />
+//     {/* <CategoricalMap outlookDay={dayNumber} /> */}
+//     <OutlookTextModalBtn openHandler={showOutlookText} outlookDay={dayNumber} />
+//   </div>
+// );
+// const OutlookTextModalBtn = ({ openHandler, outlookDay }) => (
+//   <Button
+//     variant="outline"
+//     color="accent"
+//     className="w-25"
+//     size="xs"
+//     onClick={() => openHandler(outlookDay)}
+//   >
+//     {`Day ${outlookDay} Details`}
+//   </Button>
+// );
