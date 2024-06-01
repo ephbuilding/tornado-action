@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Button } from "react-daisyui";
 import { PageLayout } from "components";
 import { MAPSERVER_LAYERS } from "constants/convective-outlooks";
 import {
@@ -78,6 +79,17 @@ export default ConvectiveOutlookScreen;
 // SUB-COMPONENTS
 const OutlooksGrid = ({ children }) => (
   <div className="md:grid md:grid-cols-2 lg:grid-cols-3">{children}</div>
+);
+const OutlookTextModalBtn = ({ openHandler, outlookDay }) => (
+  <Button
+    variant="outline"
+    color="accent"
+    className="w-25"
+    size="xs"
+    onClick={() => openHandler(outlookDay)}
+  >
+    {`Day ${outlookDay} Details`}
+  </Button>
 );
 // const OutlookGridItem = ({ dayNumber, showOutlookText }) => (
 //   <div className="flex flex-col items-center md:flex-1 mb-5">
