@@ -1,16 +1,17 @@
 import * as d3 from "d3";
-import { twMerge } from "tailwind-merge";
 import { useState } from "react";
 import NextImage from "next/image";
 import TurfRewind from "@turf/rewind";
+import { STATES_MAP } from "constants";
+import { twMerge } from "tailwind-merge";
+import { DayJSDateTime } from "components";
 import { FaTornado } from "react-icons/fa6";
+import * as topojson from "topojson-client";
 import { AiFillCloseCircle } from "react-icons/ai";
 import { Button, Card, Modal } from "react-daisyui";
-import { STATES_MAP } from "constants";
-import { changeWfoToCityState, createImpactedAreasMap } from "utils/nws-alerts";
-import { DayJSDateTime, USCountyMap } from "components";
 import AlbersTopoJSONMap from "json/topojson-albers-map.json";
-import * as topojson from "topojson-client";
+import { changeWfoToCityState, createImpactedAreasMap } from "utils/nws-alerts";
+import { USCountyMap } from "components/D3Maps";
 
 const { features: countyFeatures } = topojson.feature(
   AlbersTopoJSONMap,

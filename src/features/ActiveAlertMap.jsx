@@ -4,7 +4,7 @@ import {
   alertIsTornadoEmergency,
 } from "utils/nws-alerts";
 import { Card } from "react-daisyui";
-import { USStateMap } from "components";
+import { USStateMap } from "components/D3Maps";
 import { NWS_ALERT_COLORS } from "constants/nws-alerts";
 import { WarningPolygon, WatchPolygon } from "components/AlertPolygons";
 import { createWatchAlertGeometry, reverseAlbersGeoPath } from "utils/geometry";
