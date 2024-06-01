@@ -81,8 +81,8 @@ const HomeScreen = () => {
   return (
     <PageLayout>
       <ActiveAlertModal
-        alert={alertModalData.alert}
-        color={alertModalData.color}
+        alert={alertModalData?.alert}
+        color={alertModalData?.color}
         isOpen={alertModalIsOpen}
         closeFunc={closeAlertModal}
       />
