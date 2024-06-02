@@ -4,7 +4,7 @@ import { createHTTPClient } from "services/create-http-client";
 const AXIOS_CLIENT = createHTTPClient({
   baseURL: "/api",
 });
-
+// TODO: figure out the NOAA ftp directory naming convention
 const DAY_ENDPOINTS = Object.freeze({
   1: "/acus01.kwns.swo.dy1.txt",
   2: "/acus02.kwns.swo.dy2.txt",
