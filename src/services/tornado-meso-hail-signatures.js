@@ -9,7 +9,7 @@ const AXIOS_CLIENT = createHTTPClient({
   baseURL: "https://www.ncdc.noaa.gov/swdiws",
 });
 
-export const fetchTornadoSigJsonByDateRange = async (daterange) => {
+const fetchTornadoSignaturesByDateRange = async (daterange) => {
   const encodedDateRange = encodeURIComponent(daterange);
   const endpoint = `/json/nx3tvs/${encodedDateRange}`;
 
@@ -21,10 +21,45 @@ export const fetchTornadoSigJsonByDateRange = async (daterange) => {
     throw new Error(`${ERROR_TITLE}\n`, error);
   }
 };
+const fetchHailSignaturesByDateRange = async (daterange) => {
+  const encodedDateRange = encodeURIComponent(daterange);
+  const endpoint = `/json/nx3hail/${encodedDateRange}`;
 
-export const useTornadoSigJsonByDateRange = (daterange) => {
+  try {
+    const response = await AXIOS_CLIENT.get(endpoint);
+    const { result } = response?.data;
+    return result;
+  } catch (error) {
+    throw new Error(`${ERROR_TITLE}\n`, error);
+  }
+};
+const fetchMesoSignaturesByDateRange = async (daterange) => {
+  const encodedDateRange = encodeURIComponent(daterange);
+  const endpoint = `/json/nx3meso/${encodedDateRange}`;
+
+  try {
+    const response = await AXIOS_CLIENT.get(endpoint);
+    const { result } = response?.data;
+    return result;
+  } catch (error) {
+    throw new Error(`${ERROR_TITLE}\n`, error);
+  }
+};
+export const useTornadoSignaturesByDateRange = (daterange) => {
   return useQuery({
     queryKey: ["SWDI", "Tornado Vortex Signatures", daterange],
-    queryFn: () => fetchTornadoSigJsonByDateRange(daterange),
+    queryFn: () => fetchTornadoSignaturesByDateRange(daterange),
+  });
+};
+export const useHailSignaturesByDateRange = (daterange) => {
+  return useQuery({
+    queryKey: ["SWDI", "Hail Signatures", daterange],
+    queryFn: () => fetchHailSignaturesByDateRange(daterange),
+  });
+};
+export const useMesoSignaturesByDateRange = (daterange) => {
+  return useQuery({
+    queryKey: ["SWDI", " Mesocyclone Signatures", daterange],
+    queryFn: () => fetchMesoSignaturesByDateRange(daterange),
   });
 };
