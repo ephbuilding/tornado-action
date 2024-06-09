@@ -9,12 +9,9 @@ import {
 } from "services/tornado-meso-hail-signatures";
 
 const SignaturesScreen = () => {
-  const { data: tornadoSigs } = useTornadoSignaturesByDateRange(
-    "2021121101:2021121102"
-  );
-  const { data: hailSigs } = useHailSignaturesByDateRange(
-    "2021121101:2021121102"
-  );
+  const { data: tornadoSigs } =
+    useTornadoSignaturesByDateRange("20130531:20130601");
+  const { data: hailSigs } = useHailSignaturesByDateRange("20130531:20130601");
   const { data: mesoSigs } = useMesoSignaturesByDateRange(
     "2021121101:2021121102"
   );
@@ -22,63 +19,38 @@ const SignaturesScreen = () => {
   return (
     <PageLayout>
       <div className="grid grid-cols-2">
-        {/* <div className="text-white">
-          {tornadoSigs &&
-            Object.keys(tornadoSigs[0]).map((key) => (
-              <div key={key}>
-                <span className="text-red-500">{key}</span> :{" "}
-                <span>{tornadoSigs[0][key]}</span>
-              </div>
-            ))}
-        </div> */}
-        {/* <div className="text-white">
-          {hailSigs &&
-            Object.keys(hailSigs[0]).map((key) => (
-              <div key={key}>
-                <span className="text-red-500">{key}</span> :{" "}
-                <span>{hailSigs[0][key]}</span>
-              </div>
-            ))}
-        </div> */}
-        {/* <div className="text-white">
-          {mesoSigs &&
-            Object.keys(mesoSigs[0]).map((key) => (
-              <div key={key}>
-                <span className="text-red-500">{key}</span> :{" "}
-                <span>{mesoSigs[0][key]}</span>
-              </div>
-            ))}
-        </div> */}
-      </div>
-      <div className="grid grid-cols-2">
-        <USStateMap>
-          <g>
-            {tornadoSigs &&
-              tornadoSigs.map((signature) => {
-                return (
-                  <SignaturePoint
-                    key={signature.POINT}
-                    signature={signature}
-                    color="red"
-                  />
-                );
-              })}
-          </g>
-        </USStateMap>
-        <USStateMap>
-          <g>
-            {hailSigs &&
-              hailSigs.map((signature) => {
-                return (
-                  <SignaturePoint
-                    key={signature.POINT}
-                    signature={signature}
-                    color="blue"
-                  />
-                );
-              })}
-          </g>
-        </USStateMap>
+        <div>
+          <h2 className="text-center">Tornado Vortex Signatures</h2>
+          <USStateMap>
+            <g>
+              {tornadoSigs &&
+                tornadoSigs.map((signature) => {
+                  return (
+                    <TVSSignaturePoint
+                      key={signature.POINT}
+                      signature={signature}
+                    />
+                  );
+                })}
+            </g>
+          </USStateMap>
+        </div>
+        <div>
+          <h2 className="text-center">Hail Signatures</h2>
+          <USStateMap>
+            <g>
+              {hailSigs &&
+                hailSigs.map((signature) => {
+                  return (
+                    <HailSignaturePoint
+                      key={signature.POINT}
+                      signature={signature}
+                    />
+                  );
+                })}
+            </g>
+          </USStateMap>
+        </div>
       </div>
     </PageLayout>
   );
@@ -93,12 +65,59 @@ const parseSignatureLatLon = (signature) => {
   return [parseFloat(lat), parseFloat(lon)];
 };
 // --- SUB-COMPONENTS
-const SignaturePoint = ({ signature, color }) => {
+const TVSSignaturePoint = ({ signature }) => {
   const [lat, lon] = parseSignatureLatLon(signature);
   const [x, y] = albersGeoPath.centroid({
     type: "Point",
     coordinates: [lat, lon],
   });
+  const mxdv = parseInt(signature.MXDV);
+  let mxdvColor;
+  let pointRadius;
 
-  return <circle cx={x} cy={y} r={3} fill={color} stroke="black" />;
+  if (mxdv <= 50) {
+    mxdvColor = "green";
+    pointRadius = 2;
+  } else if (mxdv <= 100) {
+    mxdvColor = "blue";
+    pointRadius = 4;
+  } else if (mxdv <= 150) {
+    mxdvColor = "yellow";
+    pointRadius = 6;
+  } else if (mxdv <= 200) {
+    mxdvColor = "orange";
+    pointRadius = 8;
+  } else {
+    mxdvColor = "red";
+    pointRadius = 10;
+  }
+
+  return (
+    <circle
+      cx={x}
+      cy={y}
+      r={pointRadius}
+      fill={mxdvColor}
+      fillOpacity={0.5}
+      stroke="black"
+    />
+  );
+};
+const HailSignaturePoint = ({ signature }) => {
+  const [lat, lon] = parseSignatureLatLon(signature);
+  const [x, y] = albersGeoPath.centroid({
+    type: "Point",
+    coordinates: [lat, lon],
+  });
+  const maxSize = parseInt(signature.MAXSIZE);
+  let maxSizeColor;
+
+  if (maxSize <= 1) maxSizeColor = "green";
+  else if (maxSize <= 2) maxSizeColor = "blue";
+  else if (maxSize <= 3) maxSizeColor = "yellow";
+  else if (maxSize <= 4) maxSizeColor = "orange";
+  else if (maxSize <= 5) maxSizeColor = "red";
+  else maxSizeColor = "pink";
+
+  return <circle cx={x} cy={y} r={4} fill={maxSizeColor} stroke="black" />;
 };
