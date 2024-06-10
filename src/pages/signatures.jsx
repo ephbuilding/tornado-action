@@ -212,7 +212,6 @@ const SignaturePoint = ({ signature, color, radius }) => {
       cy={y}
       r={radius}
       fill={color}
-      fillOpacity={0.5}
       stroke="black"
       onClick={() => alert(JSON.stringify(signature))}
     />
