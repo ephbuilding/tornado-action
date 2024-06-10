@@ -9,9 +9,11 @@ import {
 } from "services/tornado-meso-hail-signatures";
 
 const SignaturesScreen = () => {
+  // ? --> tvs don't return MXDV > 200 kts
   const { data: tornadoSigs } =
-    useTornadoSignaturesByDateRange("20130531:20130601");
-  const { data: hailSigs } = useHailSignaturesByDateRange("20130531:20130601");
+    useTornadoSignaturesByDateRange("20211211:20211212");
+  // ? --> hail sigs don't return anything > 4"
+  const { data: hailSigs } = useHailSignaturesByDateRange("20211211:20211212");
   // ? --> why no meso signature responses from SWDI?
   const { data: mesoSigs } = useMesoSignaturesByDateRange(
     "2021121101:2021121102"
@@ -212,6 +214,7 @@ const SignaturePoint = ({ signature, color, radius }) => {
       fill={color}
       fillOpacity={0.5}
       stroke="black"
+      onClick={() => alert(JSON.stringify(signature))}
     />
   );
 };
