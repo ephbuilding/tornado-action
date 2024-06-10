@@ -59,7 +59,7 @@ export const ActiveAlertModal = ({ isOpen, closeFunc, alert, color }) => {
           >
             x
           </Button>
-          <div className="flex">
+          <div className="flex space-x-2 mb-2">
             <SenderName senderName={alert?.properties.senderName} />
             <ExpirationTime expires={alert?.properties.expires} />
             {alert?.properties?.parameters?.tornadoDetection && (
@@ -74,7 +74,7 @@ export const ActiveAlertModal = ({ isOpen, closeFunc, alert, color }) => {
             )}
           </div>
           <ImpactedAreas areaDesc={alert?.properties.areaDesc} />
-          <div className="flex">
+          <div className="flex mb-2">
             <PreText text={alert?.properties.description} />
             <PreText text={alert?.properties.instruction} />
           </div>
