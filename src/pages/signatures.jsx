@@ -1,7 +1,8 @@
+import * as d3 from "d3";
 import { PageLayout } from "components";
-import { useEffect, useRef } from "react";
+import { useState } from "react";
 import { USStateMap } from "components/D3Maps";
-import { albersGeoPath, reverseAlbersGeoPath } from "utils/geometry";
+import { albersGeoPath } from "utils/geometry";
 import {
   useTornadoSignaturesByDateRange,
   useHailSignaturesByDateRange,
@@ -9,15 +10,18 @@ import {
 } from "services/tornado-meso-hail-signatures";
 
 const SignaturesScreen = () => {
+  // const [tooltipIsOpen, setTooltipIsOpen] = useState(false);
+  // const showTooltip = () => setTooltipIsOpen(true);
+
   // ? --> tvs don't return MXDV > 200 kts
   const { data: tornadoSigs } =
     useTornadoSignaturesByDateRange("20211211:20211212");
   // ? --> hail sigs don't return anything > 4"
   const { data: hailSigs } = useHailSignaturesByDateRange("20211211:20211212");
   // ? --> why no meso signature responses from SWDI?
-  const { data: mesoSigs } = useMesoSignaturesByDateRange(
-    "2021121101:2021121102"
-  );
+  // const { data: mesoSigs } = useMesoSignaturesByDateRange(
+  //   "2021121101:2021121102"
+  // );
   let tvsByMxdv = {};
   let hailByMaxSize = {};
 
@@ -55,6 +59,7 @@ const SignaturesScreen = () => {
     <PageLayout>
       <div className="grid grid-cols-2">
         <div>
+          {/* <Tooltip open={tooltipIsOpen} message="Tooltip works!" />; */}
           <h2 className="text-center">Tornado Vortex Signatures</h2>
           <USStateMap>
             {tornadoSigs && (
@@ -121,7 +126,7 @@ const SignaturesScreen = () => {
                 {hailByMaxSize._0_1.map((signature) => {
                   return (
                     <SignaturePoint
-                      key={signature.POINT}
+                      key={`${signature.SHAPE}-${signature.ZTIME}`}
                       signature={signature}
                       color="green"
                       radius={3}
@@ -131,7 +136,7 @@ const SignaturesScreen = () => {
                 {hailByMaxSize._1_2.map((signature) => {
                   return (
                     <SignaturePoint
-                      key={signature.POINT}
+                      key={`${signature.SHAPE}-${signature.ZTIME}`}
                       signature={signature}
                       color="blue"
                       radius={4.5}
@@ -141,7 +146,7 @@ const SignaturesScreen = () => {
                 {hailByMaxSize._2_3.map((signature) => {
                   return (
                     <SignaturePoint
-                      key={signature.POINT}
+                      key={`${signature.SHAPE}-${signature.ZTIME}`}
                       signature={signature}
                       color="yellow"
                       radius={6}
@@ -151,7 +156,7 @@ const SignaturesScreen = () => {
                 {hailByMaxSize._3_4.map((signature) => {
                   return (
                     <SignaturePoint
-                      key={signature.POINT}
+                      key={`${signature.SHAPE}-${signature.ZTIME}`}
                       signature={signature}
                       color="orange"
                       radius={7.5}
@@ -161,7 +166,7 @@ const SignaturesScreen = () => {
                 {hailByMaxSize._4_5.map((signature) => {
                   return (
                     <SignaturePoint
-                      key={signature.POINT}
+                      key={`${signature.SHAPE}-${signature.ZTIME}`}
                       signature={signature}
                       color="red"
                       radius={9}
@@ -171,7 +176,7 @@ const SignaturesScreen = () => {
                 {hailByMaxSize._5.map((signature) => {
                   return (
                     <SignaturePoint
-                      key={signature.POINT}
+                      key={`${signature.SHAPE}-${signature.ZTIME}`}
                       signature={signature}
                       color="pink"
                       radius={10}
@@ -205,15 +210,35 @@ const convertSignaturePointToD3Centroid = (signature) => {
 // --- SUB-COMPONENTS
 const SignaturePoint = ({ signature, color, radius }) => {
   const [x, y] = convertSignaturePointToD3Centroid(signature);
+  const [coords, setCoords] = useState([x, y]);
+  const [isShown, setIsShown] = useState(true);
+
+  const showPointTooltip = () => {};
 
   return (
-    <circle
-      cx={x}
-      cy={y}
-      r={radius}
-      fill={color}
-      stroke="black"
-      onClick={() => alert(JSON.stringify(signature))}
-    />
+    <>
+      <circle
+        cx={x}
+        cy={y}
+        r={radius}
+        fill={color}
+        stroke="black"
+        onClick={(e) => setCoords(d3.pointer(e))}
+      />
+      {isShown && (
+        <>
+          {/* <rect x={coords[0]} y={coords[1]} fill="red" height={20} width={50} /> */}
+          <text
+            x={coords[0]}
+            y={coords[1] + 10}
+            stroke="white"
+            fill="red"
+            textLength={100}
+          >
+            tooltip text
+          </text>
+        </>
+      )}
+    </>
   );
 };
