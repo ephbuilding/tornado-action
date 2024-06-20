@@ -7,6 +7,8 @@ import { reverseAlbersGeoPath } from "utils/geometry";
 import { NWS_ALERT_COLORS } from "constants/nws-alerts";
 import { createWatchAlertGeometry } from "utils/geometry";
 
+// TODO: refactor to single AlertPolygon that only takes [color, geometry] args
+
 export const WarningPolygon = ({ alert, color, onClickCallback }) => {
   const isDestructiveStorm = alertIsDestructiveStorm(alert);
   const isPDS = alertIsPDS(alert);
