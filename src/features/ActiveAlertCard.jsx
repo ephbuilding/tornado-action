@@ -5,6 +5,9 @@ import {
   alertIsTornadoEmergency,
 } from "utils/nws-alerts";
 import { NWS_ALERT_COLORS, NWS_STORM_SITUATIONS } from "constants/nws-alerts";
+import { WarningPolygon, WatchPolygon } from "components/AlertPolygons";
+import { USCountyMap, USStateMap } from "components/D3Maps";
+import { geoAlbers, geoPath } from "d3";
 
 export const ActiveAlertCard = ({ alert, showAlertModalFunc }) => {
   const {
@@ -46,16 +49,26 @@ export const ActiveAlertCard = ({ alert, showAlertModalFunc }) => {
   };
   const alertColor = alertColorMap[event];
 
+  const albersFitExtent = geoAlbers().fitExtent(
+    [
+      [150, 100],
+      [825, 510],
+    ],
+    alert
+  );
+  const extentPathGen = geoPath(albersFitExtent);
+
   return (
     <div
       style={{
         backgroundColor: alertColor,
       }}
-      className="flex justify-between p-2 rounded text-black"
+      className="p-2 rounded text-black"
     >
-      <div>
-        <span className="font-bold text-sm">{senderName.slice(4)}</span>
-        {/* {situation && (
+      <div className="flex justify-between ">
+        <div>
+          <span className="font-bold text-sm">{senderName.slice(4)}</span>
+          {/* {situation && (
           <div
             style={{ backgroundColor: situationColor }}
             className="text-xs p-2 rounded"
@@ -63,19 +76,39 @@ export const ActiveAlertCard = ({ alert, showAlertModalFunc }) => {
             {situation}
           </div>
         )} */}
+        </div>
+        <Button
+          size="sm"
+          onClick={() =>
+            showAlertModalFunc({
+              alert: alert,
+              color: situationColor ?? alertColor,
+            })
+          }
+          style={{ backgroundColor: situationColor }}
+        >
+          Details
+        </Button>
       </div>
-      <Button
-        size="sm"
-        onClick={() =>
-          showAlertModalFunc({
-            alert: alert,
-            color: situationColor ?? alertColor,
-          })
-        }
-        style={{ backgroundColor: situationColor }}
-      >
-        Details
-      </Button>
+      <div className="h-full w-full">
+        {event.toLowerCase().includes("warning") ? (
+          <USCountyMap pathGen={extentPathGen}>
+            <WarningPolygon
+              alert={alert}
+              color={situationColor}
+              pathGen={extentPathGen}
+            />
+          </USCountyMap>
+        ) : (
+          <USStateMap>
+            <WatchPolygon
+              alert={alert}
+              color={situationColor}
+              // pathGen={extentPathGen}
+            />
+          </USStateMap>
+        )}
+      </div>
     </div>
   );
 };

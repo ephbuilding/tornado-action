@@ -15,6 +15,14 @@ export const createWatchAlertGeometry = (alert) => {
       return affectedCountyIds.includes(countyID);
     })
   );
+  // const watchGeometry = topojsonClient.feature(
+  //   AlbersMapTopoJSON,
+  //   // prepend '0' to D3 topoJSON county ids to match NWS county IDs
+  //   AlbersMapTopoJSON.objects.counties.geometries.filter((geometry) => {
+  //     const countyID = `0${geometry.id}`;
+  //     return affectedCountyIds.includes(countyID);
+  //   })
+  // );
   return watchGeometry;
 };
 export const reverseAlbersGeoPath = (geometry) => {

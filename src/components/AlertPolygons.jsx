@@ -7,9 +7,14 @@ import { reverseAlbersGeoPath } from "utils/geometry";
 import { NWS_ALERT_COLORS } from "constants/nws-alerts";
 import { createWatchAlertGeometry } from "utils/geometry";
 
-// TODO: refactor to single AlertPolygon that only takes [color, geometry] args
+// TODO: refactor to single AlertPolygon that only takes ({color, geometry, pathGen, onClickCallback}) args
 
-export const WarningPolygon = ({ alert, color, onClickCallback }) => {
+export const WarningPolygon = ({
+  alert,
+  color,
+  pathGen = reverseAlbersGeoPath,
+  onClickCallback = undefined,
+}) => {
   const isDestructiveStorm = alertIsDestructiveStorm(alert);
   const isPDS = alertIsPDS(alert);
   const isTornadoEmergency = alertIsTornadoEmergency(alert);
@@ -21,10 +26,13 @@ export const WarningPolygon = ({ alert, color, onClickCallback }) => {
     ? NWS_ALERT_COLORS.destructive_storm
     : color;
 
+  console.log("alert.geomertry >> : ", alert.geometry);
+  console.log("warning polygonColor >> : ", color);
+
   return (
     alert?.geometry && (
       <path
-        d={reverseAlbersGeoPath(alert.geometry)}
+        d={pathGen(alert.geometry)}
         fill={polygonColor}
         stroke={polygonColor}
         fillOpacity={0.65}
@@ -36,7 +44,12 @@ export const WarningPolygon = ({ alert, color, onClickCallback }) => {
   );
 };
 
-export const WatchPolygon = ({ alert, color, onClickCallback }) => {
+export const WatchPolygon = ({
+  alert,
+  color,
+  pathGen = reverseAlbersGeoPath,
+  onClickCallback = undefined,
+}) => {
   const isPDS = alertIsPDS(alert);
   const isDestructiveStorm = alertIsDestructiveStorm(alert);
   const polygonColor = isPDS
@@ -46,9 +59,12 @@ export const WatchPolygon = ({ alert, color, onClickCallback }) => {
     : color;
   const watchGeometry = createWatchAlertGeometry(alert);
 
+  console.log("watchGeometry >> : ", watchGeometry);
+  console.log("watch polygonColor >> : ", polygonColor);
+
   return (
     <path
-      d={reverseAlbersGeoPath(watchGeometry)}
+      d={pathGen(watchGeometry)}
       fill={polygonColor}
       stroke={polygonColor}
       fillOpacity={0.5}
