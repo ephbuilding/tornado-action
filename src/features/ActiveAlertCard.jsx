@@ -50,9 +50,10 @@ export const ActiveAlertCard = ({ alert, showAlertModalFunc }) => {
   const alertColor = alertColorMap[event];
 
   const albersFitExtent = geoAlbers().fitExtent(
+    // 975 x 610
     [
-      [150, 100],
-      [825, 510],
+      [350, 160],
+      [625, 450],
     ],
     alert
   );
