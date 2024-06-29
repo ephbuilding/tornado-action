@@ -6,6 +6,7 @@ import {
 import { reverseAlbersGeoPath } from "utils/geometry";
 import { NWS_ALERT_COLORS } from "constants/nws-alerts";
 import { createWatchAlertGeometry } from "utils/geometry";
+import { geoAlbers, geoPath } from "d3";
 
 // TODO: refactor to single AlertPolygon that only takes ({color, geometry, pathGen, onClickCallback}) args
 
@@ -62,11 +63,42 @@ export const WatchPolygon = ({
   console.log("watchGeometry >> : ", watchGeometry);
   console.log("watch polygonColor >> : ", polygonColor);
 
+  const albersFitExtent = geoAlbers().fitExtent(
+    // 975 x 610
+    [
+      [350, 160],
+      [625, 450],
+    ],
+    watchGeometry
+  );
+  const extentPathGen = geoPath(albersFitExtent);
+
   return (
     <path
+      // d={extentPathGen(watchGeometry)}
       d={pathGen(watchGeometry)}
       fill={polygonColor}
       stroke={polygonColor}
+      fillOpacity={0.5}
+      strokeOpacity={0.75}
+      strokeWidth={0.5}
+      onClick={() => onClickCallback({ alert, color: polygonColor })}
+    />
+  );
+};
+
+export const AlertPolygon = ({
+  alert,
+  color,
+  geometry,
+  pathGenerator,
+  onClickCallback,
+}) => {
+  return (
+    <path
+      d={pathGenerator(geometry)}
+      fill={color}
+      stroke={color}
       fillOpacity={0.5}
       strokeOpacity={0.75}
       strokeWidth={0.5}

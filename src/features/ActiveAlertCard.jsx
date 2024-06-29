@@ -8,6 +8,7 @@ import { NWS_ALERT_COLORS, NWS_STORM_SITUATIONS } from "constants/nws-alerts";
 import { WarningPolygon, WatchPolygon } from "components/AlertPolygons";
 import { USCountyMap, USStateMap } from "components/D3Maps";
 import { geoAlbers, geoPath } from "d3";
+import { createWatchAlertGeometry } from "utils/geometry";
 
 export const ActiveAlertCard = ({ alert, showAlertModalFunc }) => {
   const {
@@ -49,13 +50,17 @@ export const ActiveAlertCard = ({ alert, showAlertModalFunc }) => {
   };
   const alertColor = alertColorMap[event];
 
+  const alertGeometry = event.toLowerCase().includes("warning")
+    ? alert.geometry
+    : createWatchAlertGeometry(alert);
+
   const albersFitExtent = geoAlbers().fitExtent(
     // 975 x 610
     [
       [350, 160],
       [625, 450],
     ],
-    alert
+    alertGeometry
   );
   const extentPathGen = geoPath(albersFitExtent);
 
@@ -101,11 +106,11 @@ export const ActiveAlertCard = ({ alert, showAlertModalFunc }) => {
             />
           </USCountyMap>
         ) : (
-          <USStateMap>
+          <USStateMap pathGen={extentPathGen}>
             <WatchPolygon
               alert={alert}
               color={situationColor}
-              // pathGen={extentPathGen}
+              pathGen={extentPathGen}
             />
           </USStateMap>
         )}
