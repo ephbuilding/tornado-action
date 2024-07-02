@@ -21,7 +21,7 @@ export const ActiveAlertCard = ({ alert, showAlertModalFunc }) => {
     expires,
     instruction,
     senderName,
-    parameters: { maxHailSize, tornadoDetection },
+    parameters: { maxHailSize, tornadoDetection, thunderstormDamageThreat },
   } = alert?.properties;
 
   let situation = null;
@@ -73,7 +73,7 @@ export const ActiveAlertCard = ({ alert, showAlertModalFunc }) => {
       }}
       className="p-2 rounded text-black"
     >
-      <div className="flex justify-between ">
+      <div className="flex justify-between">
         <div>
           <span className="font-bold text-sm">{senderName.slice(4)}</span>
           {/* {situation && (
@@ -116,6 +116,13 @@ export const ActiveAlertCard = ({ alert, showAlertModalFunc }) => {
             />
           </USStateMap>
         )}
+      </div>
+      <div>
+        {thunderstormDamageThreat ? (
+          <span>{thunderstormDamageThreat}</span>
+        ) : null}
+        {tornadoDetection ? <span>{tornadoDetection}</span> : null}
+        <span>test text</span>
       </div>
     </div>
   );
