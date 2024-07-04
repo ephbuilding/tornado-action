@@ -87,22 +87,15 @@ export const WatchPolygon = ({
   );
 };
 
-export const AlertPolygon = ({
-  alert,
-  color,
-  geometry,
-  pathGenerator,
-  onClickCallback,
-}) => {
+export const AlertPolygon = ({ color, geometry, pathGen }) => {
   return (
     <path
-      d={pathGenerator(geometry)}
+      d={pathGen(geometry)}
       fill={color}
       stroke={color}
       fillOpacity={0.5}
       strokeOpacity={0.75}
       strokeWidth={0.5}
-      onClick={() => onClickCallback({ alert, color: polygonColor })}
     />
   );
 };

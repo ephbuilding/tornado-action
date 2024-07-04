@@ -5,7 +5,11 @@ import {
   alertIsTornadoEmergency,
 } from "utils/nws-alerts";
 import { NWS_ALERT_COLORS, NWS_STORM_SITUATIONS } from "constants/nws-alerts";
-import { WarningPolygon, WatchPolygon } from "components/AlertPolygons";
+import {
+  AlertPolygon,
+  WarningPolygon,
+  WatchPolygon,
+} from "components/AlertPolygons";
 import { USCountyMap, USStateMap } from "components/D3Maps";
 import { geoAlbers, geoPath } from "d3";
 import { createWatchAlertGeometry } from "utils/geometry";
@@ -21,7 +25,12 @@ export const ActiveAlertCard = ({ alert, showAlertModalFunc }) => {
     expires,
     instruction,
     senderName,
-    parameters: { maxHailSize, tornadoDetection, thunderstormDamageThreat },
+    parameters: {
+      maxHailSize,
+      maxWindGust,
+      tornadoDetection,
+      thunderstormDamageThreat,
+    },
   } = alert?.properties;
 
   let situation = null;
@@ -52,7 +61,7 @@ export const ActiveAlertCard = ({ alert, showAlertModalFunc }) => {
   };
   const alertColor = alertColorMap[event];
 
-  const alertGeometry = event.toLowerCase().includes("warning")
+  const alertGeometry = isWarningEvent(event)
     ? alert.geometry
     : createWatchAlertGeometry(alert);
 
@@ -65,26 +74,13 @@ export const ActiveAlertCard = ({ alert, showAlertModalFunc }) => {
     alertGeometry
   );
   const extentPathGen = geoPath(albersFitExtent);
+  const geometryColor = situationColor ?? alertColor;
 
   return (
-    <div
-      style={{
-        backgroundColor: alertColor,
-      }}
-      className="p-2 rounded text-black"
-    >
+    <Component color={alertColor}>
+      <SituationTag situation={situation} color={situationColor} />
       <div className="flex justify-between">
-        <div>
-          <span className="font-bold text-sm">{senderName.slice(4)}</span>
-          {/* {situation && (
-          <div
-            style={{ backgroundColor: situationColor }}
-            className="text-xs p-2 rounded"
-          >
-            {situation}
-          </div>
-        )} */}
-        </div>
+        <SenderName senderName={senderName} />
         <Button
           size="sm"
           onClick={() =>
@@ -99,31 +95,80 @@ export const ActiveAlertCard = ({ alert, showAlertModalFunc }) => {
         </Button>
       </div>
       <div className="h-full w-full">
-        {event.toLowerCase().includes("warning") ? (
-          <USCountyMap pathGen={extentPathGen}>
-            <WarningPolygon
-              alert={alert}
-              color={situationColor}
-              pathGen={extentPathGen}
-            />
-          </USCountyMap>
+        {isWarningEvent(event) ? (
+          <WarningViewbox
+            color={geometryColor}
+            geometry={alertGeometry}
+            pathGen={extentPathGen}
+          />
         ) : (
-          <USStateMap pathGen={extentPathGen}>
-            <WatchPolygon
-              alert={alert}
-              color={situationColor}
-              pathGen={extentPathGen}
-            />
-          </USStateMap>
+          <WatchViewbox
+            color={geometryColor}
+            geometry={alertGeometry}
+            pathGen={extentPathGen}
+          />
         )}
       </div>
       <div>
-        {thunderstormDamageThreat ? (
-          <span>{thunderstormDamageThreat}</span>
-        ) : null}
-        {tornadoDetection ? <span>{tornadoDetection}</span> : null}
-        <span>test text</span>
+        {/* {thunderstormDamageThreat ? <p>{thunderstormDamageThreat}</p> : null}
+        {tornadoDetection ? <p>{tornadoDetection}</p> : null} */}
       </div>
-    </div>
+    </Component>
   );
+};
+
+// SUB-COMPONENTS
+const Component = ({ color, children }) => (
+  <div
+    style={{
+      borderColor: color,
+      borderWidth: 5,
+    }}
+    className="p-2 rounded"
+  >
+    {children}
+  </div>
+);
+const SituationTag = ({ situation, color }) => {
+  return (
+    <>
+      {situation && (
+        <div
+          style={{ backgroundColor: color }}
+          className="text-center font-bold uppercase p-2 rounded"
+        >
+          {situation}
+        </div>
+      )}
+    </>
+  );
+};
+const SenderName = ({ senderName }) => (
+  <div>
+    <span className="font-bold text-sm">{senderName.slice(4)}</span>
+  </div>
+);
+const MaxHailSize = ({ maxHailSize }) => {};
+const ThunderstormDamageThreat = ({ thunderstormDamageThreat }) => {};
+const TornadoDetection = ({ tornadoDetection }) => {};
+const WarningViewbox = ({ color, geometry, pathGen }) => {
+  return (
+    <USCountyMap pathGen={pathGen}>
+      <AlertPolygon color={color} geometry={geometry} pathGen={pathGen} />
+    </USCountyMap>
+  );
+};
+const WarningZoomedViewbox = () => {};
+const WatchViewbox = ({ color, geometry, pathGen }) => {
+  return (
+    <USStateMap pathGen={pathGen}>
+      <AlertPolygon color={color} geometry={geometry} pathGen={pathGen} />
+    </USStateMap>
+  );
+};
+const WatchZoomedViewbox = () => {};
+
+// UTILS
+const isWarningEvent = (event) => {
+  return event.toLowerCase().includes("warning");
 };
