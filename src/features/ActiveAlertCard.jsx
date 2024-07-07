@@ -149,6 +149,7 @@ const SenderName = ({ senderName }) => (
   </div>
 );
 const MaxHailSize = ({ maxHailSize }) => {};
+const MaxWindGust = ({}) => {};
 const ThunderstormDamageThreat = ({ thunderstormDamageThreat }) => {};
 const TornadoDetection = ({ tornadoDetection }) => {};
 const WarningViewbox = ({ color, geometry, pathGen }) => {
