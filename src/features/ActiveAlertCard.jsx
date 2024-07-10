@@ -94,6 +94,12 @@ export const ActiveAlertCard = ({ alert, showAlertModalFunc }) => {
           Details
         </Button>
       </div>
+      <TornadoDetection tornadoDetection={tornadoDetection} />
+      <MaxWindGust maxWindGust={maxWindGust} />
+      <MaxHailSize maxHailSize={maxHailSize} />
+      <ThunderstormDamageThreat
+        thunderstormDamageThreat={thunderstormDamageThreat}
+      />
       <div className="h-full w-full">
         {isWarningEvent(event) ? (
           <WarningViewbox
@@ -148,10 +154,18 @@ const SenderName = ({ senderName }) => (
     <span className="font-bold text-sm">{senderName.slice(4)}</span>
   </div>
 );
-const MaxHailSize = ({ maxHailSize }) => {};
-const MaxWindGust = ({}) => {};
-const ThunderstormDamageThreat = ({ thunderstormDamageThreat }) => {};
-const TornadoDetection = ({ tornadoDetection }) => {};
+const MaxHailSize = ({ maxHailSize }) => {
+  return maxHailSize ? <p>{maxHailSize}</p> : null;
+};
+const MaxWindGust = ({ maxWindGust }) => {
+  return maxWindGust ? <p>{maxWindGust}</p> : null;
+};
+const ThunderstormDamageThreat = ({ thunderstormDamageThreat }) => {
+  return thunderstormDamageThreat ? <p>{thunderstormDamageThreat}</p> : null;
+};
+const TornadoDetection = ({ tornadoDetection }) => {
+  return tornadoDetection ? <p>{tornadoDetection}</p> : null;
+};
 const WarningViewbox = ({ color, geometry, pathGen }) => {
   return (
     <USCountyMap pathGen={pathGen}>
